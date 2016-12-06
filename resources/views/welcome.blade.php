@@ -9,8 +9,8 @@
 
     <!-- load stylesheets -->
     <link rel="stylesheet" href="http://fonts.useso.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
-    <link rel="stylesheet" href="/testblog/css/bootstrap.min.css">                                      <!-- Bootstrap style -->
-    <link rel="stylesheet" href="/testblog/css/templatemo-style.css">                                   <!-- Templatemo style -->
+    <link rel="stylesheet" href="{{ asset('/testblog/css/bootstrap.min.css') }}">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" href="{{ asset('/testblog/css/templatemo-style.css') }}" >                                   <!-- Templatemo style -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -59,7 +59,7 @@
         </div>
 
         <div class="tm-home-img-container">
-            <img src="/testblog/img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
+            <img src="{{ asset('/testblog/img/tm-home-img.jpg') }}" alt="Image" class="hidden-lg-up img-fluid">
         </div>
 
         <section class="tm-section">
@@ -110,9 +110,9 @@
         </footer>
 
         <!-- load JS files -->
-        <script src="/testblog/js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
-        <script src="/testblog/js/tether.min.js"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
-        <script src="/testblog/js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
+        <script src="{{ asset('/testblog/js/jquery-1.11.3.min.js') }}"></script>             <!-- jQuery (https://jquery.com/download/) -->
+        <script src="{{ asset('/testblog/js/tether.min.js') }}"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
+        <script src="{{ asset('/testblog/js/bootstrap.min.js') }}"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
 
 </body>
 </html>
