@@ -110,7 +110,7 @@
         </footer>
 
         <!-- load JS files -->
-        <script src="https://cdn.bootcss.com/jquery/1.8.2/jquery.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
+        <script src="https://cdn.bootcss.com/jquery/1.8.1/jquery.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="{{ asset('/testblog/js/tether.min.js') }}"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
         <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
 
