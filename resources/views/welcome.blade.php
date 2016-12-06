@@ -9,7 +9,7 @@
 
     <!-- load stylesheets -->
     <link rel="stylesheet" href="https://fonts.useso.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
-    <link rel="stylesheet" href="{{ asset('/testblog/css/bootstrap.min.css') }}">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">                                      <!-- Bootstrap style -->
     <link rel="stylesheet" href="{{ asset('/testblog/css/templatemo-style.css') }}" >                                   <!-- Templatemo style -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -112,7 +112,7 @@
         <!-- load JS files -->
         <script src="{{ asset('/testblog/js/jquery-1.11.3.min.js') }}"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="{{ asset('/testblog/js/tether.min.js') }}"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
-        <script src="{{ asset('/testblog/js/bootstrap.min.js') }}"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
+        <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
 
 </body>
 </html>
