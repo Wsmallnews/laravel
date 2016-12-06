@@ -8,7 +8,7 @@
     <title>Smallnews 个人博客</title>
 
     <!-- load stylesheets -->
-    <link rel="stylesheet" href="http://fonts.useso.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="https://fonts.useso.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
     <link rel="stylesheet" href="{{ asset('/testblog/css/bootstrap.min.css') }}">                                      <!-- Bootstrap style -->
     <link rel="stylesheet" href="{{ asset('/testblog/css/templatemo-style.css') }}" >                                   <!-- Templatemo style -->
 
