@@ -58,7 +58,7 @@
         </div>
 
         <div class="tm-home-img-container">
-            <img src="{{ asset('/testblog/img/tm-home-img.jpg') }}" alt="Image" class="hidden-lg-up img-fluid">
+            <img src="/testblog/img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
         </div>
 
         <section class="tm-section">
