@@ -1,5 +1,7 @@
 
 window._ = require('lodash');
+// var fs = require('fs');
+// var babel = require('babel-core');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -11,37 +13,36 @@ window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 
 /**
+ * metisMenu 左侧菜单
+ */
+require('metismenu');
+require('./sb-admin-2.js');
+
+/**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
+window.Vue = require('vue/dist/vue.js');
 require('vue-resource');
+window.VueRouter = require('vue-router');       // 引入 vue-router
+
+window.VueProgressBar = require('vue-progressbar'); // vue 进度条
+
 
 /**
- * We'll register a HTTP interceptor to attach the "CSRF" header to each of
- * the outgoing requests issued by this application. The CSRF middleware
- * included with Laravel will automatically verify the header's value.
+ * 网站异步访问，浏览器后退
+ * @type {[type]}
  */
+window.Pjax = require('pjax');      // 引入Pjax
 
-Vue.http.interceptors.push((request, next) => {
-    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
-
-    next();
-});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
- */
-
-
-
-
-/**
- * start echo pusher 实时通信，目前不可用
+ * start echo pusher 实时通信，公共频道
  * @type {[type]}
  */
 window.Pusher = require('pusher-js');

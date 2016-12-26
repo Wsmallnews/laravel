@@ -7,8 +7,8 @@ use Redirect;
 use AuthUser;
 use Session;
 use Response;
-use App\User;
-use App\News;
+use App\Models\User;
+use App\Models\News;
 use DB;
 use \Exception;
 use Event;
@@ -37,17 +37,17 @@ class NewsController extends CommonController {
 
 	    $pageRow = isset($data['rows']) ? $data['rows'] : 15;
 
-		$article = new Article();
+		$news = new News();
 
 		if(!empty($data['keyword'])){
-			$article = $article->where('title', 'like', '%'.$data['keyword'].'%');
+			$news = $news->where('title', 'like', '%'.$data['keyword'].'%');
 		}
 
-        $article_list = $article->orderBy('id','desc')->paginate($pageRow);
+        $article_list = $news->orderBy('id','desc')->paginate($pageRow);
 
 		if(Request::ajax()){
 
-	        $view = view('home.article.li',array('article_list' => $article_list));
+	        $view = view('desktop.news.li',array('article_list' => $article_list));
 
 	        return Response::json(array('error'=>0,'data'=>array('html'=>$view->render())));
 	    }else{

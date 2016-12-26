@@ -7,3 +7,25 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// font-awesome
+@import "node_modules/font-awesome/scss/font-awesome";
+
+body{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #333;
+}
+.navbar-default {
+    background-color: #f8f8f8;
+}
+
+.col-lg-9 {padding:0px;}        /*栅格padding消除*/
+.col-lg-3 {padding:0px;}
+
+.pd-right {padding-right:15px;}
+
+@media screen and (max-width: 1201px){
+    .main-col {padding:0px;}
+}
+
+

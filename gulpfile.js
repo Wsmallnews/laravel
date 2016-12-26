@@ -15,7 +15,11 @@ require('laravel-elixir-vue');
 
 elixir(mix => {
     mix.sass('app.scss')
-       .webpack('app.js');
+        .styles([
+            'sb-admin-2.css',
+            'metisMenu.css'
+        ])
+        .webpack('app.js');
 });
 
 // var elixir = require('laravel-elixir');
