@@ -14,7 +14,7 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('github')->redirect(); 
     }
 
     /**
@@ -26,6 +26,6 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('github')->user();
 
-        print_r($user);
+        print_r($user);exit;
     }
 }
