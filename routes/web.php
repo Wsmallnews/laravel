@@ -19,8 +19,8 @@
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback')->name('auth.github');
+Route::get('auth/github', 'Auth\AuthController@redirectToProvider')->name('auth.github');
+Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function()
 {
