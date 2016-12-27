@@ -58,7 +58,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="" class="wechat_login"><b class="fa fa-weixin"></b> 登录</a></li>
-                        <li><a href="" class="github_login"><b class="fa fa-github-alt"></b> 登录</a></li>
+                        <li><a href="{{ route('auth.github') }}" class="github_login"><b class="fa fa-github-alt"></b> 登录</a></li>
                     </ul>
                 </div>
             </div>
