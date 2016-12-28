@@ -25,4 +25,10 @@ class HomeController extends Controller
     {
         return view('welcome');
     }
+    
+    public function old()
+    {
+        // print_r(Auth::user());
+        return view('home');
+    }
 }

@@ -18,6 +18,7 @@
 
 
 Route::get('/home', 'HomeController@index');
+Route::get('/old', 'HomeController@old');
 
 Route::get('/test',function(){
     // try {
@@ -39,22 +40,32 @@ Route::get('/test',function(){
     return ;
 });
 
-Route::group(['prefix' => '', 'namespace' => 'Desktop'], function()
+Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
 {
-    Route::get('/', 'IndexController@index');
+    $router->get('/', 'IndexController@index');
     
-    Auth::routes();
+    // Auth::routes();      with Illuminate/Routing/Router.php  -> function auth
+    $router->get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    $router->post('login', 'Auth\LoginController@login');
+    $router->get('register', 'Auth\RegisterController@showRegistrationForm');
+    $router->post('register', 'Auth\RegisterController@register');
+    $router->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+    $router->post('password/reset', 'Auth\ResetPasswordController@reset');
+    $router->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+    $router->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+    $router->post('logout', 'Auth\LoginController@logout');
+    // Auth::routes(); end
+
     
-    Route::get('createUser', 'LoginController@showFastCreateUserForm');
-    Route::post('createUser', 'LoginController@createUser')->name('createUser');
-    Route::get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
-    Route::get('auth/callback', 'Auth\LoginController@handleProviderCallback');
+    $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm');
+    $router->post('createUser', 'Auth\LoginController@createUser')->name('createUser');
+    $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
+    $router->get('auth/callback', 'Auth\LoginController@handleProviderCallback');
     
     // Route::get('/', 'IndexController@index');
-    Route::resource('user', 'UserController');      // 用户操作
+    $router->resource('user', 'UserController');      // 用户操作
 });
 
-Auth::routes();
 
 //管理控制台路由组
 Route::group(['prefix' => 'admincms', 'namespace' => 'AdminCms'], function($router)
