@@ -19,7 +19,7 @@ class IndexController extends CommonController {
 		$this->middleware('auth.admin:admin');
 	}
 
-	public function index(){
+	public function index(){print_r(Auth::user());
 		return view('admincms.index');
 	}
 

@@ -19,14 +19,37 @@
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('auth/github', 'Auth\AuthController@redirectToProvider')->name('auth.github');
-Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+Route::get('/test',function(){
+    // try {
+    //     App\Models\User::findOrFail(5);
+    //     echo "sss";
+    // }catch(\Exception $e){
+    //     echo 'abc';
+    //     print($e->getMessage());
+    // }
+    
+    // var_dump();
+    // return;
+    $chat = App\Models\ChatMessage::create([
+        'message' => 'zheshixiaoxi1',
+        'aaa' => 'zheshixiaoxi1',
+        'user_id' => 123,
+    ]);
+    var_dump($chat);
+    return ;
+});
 
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function()
 {
+    Route::get('/', 'IndexController@index');
+    
     Auth::routes();
     
-    Route::get('/', 'IndexController@index');
+    Route::get('createUser', 'LoginController@showFastCreateUserForm');
+    Route::post('createUser', 'LoginController@createUser')->name('createUser');
+    Route::get('auth/driver', 'Auth\AuthController@redirectToProvider')->name('auth.driver');
+    Route::get('auth/callback', 'Auth\AuthController@handleProviderCallback');
+    
     // Route::get('/', 'IndexController@index');
     Route::resource('user', 'UserController');      // 用户操作
 });

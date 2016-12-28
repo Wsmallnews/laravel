@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Socialite;
+use Log;
 
 class AuthController extends Controller
 {
@@ -26,6 +27,6 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('github')->user();
 
-        print_r($user);
+        Log::info('github',['message',json_encode($user)]);
     }
 }

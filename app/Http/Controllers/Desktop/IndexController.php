@@ -24,6 +24,7 @@ class IndexController extends CommonController
      */
     public function index()
     {
+        // print_r(Auth::user());
         return view('desktop.index');
     }
 }

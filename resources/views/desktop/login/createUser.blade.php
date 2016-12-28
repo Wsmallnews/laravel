@@ -1,10 +1,3 @@
-<!--
- ____                  _ _                         
-/ ___| _ __ ___   __ _| | |_ __   _____      _____ 
-\___ \| '_ ` _ \ / _` | | | '_ \ / _ \ \ /\ / / __|
-___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
-|____/|_| |_| |_|\__,_|_|_|_| |_|\___| \_/\_/ |___/ 
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +58,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="" class="wechat_login"><b class="fa fa-weixin"></b> 登录</a></li>
-                        <li><a href="{{ route('auth.driver', ['driver' => 'github']) }}" class="github_login"><b class="fa fa-github-alt"></b> 登录</a></li>
+                        <li><a href="{{ route('auth.github') }}" class="github_login"><b class="fa fa-github-alt"></b> 登录</a></li>
                     </ul>
                 </div>
             </div>
