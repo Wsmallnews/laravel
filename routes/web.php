@@ -47,8 +47,8 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function()
     
     Route::get('createUser', 'LoginController@showFastCreateUserForm');
     Route::post('createUser', 'LoginController@createUser')->name('createUser');
-    Route::get('auth/driver', 'Auth\AuthController@redirectToProvider')->name('auth.driver');
-    Route::get('auth/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
+    Route::get('auth/callback', 'Auth\LoginController@handleProviderCallback');
     
     // Route::get('/', 'IndexController@index');
     Route::resource('user', 'UserController');      // 用户操作

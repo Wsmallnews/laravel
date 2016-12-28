@@ -74,7 +74,7 @@ trait SocialiteUser
      * @param  [type] $driver [description]
      * @return [type]         [description]
      */
-    public function getSocialiteUser($driver){
+    protected function getSocialiteUser($driver){
         $thirdUser = Socialite::driver($driver)->user();
 
         return $thirdUser;
@@ -86,7 +86,7 @@ trait SocialiteUser
      * @param  [type] $token [description]
      * @return [type]        [description]
      */
-    public function getSocialiteUserFromToken($driver, $token){
+    protected function getSocialiteUserFromToken($driver, $token){
         Socialite::driver($driver)->userFromToken($token);
         
         return $thirdUser;
@@ -96,7 +96,7 @@ trait SocialiteUser
     /**
      * 用户通过github 登录，获取 github 用户       get.Driver.User
      */
-    public function getGithubUser($thirdUser){
+    protected function getGithubUser($thirdUser){
         $githubUser = new GithubUser();
         
         return $githubUser->getGithubUser($thirdUser->id);
@@ -188,7 +188,7 @@ trait SocialiteUser
         return $this->create.Ucfirst($driver).User($socialiteUser);
     }
     
-    public function createGithubUser($githubUser){
+    protected function createGithubUser($githubUser){
         return GithubUser::create([
             'github_id' => $githubUser->getId(),
             'nick_name' => $githubUser->getNickname(),

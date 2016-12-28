@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -18,9 +17,8 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            $url = $guard ? 'admin/index':'/';
+            $url = $guard == 'admin' ? 'admin/index':'/';
             return redirect($url);
-            // return redirect('/home');
         }
 
         return $next($request);
