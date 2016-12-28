@@ -50,7 +50,8 @@ trait SocialiteUser
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 
         if($socialiteUser->token){
-            $driverUser = $this->get.ucfirst($driver).User($socialiteUser);
+            $method = "get".ucfirst($driver)."User";
+            $driverUser = $this->$method($socialiteUser);
             
             if($driverUser){
                 $this->guard()->loginUsingId($driverUser['user_id'], true);
@@ -185,7 +186,8 @@ trait SocialiteUser
         $socialiteUser = getSocialiteUserFromToken($driver, $token);
         
         // 创建对应的第三方用户
-        return $this->create.Ucfirst($driver).User($socialiteUser);
+        $method = "create".ucfirst($driver)."User";
+        return $this->$method($socialiteUser);
     }
     
     protected function createGithubUser($githubUser){
