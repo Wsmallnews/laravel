@@ -2,7 +2,7 @@
 namespace App\Http\Traits;
 
 use Auth;
-use Request;
+use Illuminate\Http\Request;
 use App\Models\GithubUser;
 use App\Models\User;
 use Socialite;
@@ -35,7 +35,7 @@ trait SocialiteUser
         }
         
         return Socialite::driver($driver)
-                ->with(['dirver' => $dirver])->redirect();
+                ->with(['driver' => $driver])->redirect();
     }
 
     /**
