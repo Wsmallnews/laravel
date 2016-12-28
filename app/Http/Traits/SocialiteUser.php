@@ -166,6 +166,7 @@ trait SocialiteUser
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'avatar' => $data['avator'],
+            'github_name' => $data['github_name'],
             'driver' => $data['driver'],
         ]);
     }
@@ -196,18 +197,6 @@ trait SocialiteUser
             'avatar' => $githubUser->getAvatar(),
             'user_id' => $user_id
         ]);
-    }
-    
-
-
-    /**
-     * Get the guard to be used during registration.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
     }
 }
 

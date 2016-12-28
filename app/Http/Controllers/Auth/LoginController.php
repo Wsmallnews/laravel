@@ -47,9 +47,19 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        Auth::guard('web')->logout();
+        $this->guard()->logout();
         
         return redirect()->route('login');
     }
     
+    
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('web');
+    }
 }
