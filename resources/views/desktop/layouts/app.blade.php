@@ -23,6 +23,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     <link rel="stylesheet" type="text/css"  href="{{ asset('/css/app.css') }}" >
 
     <style>
+        .col-lg-3,.col-lg-6,.col-lg-9,.col-lg-12 {padding:0px;}
         body{background-color:#495664;color:#F8FCEB;}
         .navbar {box-shadow:0px 5px 15px #222222;}
         #page-body{padding-top:65px;}
