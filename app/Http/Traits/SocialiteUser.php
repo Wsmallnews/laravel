@@ -49,7 +49,7 @@ trait SocialiteUser
         
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 
-        if($socialiteUser->token){
+        if($socialiteUser['token']){
             $method = "get".ucfirst($driver)."User";
             $driverUser = $this->$method($socialiteUser);
             
@@ -59,8 +59,6 @@ trait SocialiteUser
                 return redirect($this->redirectTo);
             }else {
                 // 创建用户和第三方用户
-                print_r($socialiteUser);
-                print_r($socialiteUser->toArray());
                 $request->session()->flash('socialiteUser', $socialiteUser);
                 $request->session()->flash('driver', $driver);
                 return redirect($this->redirectCreate);
@@ -82,7 +80,14 @@ trait SocialiteUser
     protected function getSocialiteUser($driver){
         $thirdUser = Socialite::driver($driver)->user();
 
-        return $thirdUser;
+        $simUser = array(
+            'token' => $thirdUser->token,
+            'avatar' => $thirdUser->getAvatar(),
+            'name' => $user->getNickname(),
+            'email' => $user->getEmail()
+        );
+
+        return $simUser;
     }
     
     /**
@@ -104,7 +109,7 @@ trait SocialiteUser
     protected function getGithubUser($thirdUser){
         $githubUser = new GithubUser();
         
-        return $githubUser->getGithubUser($thirdUser->id);
+        return $githubUser->getGithubUser($thirdUser['id']);
     }
     
     
