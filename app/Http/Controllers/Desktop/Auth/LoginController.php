@@ -49,7 +49,7 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
         
-        return redirect()->route('login');
+        return redirect($redirectTo);
     }
     
     
