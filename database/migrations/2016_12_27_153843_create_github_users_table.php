@@ -18,9 +18,9 @@ class CreateGithubUsersTable extends Migration
             $table->increments('id');
             $table->string('github_id')->unique();
             $table->string('nick_name');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });
