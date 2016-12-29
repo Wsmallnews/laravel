@@ -99,7 +99,7 @@ trait SocialiteUser
      * @return [type]        [description]
      */
     protected function getSocialiteUserFromToken($driver, $token){
-        Socialite::driver($driver)->userFromToken($token);
+        $thirdUser = Socialite::driver($driver)->userFromToken($token);
         
         return $thirdUser;
     }
