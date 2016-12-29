@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <label for="password" class="col-md-4 control-label">密码</label>
                         <div class="col-md-6">
                             <input type="password" class="form-control" id="password" name="password" placeholder="密码">
@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label for="password_confirmation" class="col-md-4 control-label">确认密码</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" id="password_confirmation" placeholder="确认密码">
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="确认密码">
                             
                             @if ($errors->has('password_confirmation'))
                                 <span class="help-block">
