@@ -191,10 +191,10 @@ trait SocialiteUser
      * @param  array  $data
      * @return User
      */
-    protected function createSocialiteUser(Request $request, $user_id)
+    protected function createSocialiteUser($user_id)
     {
-        $driver = $request->input('driver');
-        $token = $request->input('token');
+        $driver = Request::input('driver');
+        $token = Request::input('token');
         $socialiteUser = getSocialiteUserFromToken($driver, $token);
         
         // 创建对应的第三方用户
