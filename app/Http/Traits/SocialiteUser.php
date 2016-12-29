@@ -199,10 +199,10 @@ trait SocialiteUser
         
         // 创建对应的第三方用户
         $method = "create".ucfirst($driver)."User";
-        return $this->$method($socialiteUser);
+        return $this->$method($socialiteUser, $user_id);
     }
     
-    protected function createGithubUser($githubUser){
+    protected function createGithubUser($githubUser, $user_id){
         return GithubUser::create([
             'github_id' => $githubUser->getId(),
             'nick_name' => $githubUser->getNickname(),
