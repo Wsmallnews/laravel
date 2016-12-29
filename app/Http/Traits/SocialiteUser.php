@@ -55,7 +55,8 @@ trait SocialiteUser
             
             if($driverUser){
                 $this->guard()->loginUsingId($driverUser['user_id'], true);
-                return redirect($this->redirectTo)->withSuccess('登录成功');
+                flash('登录成功', 'success');
+                return redirect($this->redirectTo);
             }else {
                 // 创建用户和第三方用户
                 $request->session()->flash('socialiteUser', $socialiteUser);
@@ -65,7 +66,8 @@ trait SocialiteUser
         }
         
         // 没有获取到第三方数据
-        return redirect($this->redirectTo)->withError('请刷新重试');
+        flash('请刷新重试', 'warning');
+        return redirect($this->redirectTo);
     }
     
     
@@ -119,7 +121,7 @@ trait SocialiteUser
      * @author @smallnews 2016-12-28
      * @return [type] [description]
      */
-    public function createUser(){
+    public function createUser(Request $request){
         $this->validator($request->all())->validate();
 
         // 创建 User
@@ -132,8 +134,9 @@ trait SocialiteUser
         $user->save();
 
         $this->guard()->login($user);
-
-        return redirect($this->redirectTo)->withSuccess('登录成功');
+        
+        flash('登录成功', 'success');
+        return redirect($this->redirectTo);
     }
     
     

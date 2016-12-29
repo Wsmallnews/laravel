@@ -50,9 +50,5 @@
 
 @section('script')
     {{-- @parent --}}
-    
-    var Vm = new Vue({
-        el : '#wrapper',
-    });    
 @endsection
 

@@ -5998,7 +5998,7 @@ a.thumbnail.active {
   display: block;
   padding: 10px 15px;
   margin-bottom: -1px;
-  background-color: #fff;
+  background-color: #000000;
   border: 1px solid #d3e0e9;
 }
 
@@ -10754,8 +10754,12 @@ body {
   padding-right: 15px;
 }
 
+.pd-left {
+  padding-left: 15px;
+}
+
 @media screen and (max-width: 1201px) {
-  .main-col {
+  .pd-no {
     padding: 0px;
   }
 }

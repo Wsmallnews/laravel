@@ -183,11 +183,6 @@
     <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
     
     @section('script')
-        <script type="text/javascript">
-            var Vm = new Vue({
-                el : '#wrapper'
-            });
-        </script>
     @endsection
     {{-- <div class="pjax-script"> --}}
     @yield('script')

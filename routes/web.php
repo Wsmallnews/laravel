@@ -57,8 +57,8 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // Auth::routes(); end
 
     
-    $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm');
-    $router->post('createUser', 'Auth\LoginController@createUser')->name('createUser');
+    $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
+    $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
     $router->get('auth/callback', 'Auth\LoginController@handleProviderCallback');
     

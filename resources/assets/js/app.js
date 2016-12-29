@@ -39,6 +39,11 @@ const options = {
 Vue.use(VueProgressBar, options);
 
 
+const Vm = new Vue({
+    el: '#wrapper'
+});
+
+
 /**
  * 初始化 Pjax，选择元素 a  绑定区域整个body
  */
