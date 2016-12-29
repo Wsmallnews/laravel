@@ -18,7 +18,7 @@
                         <label for="avatar" class="col-md-4 control-label">头像</label>
                         <div class="col-md-6">
                             <div class="img-file" style="background: url(@if (old('avatar')){{{old('avatar')}}}@else{{{ session('socialiteUser.avatar') }}}@endif) no-repeat;background-size: cover;">
-                                <input type="file" class="form-control" id="avatar" name="file" placeholder="头像">
+                                <input type="file" class="form-control" id="avatar" placeholder="头像">
                                 <input type="hidden" name="avatar" value="@if (old('avatar')){{{old('avatar')}}}@else{{{ session('socialiteUser.avatar') }}}@endif">
                             </div>
                         </div>
