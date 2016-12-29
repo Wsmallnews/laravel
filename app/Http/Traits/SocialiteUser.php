@@ -195,7 +195,7 @@ trait SocialiteUser
     {
         $driver = request()->input('driver');
         $token = request()->input('token');
-        $socialiteUser = getSocialiteUserFromToken($driver, $token);
+        $socialiteUser = $this->getSocialiteUserFromToken($driver, $token);
         
         // 创建对应的第三方用户
         $method = "create".ucfirst($driver)."User";
