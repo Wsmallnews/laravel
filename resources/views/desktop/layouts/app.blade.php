@@ -43,7 +43,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         a.list-group-item:focus {background-color:#333C4A;color:#F8FCEB;}
         .list-group-item:first-child{border-radius: 0px;}
         .list-group-item:last-child{border-radius: 0px;}
-        .form-control { background-color: #495664;border: 2px solid #333C4A;}
+        .form-control { background-color: #495664;border: 2px solid #333C4A;color: #F8FCEB;}
         .pd-10 {padding:10px;}
         .mr-bo-20 {margin-bottom: 20px;}
         .btn-default:hover{color: #F8FCEB;background-color: #495664;border-color: #333C4A;}

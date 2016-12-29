@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\GithubUser;
 use App\Models\User;
 use Socialite;
+use Validator;
 
 trait SocialiteUser
 {
