@@ -132,7 +132,7 @@ trait SocialiteUser
      */
     public function createUser(Request $request){
         $this->validator($request->all())->validate();
-
+        print_r($request->all());exit;
         // 创建 User
         $user = $this->create($request->all());
 
