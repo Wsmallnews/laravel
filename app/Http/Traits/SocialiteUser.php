@@ -13,7 +13,7 @@ trait SocialiteUser
     /**
      * 允许登录的第三方
      */
-    protected $filterLogin = ['github'];
+    protected $filterLogin = ['github', 'wechat'];
     
     /**
      * 
@@ -160,7 +160,7 @@ trait SocialiteUser
             'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'driver' => 'required|in_array:'.join(',', $this->filterLogin),
+            'driver' => 'required|in:'.join(',', $this->filterLogin),
             'token' => 'required',
         ],[
             
