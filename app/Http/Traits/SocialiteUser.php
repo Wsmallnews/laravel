@@ -60,7 +60,7 @@ trait SocialiteUser
             }else {
                 // 创建用户和第三方用户
                 print_r($socialiteUser);
-                print_r($socialiteUser)->toArray();exit;
+                print_r($socialiteUser->toArray());
                 $request->session()->flash('socialiteUser', $socialiteUser);
                 $request->session()->flash('driver', $driver);
                 return redirect($this->redirectCreate);
