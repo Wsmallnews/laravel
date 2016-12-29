@@ -83,8 +83,8 @@ trait SocialiteUser
         $simUser = array(
             'token' => $thirdUser->token,
             'avatar' => $thirdUser->getAvatar(),
-            'name' => $user->getNickname(),
-            'email' => $user->getEmail()
+            'name' => $thirdUser->getNickname(),
+            'email' => $thirdUser->getEmail()
         );
 
         return $simUser;
