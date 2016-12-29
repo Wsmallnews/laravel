@@ -26,7 +26,6 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         body{background-color:#495664;color:#F8FCEB;}
         .navbar {box-shadow:0px 5px 15px #222222;}
         #page-body{padding-top:65px;}
-        .navbar-right{margin-right: 0px;}
         .shadow {box-shadow:1px 1px 5px #222222;}       /*设置阴影*/
         #powerby{text-align: center;height:30px;line-height: 30px;margin: 30px 0px;}
         /*.power {background-color: #F8FCEB}*/
@@ -54,6 +53,9 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .panel {margin-bottom: 22px;background-color:#495664;}
         .panel-default {border:none;border-radius: 0px;}
         .panel-default > .panel-heading {color: #F8FCEB;background-color: #495664;border-color: #333C4A;}
+        .dropdown-menu {background-color: #495664; box-shadow: 0px 3px 5px #222222}
+        .dropdown-menu > li > a {color: #F8FCEB;}
+        .dropdown-menu > li > a:hover {color: #F8FCEB;background-color: #333C4A;}
     </style>
 
     <!-- Scripts -->
