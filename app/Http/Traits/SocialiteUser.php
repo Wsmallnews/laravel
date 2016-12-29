@@ -161,7 +161,7 @@ trait SocialiteUser
             'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'driver' => 'required|in_array:'.$this->filterLogin,
+            'driver' => 'required|in_array:'.join(',', $this->filterLogin),
             'token' => 'required',
         ]);
     }
