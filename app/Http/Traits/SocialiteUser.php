@@ -191,7 +191,7 @@ trait SocialiteUser
      * @param  array  $data
      * @return User
      */
-    protected function createSocialiteUser($user_id)
+    protected function createSocialiteUser(Request $request, $user_id)
     {
         $driver = $request->input('driver');
         $token = $request->input('token');
