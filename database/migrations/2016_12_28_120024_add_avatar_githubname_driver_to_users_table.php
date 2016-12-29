@@ -14,9 +14,9 @@ class AddAvatarGithubnameDriverToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar');
-            $table->string('github_name');
-            $table->string('driver');
+            $table->string('avatar')->nullable();
+            $table->string('github_name')->nullable();
+            $table->string('driver')->nullable();
         });
     }
 
