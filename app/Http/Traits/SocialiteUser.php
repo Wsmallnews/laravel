@@ -131,9 +131,7 @@ trait SocialiteUser
      * @return [type] [description]
      */
     public function createUser(Request $request){
-        print_r('1111111');
         $this->validator($request->all())->validate();
-        print_r($request->all());exit;
         // 创建 User
         $user = $this->create($request->all());
 
@@ -164,6 +162,8 @@ trait SocialiteUser
             'password' => 'required|min:6|confirmed',
             'driver' => 'required|in_array:'.join(',', $this->filterLogin),
             'token' => 'required',
+        ],[
+            
         ]);
     }
 
