@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\User;
-use App\ChatMessage;
+use App\Models\User;
+use App\Models\ChatMessage;
 use App\Events\ChatMessageWasReceived;
 
 class SendChatMessage extends Command

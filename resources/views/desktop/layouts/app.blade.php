@@ -153,7 +153,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     
     @section('script')
         <script type="text/javascript">
-            $('#flash-overlay-modal').modal();
+            
         </script>
     @endsection
 
