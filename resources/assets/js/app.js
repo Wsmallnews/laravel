@@ -13,11 +13,18 @@ require('./bootstrap');
  * the body of the page. From here, you may begin adding components to
  * the application, or feel free to tweak this setup for your needs.
  */
-// 全局注册
+// 全局注册,admincms
 Vue.component('no-data', require('./components/admincms/no-data.vue'));
-// 引入，等待局部注册
+
+// 全局注册 desktop
+Vue.component('markdown', require('./components/markdown.vue'));
+
+// 局部注册 admincms
 window.example = require('./components/Example.vue');
 window.admin_table = require('./components/admincms/table.vue');
+
+// 局部注册 desktop
+// window.md_desk = require('./components/markdown.vue');
 
 /**
  * 初始化vue进度条
@@ -96,5 +103,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false
+});
 
+autosize($(".autosize"));
 

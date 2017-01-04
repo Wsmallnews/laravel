@@ -17,13 +17,12 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - {{ $title or config('app.name', 'Laravel')}} - 控制台</title>
+    <title>@yield('title-body'){{ $title or config('app.name', 'Laravel')}} - {{ config('app.name', 'Laravel') }}开发者社区</title>
 
     <!-- Styles -->
     <link rel="stylesheet" type="text/css"  href="{{ asset('/css/app.css') }}" >
 
     <style>
-        .col-lg-3,.col-lg-6,.col-lg-9,.col-lg-12 {padding:0px;}
         body{background-color:#495664;color:#F8FCEB;}
         .navbar {box-shadow:0px 5px 15px #222222;}
         #page-body{padding-top:65px;}
@@ -57,6 +56,9 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .dropdown-menu {background-color: #495664; box-shadow: 0px 3px 5px #222222}
         .dropdown-menu > li > a {color: #F8FCEB;}
         .dropdown-menu > li > a:hover {color: #F8FCEB;background-color: #333C4A;}
+        #md-content{ overflow-x: hidden; overflow-y: auto;word-wrap: break-word; resize: none; width: 100%;}
+        #md-html {border: 2px solid #333C4A;display:table;}
+        .alert {border-radius: 0px;}
     </style>
 
     <!-- Scripts -->

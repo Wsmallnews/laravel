@@ -49,6 +49,7 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
         
+        flash('退出登录成功', 'success');
         return redirect($this->redirectTo);
     }
     

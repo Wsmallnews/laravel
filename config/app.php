@@ -168,6 +168,7 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class,
 
         //
 
@@ -179,7 +180,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\MarkdownServiceProvider::class,
     ],
 
     /*
@@ -231,6 +232,7 @@ return [
          * Package Service Providers...
          */
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,
         
 
         /**

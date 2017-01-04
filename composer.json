@@ -13,7 +13,8 @@
         "laravel/socialite": "^2.0",
         "league/html-to-markdown": "^4.3",
         "laracasts/flash": "^2.0",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "mews/purifier": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

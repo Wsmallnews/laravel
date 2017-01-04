@@ -5,7 +5,6 @@
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
     </div>
-    {{$errors->first()}}
     <div class="col-lg-9 pd-left pd-no">
         <div class="panel panel-default shadow">
             <div class="panel-heading">Register</div>

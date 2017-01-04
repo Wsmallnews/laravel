@@ -5,6 +5,7 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "autosize": "^3.0.20",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -19,6 +20,7 @@
     "laravel-elixir-vue-2": "^0.2.0",
     "laravel-elixir-webpack-official": "^1.0.2",
     "lodash": "^4.16.2",
+    "marked": "^0.3.6",
     "metismenu": "^2.6.0",
     "pjax": "^0.2.4",
     "tether": "^1.4.0",

@@ -55,12 +55,21 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
     $router->post('logout', 'Auth\LoginController@logout');
     // Auth::routes(); end
-
     
+    // fast login start
     $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
     $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
     $router->get('auth/callback', 'Auth\LoginController@handleProviderCallback');
+    // fast login end
+    
+    $router->get('topic', 'TopicsController@index');
+    $router->get('topic/write', 'TopicsController@write');
+    $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+');
+    $router->patch('topic/write', 'TopicsController@save')->name('topic.save');
+    $router->get('topic/{id}', 'TopicsController@show')->name('topic.show');
+    // $router->get('topic/{id}/edit', 'TopicsController@edit')->name('topic.edit');
+    // $router->patch('topic/{id}/edit', 'TopicsController@update')->name('topic.update');
     
     // Route::get('/', 'IndexController@index');
     $router->resource('user', 'UserController');      // 用户操作
@@ -83,8 +92,6 @@ Route::group(['prefix' => 'admincms', 'namespace' => 'AdminCms'], function($rout
     $router->get('login', 'LoginController@showLoginForm')->name('admin.login');
     $router->post('login', 'LoginController@login');
     $router->get('logout', 'LoginController@logout');
-
-    
 });
 
 // Route::get('/admin', 'HomeController@index');

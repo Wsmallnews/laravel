@@ -12,6 +12,7 @@ require('laravel-elixir-vue');
  | file for our application, as well as publishing vendor resources.
  |
  */
+// elixir.config.sourcemaps = false;
 
 elixir(mix => {
     mix.sass('app.scss')

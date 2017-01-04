@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Desktop;
 
 use App\Http\Controllers\Controller;
+use Auth;
 
 class CommonController extends Controller {
 
@@ -9,4 +10,9 @@ class CommonController extends Controller {
 	{
 		$this->_initialize();
 	}
+	
+	protected function guard()
+    {
+        return Auth::guard('web');
+    }
 }
