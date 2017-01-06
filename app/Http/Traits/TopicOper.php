@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Topic;
 use App\Models\TopicClassify;
+use App\Repositories\Markdown;
 
 trait TopicOper
 {    
