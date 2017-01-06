@@ -4,6 +4,8 @@ namespace App\Http\Traits;
 use Auth;
 use Illuminate\Http\Request;
 use Validator;
+use App\Models\Topic;
+use App\Models\TopicClassify;
 
 trait TopicOper
 {    
