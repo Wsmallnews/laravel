@@ -21,6 +21,7 @@ class CreateTopicsTable extends Migration
             $table->string('title',255)->nullable();
             $table->string('abstract',255)->nullable()->comment('摘要'); // 摘要
             $table->text('body')->nullable();        // 内容
+            $table->text('body_original')->nullable();        // markdown内容
             $table->tinyInteger('is_top')->default(0);
             $table->tinyInteger('is_elite')->default(0)->comment('是否加精');    // 是否加精
             $table->integer('view_num')->default(0);            // 查看数量

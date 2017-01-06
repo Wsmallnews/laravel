@@ -14,10 +14,11 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 // 全局注册,admincms
-Vue.component('no-data', require('./components/admincms/no-data.vue'));
+Vue.component('admin-no-data', require('./components/admincms/no-data.vue'));
 
 // 全局注册 desktop
 Vue.component('markdown', require('./components/markdown.vue'));
+// Vue.component('desk-no-data', require('./components/desktop/no-data.vue'));
 
 // 局部注册 admincms
 window.example = require('./components/Example.vue');
@@ -57,7 +58,7 @@ const Vm = new Vue({
 document.addEventListener("DOMContentLoaded", function() {
     new Pjax({
         elements: ".pjax-element",
-        selectors: ["title", "#page-wrapper", ".pjax-script"]
+        selectors: ["title", "#page-wrapper", "#page-body", ".pjax-script"]
     });
 });
 
@@ -103,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-marked.setOptions({
+marked.setOptions({         // 初始化 markdown 解析器
     renderer: new marked.Renderer(),
     gfm: true,
     tables: true,
@@ -114,5 +115,42 @@ marked.setOptions({
     smartypants: false
 });
 
-autosize($(".autosize"));
+autosize($(".autosize"));       // 设置 textarea 自动随内容增高
+
+window.showAlert = function(obj, confirmCB, cancelCB){
+    var defaults = {
+        title: "",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    };
+    
+    $.extend(defaults, obj);
+    
+    swal(defaults,function(isConfirm){
+        if (isConfirm) {
+            if(confirmCB != undefined){
+				confirmCB();
+                return;
+			}
+            swal("this is confirm", '', 'success');
+            
+        } else {
+            if(cancelCB != undefined){
+                cancelCB();
+                return;
+            }
+            swal.close();
+        }
+    });
+}
+
+
+
+
 

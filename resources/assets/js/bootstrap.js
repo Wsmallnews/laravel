@@ -30,6 +30,7 @@ window.VueRouter = require('vue-router');       // 引入 vue-router
 
 window.VueProgressBar = require('vue-progressbar'); // vue 进度条
 
+require('sweetalert');                          // 引入 alert 弹窗 http://t4t5.github.io/sweetalert/
 
 /**
  * 网站异步访问，浏览器后退

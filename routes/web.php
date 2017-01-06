@@ -64,14 +64,19 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // fast login end
     
     $router->get('topic', 'TopicsController@index');
-    $router->get('topic/write', 'TopicsController@write');
-    $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+');
+    $router->get('topic/order/{class?}', 'TopicsController@index');
+    $router->get('topic/by/{id?}', 'TopicsController@index');
+    $router->get('topic/sort/{orderby?}', 'TopicsController@index')->where('orderby', '[a-z]+')->name('topic.sort');
+    $router->get('topic/filter', 'TopicsController@index')->name('topic.filter');
+    $router->get('topic/create', 'TopicsController@create')->name('topic.create');
+    $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+')->name('topic.write');
     $router->patch('topic/write', 'TopicsController@save')->name('topic.save');
-    $router->get('topic/{id}', 'TopicsController@show')->name('topic.show');
+    $router->get('topic/{id}', 'TopicsController@show')->where('id', '[0-9]+')->name('topic.show');
     // $router->get('topic/{id}/edit', 'TopicsController@edit')->name('topic.edit');
     // $router->patch('topic/{id}/edit', 'TopicsController@update')->name('topic.update');
     
     // Route::get('/', 'IndexController@index');
+    $router->get('user/{id}', 'TopicsController@show')->name('user.show');
     $router->resource('user', 'UserController');      // 用户操作
 });
 
@@ -95,3 +100,11 @@ Route::group(['prefix' => 'admincms', 'namespace' => 'AdminCms'], function($rout
 });
 
 // Route::get('/admin', 'HomeController@index');
+
+// 
+// Event::listen('illuminate.query', function($sql, $param)
+// {
+//     Log::info($sql . ", with[" . join(',', $param) ."]");
+//     var_dump($sql);//sql 预处理 语句
+//     var_dump($param);
+// });

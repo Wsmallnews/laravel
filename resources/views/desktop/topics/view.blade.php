@@ -6,13 +6,12 @@
         <div class="panel panel-default shadow">
             <div class="panel-heading">
                 <h1>{{ $topic->title }}</h1>
-                <p style="margin:0;color:#929292;font-size:12px;">
-                    <a href="{{ url('topic') }}">{{ $topic->classifyName }}</a> - 
-                    <a href="{{ url('user') }}">{{ $topic->userName }}</a> - 
-                    于5天前 - 最后回复由
-                    <a href="{{ url('user') }}">smallnews</a> - 于2天前 - 
-                    <span> {{ $topic->view_num }} 阅读</span>
-                </p> 
+                <p class="topic-spec">
+                    <span class="list-tag">{{ $topic->classify->name }}</span> - 
+                    <a href="{{ route('user.show', $topic->user_id) }}" class="pjax-element">{{ $topic->user->name }}</a> - 
+                    于 <span class="white">{{$topic->created_at->diffForHumans()}}</span> - 
+                    <span class="white"> {{ $topic->view_num }} </span>阅读
+                </p>
             </div>
             <div class="panel-body">
                 {!! $topic->body !!}

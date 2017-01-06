@@ -43,7 +43,7 @@
         {{ $news->links() }}
     </div>
     @else
-    <no-data></no-data>
+    <admin-no-data></admin-no-data>
     @endif
 </div>
 @endsection
