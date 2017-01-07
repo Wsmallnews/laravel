@@ -143,7 +143,7 @@ trait SocialiteUser
 
         $this->guard()->login($user);
         
-        flash('登录成功', 'success');
+        flash('登录成功', 'success'); 
         return redirect($this->redirectTo);
     }
     
