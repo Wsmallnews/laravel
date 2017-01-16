@@ -70,8 +70,8 @@ return [
     |
     */
 
-    'connection' => null,
-
+    // 'connection' => null,
+    'connection' => 'session',      // 2017-01-10
     /*
     |--------------------------------------------------------------------------
     | Session Database Table

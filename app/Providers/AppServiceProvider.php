@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\TopicClassify;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,17 +27,15 @@ class AppServiceProvider extends ServiceProvider
     {
         // 注册 前端导航 栏 单例
         $this->app->singleton('nav',function($app){
-			$nav = session('nav', null);
-            
-            if(!$nav){
-                $nav = TopicClassify::orderBy('sort', 'desc')->get();
-                
-                if(!$nav->isEmpty()){
-                    session(['nav' => $nav]);
+            $nav = Cache::get('nav', function() {
+                $nav = TopicClassify::orderBy('sort', 'desc')->get()->toArray();
+                if(!empty($nav)){
+                    Cache::put('nav', $nav, '6000');
                 }
-            }
+            });
 
             return $nav;
 		});
+
     }
 }

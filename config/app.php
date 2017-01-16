@@ -169,6 +169,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
 
         //
 

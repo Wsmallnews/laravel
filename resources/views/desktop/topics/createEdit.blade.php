@@ -48,9 +48,9 @@
                     <markdown has-error="{{ $errors->has('body') }}" error-msg="{{ $errors->first('body') }}" ta-content="@if(old('body')){{{old('body')}}}@else{{{$topic->body_original}}}@endif"></markdown>
                     
                     <div class="form-group">
-                        {{-- <button type="submit" name="save" class="btn btn-default">
+                        <button type="submit" name="save" class="btn btn-default">
                             保存
-                        </button> --}}
+                        </button>
                         @if(!$topic->is_publish)
                             <button type="submit" name="save_and_publish" class="btn btn-success">
                                 保存并发布

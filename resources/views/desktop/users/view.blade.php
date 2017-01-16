@@ -9,7 +9,7 @@
                 <p class="topic-spec">
                     <span class="list-tag">{{ $topic->classify->name }}</span> - 
                     <a href="{{ route('user.show', $topic->user_id) }}" class="pjax-element">{{ $topic->user->name }}</a> - 
-                    于 <span class="white">{{$topic->published_at->diffForHumans()}}</span> - 
+                    于 <span class="white">{{$topic->created_at->diffForHumans()}}</span> - 
                     <span class="white"> {{ $topic->view_num }} </span>阅读
                 </p>
             </div>

@@ -76,7 +76,9 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // $router->patch('topic/{id}/edit', 'TopicsController@update')->name('topic.update');
     
     // Route::get('/', 'IndexController@index');
-    $router->get('user/{id}', 'TopicsController@show')->name('user.show');
+    $router->get('user/{id}', 'UsersController@index')->name('user.show');
+    $router->get('user/personal', 'UsersController@personal')->name('user.personal');
+    
     $router->resource('user', 'UserController');      // 用户操作
 });
 
