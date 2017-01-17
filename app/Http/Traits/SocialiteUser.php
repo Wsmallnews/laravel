@@ -13,7 +13,7 @@ trait SocialiteUser
     /**
      * 允许登录的第三方
      */
-    protected $filterLogin = ['github', 'wechat'];
+    protected $filterLogin = ['github', 'wechat', 'qq'];
     
     /**
      * 
