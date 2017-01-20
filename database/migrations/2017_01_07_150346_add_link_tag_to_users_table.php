@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLinkTagToTopicsTable extends Migration
+class AddLinkTagToUsersTable extends Migration
 {
     /**
      * to topics添加字段，发布时间
