@@ -47,7 +47,7 @@ trait SocialiteUser
     public function handleProviderCallback(Request $request, $driver = 'qq')
     {
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
-        print_r($driver);exit;
+
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 print_r($socialiteUser);exit;
         if($socialiteUser['token']){
