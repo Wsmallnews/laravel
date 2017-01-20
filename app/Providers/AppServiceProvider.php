@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
                 if(!empty($nav)){
                     Cache::put('nav', $nav, '6000');
                 }
+                
+                return $nav;
             });
 
             return $nav;

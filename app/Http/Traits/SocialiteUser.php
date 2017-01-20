@@ -49,7 +49,7 @@ trait SocialiteUser
         $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'github';
         
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
-
+print_r($socialiteUser);exit;
         if($socialiteUser['token']){
             $method = "get".ucfirst($driver)."User";
             $driverUser = $this->$method($socialiteUser);
@@ -109,6 +109,15 @@ trait SocialiteUser
      * 用户通过github 登录，获取 github 用户       get.Driver.User
      */
     protected function getGithubUser($thirdUser){
+        $githubUser = new GithubUser();
+        
+        return $githubUser->getGithubUser($thirdUser['id']);
+    }
+    
+    /**
+     * 用户通过qq 登录，获取 qq 用户       get.Qq.User
+     */
+    protected function getQqUser($thirdUser){
         $githubUser = new GithubUser();
         
         return $githubUser->getGithubUser($thirdUser['id']);
