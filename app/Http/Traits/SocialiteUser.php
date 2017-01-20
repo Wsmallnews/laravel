@@ -29,7 +29,7 @@ trait SocialiteUser
      */
     public function redirectToProvider(Request $request)
     {
-        $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'github';
+        $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'qq';
         
         if($this->guard()->check()){
             return redirect($this->redirectTo);
@@ -44,10 +44,9 @@ trait SocialiteUser
      *
      * @return Response
      */
-    public function handleProviderCallback(Request $request)
+    public function handleProviderCallback(Request $request, $driver = 'qq')
     {
-        var_dump($request->input('driver'));exit;
-        $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'github';
+        $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
         
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 print_r($socialiteUser);exit;

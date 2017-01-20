@@ -60,7 +60,7 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
     $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
-    $router->get('auth/callback', 'Auth\LoginController@handleProviderCallback');
+    $router->get('auth/callback/{driver?}', 'Auth\LoginController@handleProviderCallback');
     // fast login end
     
     $router->get('topic', 'TopicsController@index');
