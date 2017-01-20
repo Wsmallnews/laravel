@@ -49,7 +49,7 @@ trait SocialiteUser
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
-print_r($socialiteUser);exit;
+
         if($socialiteUser['token']){
             $method = "get".ucfirst($driver)."User";
             $driverUser = $this->$method($socialiteUser);
@@ -80,7 +80,7 @@ print_r($socialiteUser);exit;
      */
     protected function getSocialiteUser($driver){
         $thirdUser = Socialite::driver($driver)->user();
-
+print_r($thirdUser);exit;
         $simUser = array(
             'token' => $thirdUser->token,
             'id' => $thirdUser->getId(),
