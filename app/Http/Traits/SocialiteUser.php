@@ -45,7 +45,7 @@ trait SocialiteUser
      * @return Response
      */
     public function handleProviderCallback(Request $request)
-    {print_r($request);
+    {
         var_dump($request->input('driver'));exit;
         $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'github';
         
