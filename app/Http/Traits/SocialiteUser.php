@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\GithubUser;
+use App\Models\QqUser;
 use App\Models\User;
 use Socialite;
 use Validator;
@@ -80,7 +81,7 @@ trait SocialiteUser
      */
     protected function getSocialiteUser($driver){
         $thirdUser = Socialite::driver($driver)->user();
-print_r($thirdUser);exit;
+
         $simUser = array(
             'token' => $thirdUser->token,
             'id' => $thirdUser->getId(),
@@ -118,9 +119,9 @@ print_r($thirdUser);exit;
      * 用户通过qq 登录，获取 qq 用户       get.Qq.User
      */
     protected function getQqUser($thirdUser){
-        $githubUser = new GithubUser();
+        $qqUser = new QqUser();
         
-        return $githubUser->getGithubUser($thirdUser['id']);
+        return $qqUser->getQqUser($thirdUser['id']);
     }
     
     
@@ -211,9 +212,28 @@ print_r($thirdUser);exit;
         return $this->$method($socialiteUser, $user_id);
     }
     
+    /**
+     * [创建github 用户]
+     * @author @smallnews 2017-01-20
+     */
     protected function createGithubUser($githubUser, $user_id){
         return GithubUser::create([
             'github_id' => $githubUser->getId(),
+            'nick_name' => $githubUser->getNickname(),
+            'name' => $githubUser->getName(),
+            'email' => $githubUser->getEmail(),
+            'avatar' => $githubUser->getAvatar(),
+            'user_id' => $user_id
+        ]);
+    }
+    
+    /**
+     * [创建 qq 用户]
+     * @author @smallnews 2017-01-20
+     */
+    protected function createQqUser($githubUser, $user_id){
+        return QqUser::create([
+            'qq_id' => $githubUser->getId(),
             'nick_name' => $githubUser->getNickname(),
             'name' => $githubUser->getName(),
             'email' => $githubUser->getEmail(),
