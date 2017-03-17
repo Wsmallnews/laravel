@@ -47,4 +47,15 @@ return [
         'redirect' => env('QQ_REDIRECT_URI'),  
     ], 
     
+    'weibo' => [
+        'client_id' => env('WEIBO_KEY'),
+        'client_secret' => env('WEIBO_SECRET'),
+        'redirect' => env('WEIBO_REDIRECT_URI'),  
+    ],
+    
+    'twitter' => [
+        'client_id' => env('TWITTER_KEY'),
+        'client_secret' => env('TWITTER_SECRET'),
+        'redirect' => env('TWITTER_REDIRECT_URI'),  
+    ], 
 ];

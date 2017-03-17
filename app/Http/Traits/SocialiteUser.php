@@ -5,6 +5,8 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\GithubUser;
 use App\Models\QqUser;
+use App\Models\WeiboUser;
+use App\Models\TwitterUser;
 use App\Models\User;
 use Socialite;
 use Validator;
@@ -14,7 +16,7 @@ trait SocialiteUser
     /**
      * 允许登录的第三方
      */
-    protected $filterLogin = ['github', 'wechat', 'qq'];
+    protected $filterLogin = ['github', 'wechat', 'qq', 'weibo', 'twitter'];
     
     /**
      * 
@@ -124,6 +126,24 @@ trait SocialiteUser
         return $qqUser->getQqUser($thirdUser['id']);
     }
     
+    /**
+     * 用户通过weibo 登录，获取 weibo 用户       get.Weibo.User
+     */
+    protected function getWeiboUser($thirdUser){
+        $qqUser = new WeiboUser();
+        
+        return $qqUser->getQqUser($thirdUser['id']);
+    }
+    
+    /**
+     * 用户通过twitter 登录，获取 twitter 用户       get.twitter.User
+     */
+    protected function getTwitterUser($thirdUser){
+        $qqUser = new WeiboUser();
+        
+        return $qqUser->getTwitterUser($thirdUser['id']);
+    }
+    
     
     /**
      * create Third user
@@ -146,9 +166,12 @@ trait SocialiteUser
         $user = $this->create($request->all());
 
         // create third user
-        $github = $this->createSocialiteUser($user->id);
+        $socialite = $this->createSocialiteUser($user->id);
 
-        $user->github_id = $github->id;
+        $driver = request()->input('driver');
+        
+        $third_id = $driver."_id";
+        $user->$third_id = $socialite->id;
         $user->save();
 
         $this->guard()->login($user);
@@ -231,13 +254,44 @@ trait SocialiteUser
      * [创建 qq 用户]
      * @author @smallnews 2017-01-20
      */
-    protected function createQqUser($githubUser, $user_id){
+    protected function createQqUser($qqUser, $user_id){
         return QqUser::create([
-            'qq_id' => $githubUser->getId(),
-            'nick_name' => $githubUser->getNickname(),
-            'name' => $githubUser->getName(),
-            'email' => $githubUser->getEmail(),
-            'avatar' => $githubUser->getAvatar(),
+            'qq_id' => $qqUser->getId(),
+            'nick_name' => $qqUser->getNickname(),
+            'name' => $qqUser->getName(),
+            'email' => $qqUser->getEmail(),
+            'avatar' => $qqUser->getAvatar(),
+            'user_id' => $user_id
+        ]);
+    }
+    
+    
+    /**
+     * [创建 weibo 用户]
+     * @author @smallnews 2017-03-17
+     */
+    protected function createWeiboUser($weiboUser, $user_id){
+        return WeiboUser::create([
+            'Weibo_id' => $weiboUser->getId(),
+            'nick_name' => $weiboUser->getNickname(),
+            'name' => $weiboUser->getName(),
+            'email' => $weiboUser->getEmail(),
+            'avatar' => $weiboUser->getAvatar(),
+            'user_id' => $user_id
+        ]);
+    }
+    
+    /**
+     * [创建 weibo 用户]
+     * @author @smallnews 2017-03-17
+     */
+    protected function createTwitterUser($twitter, $user_id){
+        return WeiboUser::create([
+            'twitter_id' => $twitter->getId(),
+            'nick_name' => $twitter->getNickname(),
+            'name' => $twitter->getName(),
+            'email' => $twitter->getEmail(),
+            'avatar' => $twitter->getAvatar(),
             'user_id' => $user_id
         ]);
     }

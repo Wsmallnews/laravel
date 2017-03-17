@@ -40,6 +40,10 @@ Route::get('/test',function(){
     return ;
 });
 
+
+// Route::get('/privacy', '');     // 隐私协议 twitter login
+// Route::get('/terms', '');       // 服务条款 twitter login
+
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
 {
     $router->get('/', 'IndexController@index');
