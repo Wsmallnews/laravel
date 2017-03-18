@@ -40,6 +40,10 @@ Route::get('/test',function(){
     return ;
 });
 
+
+// Route::get('/privacy', '');     // 隐私协议 twitter login
+// Route::get('/terms', '');       // 服务条款 twitter login
+
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
 {
     $router->get('/', 'IndexController@index');
@@ -60,7 +64,7 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
     $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
-    $router->get('auth/callback', 'Auth\LoginController@handleProviderCallback');
+    $router->get('auth/callback/{driver?}', 'Auth\LoginController@handleProviderCallback');
     // fast login end
     
     $router->get('topic', 'TopicsController@index');
@@ -76,7 +80,9 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // $router->patch('topic/{id}/edit', 'TopicsController@update')->name('topic.update');
     
     // Route::get('/', 'IndexController@index');
-    $router->get('user/{id}', 'TopicsController@show')->name('user.show');
+    $router->get('user/{id}', 'UsersController@index')->name('user.show');
+    $router->get('user/personal', 'UsersController@personal')->name('user.personal');
+    
     $router->resource('user', 'UserController');      // 用户操作
 });
 

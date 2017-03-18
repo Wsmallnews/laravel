@@ -72,10 +72,11 @@ trait TopicOper
         $topics = $topic->where('id', $request->input('id'))
             ->where('user_id', $this->guard()->id())->firstOrFail();
         
-        if($request->input('save_and_publish') !== null){
+        if($request->input('save_and_publish') !== null && !$topics->is_public){
             $this->validator($request->all())->validate();
             
             $topics->is_publish = 1;
+            $topics->publishd_at = date('Y-m-d H:i:s');
         }
         $topics = $this->setData($topics);
         
@@ -112,8 +113,7 @@ trait TopicOper
      */
     protected function setData($topic){
         $markdown = new Markdown();
-        
-        $topic->user_id = 1;
+
         $topic->classify_id = request()->input('classify_id');
         $topic->title = trim(request()->input('title'));
         $topic->body_original = trim(request()->input('body'));

@@ -27,7 +27,7 @@ class CreateTopicsTable extends Migration
             $table->integer('view_num')->default(0);            // 查看数量
             $table->integer('review_num')->default(0)->comment('评论数量');          // 评论
             $table->integer('support_num')->default(0)->comment('点赞数量');         // 点赞数量
-            $table->timestamp('last_active_time')->nullable()->comment('最后活跃时间');         // 最后活跃时间
+            $table->timestamp('actived_at')->nullable()->comment('最后活跃时间');         // 最后活跃时间
             $table->timestamps();
             $table->softDeletes();
         });

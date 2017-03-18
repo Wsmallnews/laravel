@@ -32,7 +32,7 @@ class TopicsController extends CommonController
     {        
         $topic = $this->topicIndexFilter($topic);
         
-        $topics = $topic->with('user', 'classify')->get();
+        $topics = $topic->with('user', 'classify')->paginate(2);
         
         return view('desktop.topics.index', ['topics' => $topics]);
     }

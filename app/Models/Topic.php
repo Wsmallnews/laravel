@@ -14,6 +14,11 @@ class Topic extends Model
        'is_top', 'is_elite', 'view_num', 'review_num', 'support_num', 'is_publish', 'last_active_time'
     ];
     
+    protected $dates = [
+        'published_at',
+        'actived_at'
+    ];
+    
     /* =======================查询scopes=======================*/
     
     /**

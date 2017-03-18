@@ -26,32 +26,13 @@
                     </li>
                 </ul>
             </div>
-            <div class="panel-body pd-no">
-                @if(!$topics->isEmpty())
-                <ul class="list-group">
-                    @foreach($topics as $topic)
-                        <li class="list-group-item list-spec" style="
-                        @if($topic->is_top)
-                            background-image: url('/images/top.png');
-                        @elseif ($topic->is_elite)
-                            background-image: url('/images/elite.png');
-                        @endif
-                        ">
-                            <a href="{{ route('user.show', $topic->user_id) }}" class="pjax-element list-a-avatar">
-                                <img src="{{ $topic->user->avatar }}" class="list-avatar" />
-                            </a>
-                            <div class="list-content">
-                                <span class="list-tag hidden-xs">{{$topic->classify->name}}</span>
-                                <a href="{{ route('topic.show', $topic->id) }}" class="pjax-element list-title">{{ $topic->title }}</a>
-                            </div>
-                            <span class="badge">{{ $topic->num }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-                @else
-                    @include('desktop.layouts.empty')
-                @endif
+            @if(!$topics->isEmpty())
+            <div class="panel-body padding-no">
+                @include('desktop.includes.topicList', ['type' => 'all'])
             </div>
+            @else
+                @include('desktop.layouts.empty')
+            @endif
         </div>
     </div>
     
