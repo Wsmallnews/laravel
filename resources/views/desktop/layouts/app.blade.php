@@ -41,8 +41,10 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .navbar-inverse .navbar-nav > li > a {text-align: center;color:#F8FCEB;}
         .nav.navbar-nav .wechat_login {text-align: center;color:#999999;font-size:18px;padding: 4px 0px;margin: 10px 5px;}
         .nav.navbar-nav .github_login {text-align: center;color:#999999;font-size:18px;padding: 4px 0px;margin: 10px 5px;}
+        .nav.navbar-nav .weibo_login {text-align: center;color:#999999;font-size:18px;padding: 4px 0px;margin: 10px 5px;}
         .nav.navbar-nav .wechat_login:hover{color:#44b549}
         .nav.navbar-nav .github_login:hover{color: #4FA7EF;}
+        .nav.navbar-nav .weibo_login:hover{color:#e32529;}
         li.list-group-item{background-color:#495664;border-color: #333C4A;color:#F8FCEB;position:relative;
                             overflow:hidden;border-left:none;border-right:none;}
         li.list-group-item a {color: #F8FCEB; text-decoration: none;}
@@ -159,7 +161,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}" class="pjax-element"> 登录</a></li>
                             <li><a href="{{ url('/register') }}" class="pjax-element"> 注册</a></li>
-                            <li><a href="{{ route('auth.driver', ['driver' => 'qq']) }}" class="wechat_login"> <b class="fa fa-qq"></b></a></li>
+                            <li><a href="{{ route('auth.driver', ['driver' => 'weibo']) }}" class="weibo_login"> <b class="fa fa-weibo"></b></a></li>
                             <li><a href="{{ route('auth.driver', ['driver' => 'github']) }}" class="github_login"> <b class="fa fa-github-alt"></b></a></li>
                         @else
                             <li class="dropdown">
@@ -187,8 +189,8 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{route('user.personal')}}">
-                                            退出
+                                        <a href="{{route('user.show', ['id' => Auth::user()->id])}}">
+                                            个人中心
                                         </a>
                                     </li>
                                     <li>
