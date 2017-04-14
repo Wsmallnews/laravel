@@ -30,24 +30,32 @@ trait SocialiteUser
      *
      * @return Response
      */
-    public function redirectToProvider(Request $request)
+    public function redirectToProvider(Request $request, $type = '')
     {
         $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'qq';
         
-        if($this->guard()->check()){
-            return redirect($this->redirectTo);
+        if($type == 'bind'){
+            if(!$this->guard()->check()){
+                flash('您还未登录，请先登录', 'warning');
+                return redirect($this->redirectTo);
+            }
+        }else {
+            if($this->guard()->check()){
+                return redirect($this->redirectTo);
+            }
         }
         
         return Socialite::driver($driver)
-                ->with(['driver' => $driver])->redirect();
+                ->with(['driver' => $driver, 'type' => $type])->redirect();
     }
 
     /**
      * Obtain the user information from GitHub.
-     *
+     * @param driver    第三方驱动
+     * @param type      登录还是绑定    
      * @return Response
      */
-    public function handleProviderCallback(Request $request, $driver = 'qq')
+    public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
     {
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
@@ -62,10 +70,18 @@ trait SocialiteUser
                 flash('登录成功', 'success');
                 return redirect($this->redirectTo);
             }else {
-                // 创建用户和第三方用户
-                $request->session()->flash('socialiteUser', $socialiteUser);
-                $request->session()->flash('driver', $driver);
-                return redirect($this->redirectCreate);
+                if($type == 'bind'){
+                    $method = "create".ucfirst($driver)."User";
+                    $this->$method($socialiteUser, $this->guard->id());
+                    
+                    flash('绑定成功', 'success');
+                    return redirect()->route('user.bind');
+                }else{
+                    // 创建用户和第三方用户
+                    $request->session()->flash('socialiteUser', $socialiteUser);
+                    $request->session()->flash('driver', $driver);
+                    return redirect($this->redirectCreate);
+                }
             }
         }
         

@@ -167,10 +167,13 @@ return [
          * Package Service Providers...
          */
         // Laravel\Socialite\SocialiteServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
-        SocialiteProviders\Manager\ServiceProvider::class,
-
+        Intervention\Image\ImageServiceProvider::class,
+        // Smallnews\Cos\QCloudCosServiceProvider::class,
+        Smallnews\Qls\QcloudFilesystemServiceProvider::class,
+        // zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
         //
 
         /*
@@ -182,6 +185,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\MarkdownServiceProvider::class,
+        App\Providers\MyUploadServiceProvider::class,
+        
     ],
 
     /*
@@ -239,7 +244,8 @@ return [
         /**
          * Application Service Providers...
          */
-
+        'MyUpload'  => App\Facades\MyUpload::class,
+        'Image' => Intervention\Image\Facades\Image::class
     ],
 
 ];

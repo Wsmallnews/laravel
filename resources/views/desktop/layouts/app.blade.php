@@ -33,9 +33,9 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .shadow-3 {box-shadow:3px 3px 7px #222222;}       /*设置阴影*/
         .shadow-5 {box-shadow:5px 5px 10px #222222;}       /*设置阴影*/
         
-        #powerby{text-align: center;height:30px;line-height: 30px;margin: 30px 0px;}
+        #powerby{text-align: center;height:30px;line-height: 30px;margin: 30px 0px 70px;}
         /*.power {background-color: #F8FCEB}*/
-        footer{background:#333C4A;padding:20px;box-shadow:0px -5px 15px #222222;position:fixed;bottom:0;left:0;width:100%;}
+        footer{background:#333C4A;padding:20px;box-shadow:0px -5px 15px #222222;position:fixed;bottom:0;left:0;width:100%;z-index:10}
         
         .navbar-inverse {background-color: #333C4A;border-color: #222222;}
         .navbar-inverse .navbar-nav > li > a {text-align: center;color:#F8FCEB;}
@@ -127,6 +127,14 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .pagination > .disabled > span:hover {background-color:#495664;border-color: #333C4A;}
         .pagination > .active > span {background-color:#333C4A;border-color: #333C4A;}
         .pagination > .active > span:hover {background-color:#333C4A;border-color: #333C4A;}
+        
+        /* markdown editor */
+        .editor-toolbar {background-color: #495664; border-top: 2px solid #333C4A;border-left: 2px solid #333C4A;border-right: 2px solid #333C4A; border-top-left-radius: 4px;border-top-right-radius: 4px;}
+        .editor-toolbar i.separator {border-left: 1px solid #333C4A;border-right: 1px solid #333C4A;}
+        .editor-toolbar a{color:#F8FCEB!important;}
+        .editor-toolbar a.active, .editor-toolbar a:hover {background-color: #495664; border-radius: 0px;border-color:#333C4A;box-shadow:1px 1px 5px #222222;color:#F8FCEB!important;}
+        .editor-toolbar.disabled-for-preview a:not(.no-disable) { background: none;}
+        .CodeMirror{height:550px;color:#F8FCEB;background-color: #495664; border: 2px solid #333C4A; border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;}
     </style>
 
     <!-- Scripts -->
@@ -171,17 +179,17 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="javascript:void(0);" onclick="showAlert({title:'确定添加新主题？'},createTopic)">
+                                        <a href="javascript:void(0);" onclick="showAlert({title:'确定添加新主题？'},function(){document.getElementById('create_topic').submit();})">
                                             新主题
                                         </a>
+                                        
+                                        <form id="create_topic" action="{{route('topic.store')}}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
                                     </li>
                                 </ul>
                             </li>
-                            <script type="text/javascript">
-                                function createTopic(){ // 添加新主题
-                                    window.location.href="{{route('topic.create')}}";
-                                }
-                            </script>
+                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <b class="fa fa-user"></b> {{ Auth::user()->name }} <span class="caret"></span>

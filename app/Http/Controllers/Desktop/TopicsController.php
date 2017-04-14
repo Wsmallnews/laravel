@@ -29,7 +29,7 @@ class TopicsController extends CommonController
      * 主题列表页
      */
     public function index(Request $request, Topic $topic)
-    {        
+    {   
         $topic = $this->topicIndexFilter($topic);
         
         $topics = $topic->with('user', 'classify')->paginate(2);
@@ -45,9 +45,9 @@ class TopicsController extends CommonController
      * @param  [type] $id    [description]
      * @return [type]        [description]
      */
-    public function show(Topic $topic, $id)
+    public function show($id)
     {
-        $topics = $topic->with('user', 'classify')->findOrFail($id);
+        $topics = Topic::with('user', 'classify')->published()->findOrFail($id);
         
         return view('desktop.topics.view', ['topic' => $topics]);
     }

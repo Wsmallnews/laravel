@@ -104,7 +104,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-marked.setOptions({         // 初始化 markdown 解析器
+/**
+ * vue  marked  插件配置
+ * @type {marked}
+ */
+marked.setOptions({
     renderer: new marked.Renderer(),
     gfm: true,
     tables: true,
@@ -115,8 +119,16 @@ marked.setOptions({         // 初始化 markdown 解析器
     smartypants: false
 });
 
-autosize($(".autosize"));       // 设置 textarea 自动随内容增高
 
+/** 
+ * 设置 textarea 自动随内容增高
+ */
+autosize($(".autosize"));       
+
+
+/**
+ * 弹框   sweetalert
+ */
 window.showAlert = function(obj, confirmCB, cancelCB){
     var defaults = {
         title: "",
@@ -152,5 +164,61 @@ window.showAlert = function(obj, confirmCB, cancelCB){
 
 
 
+/**
+ * 重新定义 SimpleMDE 编辑器
+ */
+window.MDEditor = function(options){
+    var defaults = {  // 默认参数
+        element: "",
+        // autosave: {      // 如有需要，可自行设置
+        //     enabled: true,
+        //     uniqueId: "MyUniqueID",
+        //     delay: 1000,
+        // },
+        initialValue : "",      // 默认值
+        forceSync : false,       // 内容变动时是否强制 写到原本textarea 框
+        autoDownloadFontAwesome: false,         // 是否强制下载Font Awesome，因为已经引入，所以设置为false
+        placeholder:"请使用 Markdown 格式书写(≧∇≦)",
+        promptURLs: false,          //插入图片，弹出 prompt 框输入 url
+        tabSize: 4,
+        // toolbar:false,               // 隐藏工具栏
+        toolbarTips: false
+    };
+    
+    $.extend(defaults, options);
+    
+    return new SimpleMDE(defaults);
+}
+
+
+/**
+ * 定义拖拽 粘贴上传图片
+ */
+window.MDUploader = function(editor_obj, options){
+    var defaults = {
+        uploadUrl: "",
+        uploadFieldName: "file",
+        urlText: "\n ![file]({filename}) \n\n",
+        extraParams: {
+            '_token': Laravel.csrfToken
+        }
+    };
+    
+    $.extend(defaults, options);
+    
+    inlineAttachment.editors.codemirror4.attach(editor_obj, defaults);
+}
+
+
+/**
+ * 百度统计代码
+ */
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0d4d8ef8221b70abfd4951252162a63b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
 
 

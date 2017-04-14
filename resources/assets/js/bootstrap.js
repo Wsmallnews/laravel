@@ -12,6 +12,7 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 
+
 /**
  * metisMenu 左侧菜单
  */
@@ -43,12 +44,34 @@ window.Pjax = require('pjax');      // 引入Pjax
  * markdown js
  * @type {[type]}
  */
-window.marked = require('marked');
+window.marked = require('marked');  // 自己写的 vue+ markdown 需要使用
 
 /**
  * autosize textarea ,自动增高
  */
 window.autosize = require('autosize');
+
+
+/**
+ * 本地存储
+ */
+window.localforage = require('localforage');       
+
+
+/**
+ * markdown 编辑器插件
+ * @type {[type]}
+ */
+window.SimpleMDE = require('simplemde'); 
+
+
+/**
+ * markdown 拖拽粘贴上传图片
+ * @return {[type]}
+ */
+require('./inline-attachment.js');
+require('./codemirror.inline-attachment.js');
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
