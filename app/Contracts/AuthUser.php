@@ -1,6 +1,6 @@
 <?php namespace App\Contracts;
 
-interface MyUpload extends Contract {
+interface AuthUser extends Contract {
 
 //     public function rt();
 

@@ -1,48 +1,55 @@
 <?php namespace App\Repositories;
 
-use App\Contracts\MyUpload as MyUploadContract;
+use App\Contracts\MyUpload as UploadContract;
 use Session;
 use Image;
+use Hp;
 use Storage;
 
-class MyUpload implements MyUploadContract {
+class MyUpload implements UploadContract {
 
 	private $img = '';				//图片对象
-	private $save_path = '';		//最终文件保存路径
+	private $real_path = '';		//最终文件保存路径
+	private $real_default_path;		//缩略图真是路径
 	private $mime_type = '';		//文件mime 类型
 	private $extension = '';		//图片后缀名
 	private $tmp_path = '';			//临时文件路径
-	private $dir = 'public';		//上传文件保存根目录
+	private $dir = 'uploads';		//上传文件保存根目录
 	private $real_dir = '';			//图片真实保存目录
-	private $filename = '';			//生成文件文件名，不带后缀
+	private $prefix = '';			//生成文件文件名，不带后缀
 
-	public function __construct(){		
-		$this->filename = time_name(4).rand(0,99);
+	private $cut_img = [['800',0],['400',1],['200',0]];			//图片尺寸
+	private $z_type = 'W';
+	private $default_style = 'jpg';	//默认格式
+
+
+
+	public function __construct(){
+		$this->prefix = Hp::mitime(4).rand(0,99);
 	}
 
-	public function upload($file, $type = 'avatars'){
+	public function upload($file,$type = 'logo',$zoom_type = 'default'){
+		$img_info = getimagesize($file);	//获取文件信息
 		//文件的扩展名
 		$this->entension = $file->getClientOriginalExtension();	//获取文件的扩展名
 		$this->tmp_path = $file->getRealPath();	//这个表示的是缓存在tmp文件夹下的文件的绝对路径
 		$this->mime_type = $file->getMimeType();	//获取文件mime 类型
-		$this->filesize = $file->getClientSize();
-		
-		// 设置上传目录
+		$this->original_width = $img_info[0];	//获取文件mime 类型
+		$this->original_height = $img_info[1];	//获取文件mime 类型
+
 		$this->setRealDir($type);
 
-		// 生成图片完整路径，包括文件名
 		$this->setDefaultPath();
-		
-		// 获取裁剪尺寸
-		$this->zoomType($type);
 
-		if(!Storage::exists($this->save_path)){
+		$this->zoomType($zoom_type);
+
+		if(!Storage::exists($this->real_path)){
 			$this->img = Image::make($this->tmp_path);
 
 			//保存图片
-			$this->saveImg($type);		// 裁剪图片，打水印，并保存图片
+			$this->saveImg();
 
-			return $this->getUrlPath();	// 返回 url  图片访问 路径
+			return $this->real_default_path;
 		}else{
 			return false;
 		}
@@ -52,11 +59,11 @@ class MyUpload implements MyUploadContract {
 	/**
 	 * 保存图片
 	 */
-	private function saveImg($type){
+	private function saveImg(){
 		foreach($this->cut_img as $key => $value){
 			//根据预定尺寸裁剪图片
 
-			if($type == 'avatars'){
+			if($this->z_type == 'W'){
 				//正方形
 				$this->img->fit($value[0],$value[0]);
 			}else{
@@ -65,15 +72,17 @@ class MyUpload implements MyUploadContract {
 			}
 
 			//水印，暂时不开启
-			// $this->img->insert(public_path().'/images/watermark.png','bottom-right');
+			if(false){
+				$this->img->insert(public_path().'/images/watermark.png','bottom-right');
+			}
 
 			//设置图片路径
 			if($value[1]){
-				$save_path = $this->save_path;
+				$save_path = $this->real_default_path;
 				Storage::put($save_path, $this->img->encode());
 			}else{
 				$save_path = $this->getRealPath($value[0]);
-				Storage::put($save_path, $this->img->encode($this->entension));
+				Storage::put($save_path, $this->img->encode($this->default_style));
 			}
 		}
 	}
@@ -91,14 +100,8 @@ class MyUpload implements MyUploadContract {
 		设置默认文件保存路径，带文件名
 	 */
 	private function setDefaultPath(){
-		$this->save_path = $this->real_dir.$this->filename.'.'.$this->entension;
-	}
 
-	/*
-		获取访问路径
-	 */
-	private function getUrlPath(){
-		return str_replace('public/', '/storage/', $this->save_path);
+		$this->real_default_path = $this->real_dir.$this->prefix.'.'.$this->entension;
 	}
 
 	/*
@@ -106,7 +109,7 @@ class MyUpload implements MyUploadContract {
 	 */
 	private function getRealPath($size){
 
-		return $this->real_dir.$this->filename.'.'.$this->entension."_".$size.'.'.$this->entension;
+		return $this->real_dir.$this->prefix.'.'.$this->entension."_".$size.'.'.$this->default_style;
 	}
 
 	/*
@@ -114,30 +117,50 @@ class MyUpload implements MyUploadContract {
 	 */
 	private function zoomType($zoom_type){
 		switch($zoom_type){
-			case 'avatars' :				// 用户头像
-				$this->cut_img[0][] = 400;
-				$this->cut_img[0][] = 0;
-				$this->cut_img[1][] = 200;
-				$this->cut_img[1][] = 1;
-				break;
-			case 'topics' :					// 主题图片		, 限制最大宽缩放
+			case 'IMG800X400X200W' :
 				$this->cut_img[0][] = 800;
 				$this->cut_img[0][] = 0;
 				$this->cut_img[1][] = 400;
 				$this->cut_img[1][] = 1;
+				$this->cut_img[2][] = 200;
+				$this->cut_img[2][] = 0;
+				$this->z_type = 'W';
 				break;
-			case 'general' :					// 普通图片		, 限制最大宽缩放
+			case 'IMG320X160X80W' :
+				$this->cut_img[0][] = 320;
+				$this->cut_img[0][] = 0;
+				$this->cut_img[1][] = 160;
+				$this->cut_img[1][] = 1;
+				$this->cut_img[2][] = 80;
+				$this->cut_img[2][] = 0;
+				$this->z_type = 'W';
+				break;
+			case 'IMG800X400X200S' :
 				$this->cut_img[0][] = 800;
 				$this->cut_img[0][] = 0;
 				$this->cut_img[1][] = 400;
 				$this->cut_img[1][] = 1;
+				$this->cut_img[2][] = 200;
+				$this->cut_img[2][] = 0;
+				$this->z_type = 'S';
 				break;
-			default :						// 默认，普通图片		, 限制最大宽缩放
+			case 'IMG320X160X80S' :
+				$this->cut_img[0][] = 320;
+				$this->cut_img[0][] = 0;
+				$this->cut_img[1][] = 160;
+				$this->cut_img[1][] = 1;
+				$this->cut_img[2][] = 80;
+				$this->cut_img[2][] = 0;
+				$this->z_type = 'S';
+				break;
+			default :
 				$this->cut_img[0][] = 800;
 				$this->cut_img[0][] = 0;
 				$this->cut_img[1][] = 400;
 				$this->cut_img[1][] = 1;
-				break;
+				$this->cut_img[2][] = 200;
+				$this->cut_img[2][] = 0;
+				$this->z_type = 'W';
 		}
 	}
 }

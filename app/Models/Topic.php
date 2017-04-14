@@ -11,7 +11,7 @@ class Topic extends Model
     
     protected $fillable = [
        'user_id', 'classify_id', 'title', 'abstract', 'body', 
-       'is_top', 'is_elite', 'view_num', 'review_num', 'support_num', 'is_publish', 'published_at', 'actived_at', 'last_active_time'
+       'is_top', 'is_elite', 'view_num', 'review_num', 'support_num', 'is_publish', 'last_active_time'
     ];
     
     protected $dates = [

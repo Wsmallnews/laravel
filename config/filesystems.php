@@ -64,7 +64,7 @@ return [
 
         'qcos' => [     // 腾讯云 对象存储
             'driver'    => 'qcos',
-            'root' => env('QCLOUD_ROOT', 'http://img.smallnews.top/'),
+            'root' => env('QCLOUD_ROOT', 'http://imgtest.smallnews.top/'),
             'bucket' => env('QCLOUD_BUCKET'),
             'api_cos_api_end_point' => env('QCLOUD_API_COS_API_END_POINT', "http://sh.file.myqcloud.com/files/v2/"),
             'app_id' => env('QCLOUD_APPID'),
