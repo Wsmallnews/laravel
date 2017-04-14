@@ -65,25 +65,42 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
     $router->get('auth/callback/{driver?}', 'Auth\LoginController@handleProviderCallback');
+    $router->get('auth/driver/{type}', 'Auth\LoginController@redirectToProvider')->name('auth.bind');
+    $router->get('auth/callback/{driver}/{type}', 'Auth\LoginController@handleProviderCallback');
     // fast login end
     
-    $router->get('topic', 'TopicsController@index');
-    $router->get('topic/order/{class?}', 'TopicsController@index');
-    $router->get('topic/by/{id?}', 'TopicsController@index');
-    $router->get('topic/sort/{orderby?}', 'TopicsController@index')->where('orderby', '[a-z]+')->name('topic.sort');
-    $router->get('topic/filter', 'TopicsController@index')->name('topic.filter');
-    $router->get('topic/create', 'TopicsController@create')->name('topic.create');
-    $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+')->name('topic.write');
-    $router->patch('topic/write', 'TopicsController@save')->name('topic.save');
-    $router->get('topic/{id}', 'TopicsController@show')->where('id', '[0-9]+')->name('topic.show');
+    
     // $router->get('topic/{id}/edit', 'TopicsController@edit')->name('topic.edit');
     // $router->patch('topic/{id}/edit', 'TopicsController@update')->name('topic.update');
     
     // Route::get('/', 'IndexController@index');
-    $router->get('user/{id}', 'UsersController@index')->name('user.show');
-    $router->get('user/personal', 'UsersController@personal')->name('user.personal');
     
-    $router->resource('user', 'UserController');      // 用户操作
+    // $router->get('user/personal', 'UsersController@personal')->name('user.personal');
+    // $router->get('user/bind', 'UsersController@personal')->name('user.bind');
+    // $router->get('user/{id}', 'UsersController@show');
+    $router->resource('user', 'UsersController');
+    
+    $router->post('uploadTopicFiles', 'TopicsController@uploadTopicFiles');
+    $router->resource('topic', 'TopicsController', ['except' => [
+        'create'
+    ]]);
+
+    
+    // $router->get('topic', 'TopicsController@index');
+    
+    $router->get('topic/order/{class?}', 'TopicsController@index');
+    $router->get('topic/by/{id?}', 'TopicsController@index');
+    $router->get('topic/sort/{orderby?}', 'TopicsController@index')->where('orderby', '[a-z]+')->name('topic.sort');
+    $router->get('topic/filter', 'TopicsController@index')->name('topic.filter');
+    
+    
+    // $router->get('topic/create', 'TopicsController@create')->name('topic.create');
+    // $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+')->name('topic.write');
+    // $router->patch('topic/write', 'TopicsController@save')->name('topic.save');
+    
+    
+    // $router->get('topic/{id}', 'TopicsController@show')->where('id', '[0-9]+')->name('topic.show');
+    
 });
 
 

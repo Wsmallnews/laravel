@@ -7,6 +7,7 @@ use Validator;
 use App\Models\Topic;
 use App\Models\TopicClassify;
 use App\Repositories\Markdown;
+use MyUpload;
 
 trait TopicOper
 {    
@@ -23,19 +24,20 @@ trait TopicOper
         
         return $topic;
     }
+
     
     
     /**
-     * 创建新主题
+     * 保存新主题
      * @author @smallnews 2017-01-04
      * @return [type] [description]
      */
-    public function create(Topic $topic){
+    public function store(Request $request, Topic $topic){
         $topic->user_id = $this->guard()->id();
         $topic->save();
         
         flash('添加成功', 'success');
-        return redirect(route('topic.write', $topic->id));
+        return redirect(route('topic.edit', $topic->id));
     }
     
     
@@ -46,14 +48,13 @@ trait TopicOper
      * @param  TopicClassify $topicClassify [description]
      * @return [type]                       [description]
      */
-    public function write(Topic $topic, TopicClassify $topicClassify, $id = 0)
+    public function edit($id)
     {
-        $topicClassifys = $topicClassify->orderBy('sort', 'desc')->get();
+        $topicClassifys = TopicClassify::orderBy('sort', 'desc')->get();
         
-        $topic = $topic->where('id', $id)
-            ->where('user_id', $this->guard()->id())->firstOrFail();
-
-        return view('desktop.topics.createEdit', [
+        $topic = Auth::user()->topic()->findOrFail($id);
+        
+        return view('desktop.topics.edit', [
             'title' => '编辑主题',
             'topic' => $topic,
             'classify' => $topicClassifys
@@ -67,16 +68,15 @@ trait TopicOper
      * @param  Topic $topic [description]
      * @return [type]                       [description]
      */
-    public function save(Request $request, Topic $topic)
+    public function update(Request $request, $id)
     {
-        $topics = $topic->where('id', $request->input('id'))
-            ->where('user_id', $this->guard()->id())->firstOrFail();
+        $topics = Auth::user()->topic()->findOrFail($id);
         
         if($request->input('save_and_publish') !== null && !$topics->is_public){
             $this->validator($request->all())->validate();
             
             $topics->is_publish = 1;
-            $topics->publishd_at = date('Y-m-d H:i:s');
+            $topics->published_at = date('Y-m-d H:i:s');
         }
         $topics = $this->setData($topics);
         
@@ -87,7 +87,16 @@ trait TopicOper
         }
         
         flash('保存成功', 'success');
-        return redirect(url('topic/'.$topics->id));
+        return redirect(route('topic.show', $id));
+    }
+    
+    
+    public function destroy($id){
+        $topics = Auth::user()->topic()->findOrFail($id);
+        $topics->delete();
+        
+        flash('删除成功', 'success');
+        return redirect(route('user.show', Auth::id()));
     }
     
     
@@ -112,15 +121,28 @@ trait TopicOper
      * @param  [type] $topic [description]
      */
     protected function setData($topic){
-        $markdown = new Markdown();
-
         $topic->classify_id = request()->input('classify_id');
         $topic->title = trim(request()->input('title'));
         $topic->body_original = trim(request()->input('body'));
-        $topic->body = $markdown->markdownToHtml(trim(request()->input('body')));
+        $topic->body = resolve('Markdown')->markdownToHtml(trim(request()->input('body')));
         $topic->abstract = $topic->setAbstract($topic->body);
         
         return $topic;
+    }
+    
+    
+    
+    /**
+     * 
+     */
+    public function uploadTopicFiles(Request $request){
+        if ($request->hasFile('file')){
+            $filename = MyUpload::upload($request->file('file'), 'topics');
+        }
+        
+        return response()->json([
+            'filename' => $filename
+        ]);
     }
     
     // public function edit(Topic $topic, TopicClassify $topicClassify, $id)
