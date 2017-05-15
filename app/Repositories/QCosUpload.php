@@ -7,6 +7,7 @@ use Storage;
 use Smallnews\Cos;
 
 class QCosUpload implements MyUpload {
+	private $type = '';
 	private $extension = '';		//图片后缀名
 	private $tmp_path = '';			//临时文件路径
 	private $filename = '';			//生成文件文件名，不带后缀
@@ -17,15 +18,43 @@ class QCosUpload implements MyUpload {
 	
 	public function upload($file, $type = 'avatars'){
 		//文件的扩展名
+		$this->type = $type;
 		$this->extension = $file->getClientOriginalExtension();	//获取文件的扩展名
 		$this->tmp_path = $file->getRealPath();	//这个表示的是缓存在tmp文件夹下的文件的绝对路径
 		$this->filename = $file->hashName();		// 根据hash 值 生成文件名
         $this->filesize = $file->getClientSize();
 		
+		$this->saveFile();
+	}
+	
+	
+	/**
+	 * 远程图片 复制 转存
+	 * @author @smallnews 2017-05-15
+	 * @return [type] [description]
+	 */
+	public function uploadCopy($file_src, $type = 'avatars'){
+		$img = Image::make($file_src);
+		
+		$mime = $img->mime();
+		$mime = explode('/', $mime);
+		
+		$this->type = $type;
+		$this->extension = $mime[[count($mime)-1]];
+		$this->tmp_path = $file_src; 
+		$this->filename = $this->getHashName();
+		$this->filesize = $img->filesize();
+		
+		return $this->saveFile();
+	}
+	
+	
+	private function saveFile(){
 		// 设置上传目录
-		$this->upload_dir = $this->createUploadDir($type);
+		$this->upload_dir = $this->createUploadDir($this->type);
 
-		$this->upload_url = $this->setUploadUrl();
+		// 获取上传路径
+		$this->upload_url = $this->getUploadUrl();
 
 		if(!$this->exists($this->upload_url)){
 			$ret = $this->driver()::upload($this->tmp_path, $this->upload_url);
@@ -42,6 +71,10 @@ class QCosUpload implements MyUpload {
 				'url' => $this->fullUrl($this->upload_url)
 			]);
 		}
+	}
+	
+	private function getHashName(){
+		return md5_file($this->tmp_path).'.'.$this->extension;
 	}
 	
 	
@@ -67,7 +100,7 @@ class QCosUpload implements MyUpload {
 	 * @param  [type] $type [description]
 	 * @return [type]       [description]
 	 */
-	private function setUploadUrl(){
+	private function getUploadUrl(){
 		return $this->upload_dir . $this->filename;
 	}
 	

@@ -11,22 +11,19 @@
             <div class="panel-body">
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/createUser') }}">
                     {{ csrf_field() }}
-                    <input type="hidden" name="driver" value="@if (old('driver')){{{old('driver')}}}@else{{{ session('driver') }}}@endif">
-                    <input type="hidden" name="token" value="@if (old('token')){{{old('token')}}}@else{{{ session('socialiteUser.token') }}}@endif">
+                    <input type="hidden" name="driver" @if (old('driver')) value="{{old('driver')}}" @else value="{{ session('driver') }}" @endif>
+                    <input type="hidden" name="token" value=@if (old('token')) value="{{old('token')}}" @else value="{{ session('socialiteUser.token') }}" @endif>
                     <div class="form-group">
                         <label for="avatar" class="col-md-4 control-label">头像</label>
                         <div class="col-md-6">
-                            <div class="img-file" style="background: url(@if (old('avatar')){{{old('avatar')}}}@else{{{ session('socialiteUser.avatar') }}}@endif) no-repeat;background-size: cover;">
-                                <input type="file" class="form-control" id="avatar" placeholder="">
-                                <input type="hidden" name="avatar" value="@if (old('avatar')){{{old('avatar')}}}@else{{{ session('socialiteUser.avatar') }}}@endif">
-                            </div>
+                            <uploader btn-obj="avatar" btn-name="更改头像" type="users/avatars"  @if (old('avatar')) def-value="{{old('avatar')}}" @else def-value="{{ session('socialiteUser.avatar') }}" @endif></uploader>
                         </div>
                     </div>
                     
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">用户名</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="" value="@if (old('name')){{{old('name')}}}@else{{{ session('socialiteUser.name') }}}@endif">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="" @if (old('name')) value="{{old('name')}}" @else value="{{ session('socialiteUser.name') }}" @endif>
                             
                             @if ($errors->has('name'))
                                 <span class="help-block">
@@ -39,7 +36,7 @@
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="col-md-4 control-label">邮箱</label>
                         <div class="col-md-6">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="" value="@if (old('email')){{{old('email')}}}@else{{{ session('socialiteUser.email') }}}@endif">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="" @if (old('email')) value="{{old('email')}}" @else value="{{ session('socialiteUser.email') }}" @endif>
                             
                             @if ($errors->has('email'))
                                 <span class="help-block">

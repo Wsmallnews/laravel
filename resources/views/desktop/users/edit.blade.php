@@ -22,13 +22,6 @@
                         <uploader btn-obj="hidden" btn-name="hidden" type="no"  ></uploader>
                     </div>
                     <div class="form-group">
-                        {{-- <div class="img-file" @if (!old('avatar') && !session('socialiteUser.avatar')) style="display:none;" @endif>
-                            <input type="hidden" name="avatar" @if (old('avatar')) value="{{old('avatar')}}" @else value="{{ session('socialiteUser.avatar') }}" @endif >
-                            <div class="progress"></div>
-                        </div> --}}
-                        {{-- @if (!old('avatar') && !session('socialiteUser.avatar')) style="display:none;" @endif
-                            @if (old('avatar')) value="{{old('avatar')}}" @else value="{{ session('socialiteUser.avatar') }}" @endif --}}
-                        
                         <uploader btn-obj="avatar" btn-name="更改头像" type="users/avatars"  @if (old('avatar')) def-value="{{old('avatar')}}" @else def-value="{{ $user->avatar }}" @endif></uploader>
                     </div>
                     

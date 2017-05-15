@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class PhotoController extends Controller
+class RestfulController extends Controller
 {
     /**
      * Display a listing of the resource.

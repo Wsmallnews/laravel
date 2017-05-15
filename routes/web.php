@@ -11,48 +11,18 @@
 |
 */
 
-// Route::get('/home', function () {
-//     // abort(404,'the page you are looking for could not be found.');
-//     return view('welcome');
-// });
-
-
-Route::get('/home', 'HomeController@index');
-Route::get('/old', 'HomeController@old');
-
-Route::get('/test',function(){
-    // try {
-    //     App\Models\User::findOrFail(5);
-    //     echo "sss";
-    // }catch(\Exception $e){
-    //     echo 'abc';
-    //     print($e->getMessage());
-    // }
-    
-    // var_dump();
-    // return;
-    $chat = App\Models\ChatMessage::create([
-        'message' => 'zheshixiaoxi1',
-        'aaa' => 'zheshixiaoxi1',
-        'user_id' => 123,
-    ]);
-    var_dump($chat);
-    return ;
-});
-
+Route::get('home', 'HomeController@index');
+Route::get('old', 'HomeController@old');
 
 // Route::get('/privacy', '');     // 隐私协议 twitter login
 // Route::get('/terms', '');       // 服务条款 twitter login
 
-
+// 文件上传
+Route::post('myUpload', 'FileController@upload')->name('myUpload');
 
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
 {
-    $router->post('/myUpload', 'IndexController@upload')->name('myUpload');
-    
     $router->get('/', 'IndexController@index');
-    
-    $router->get('fileTest/{filename?}', 'IndexController@fileTest')->name('fileTest')->where('filename', '^(.+)/(.+)/(.+)$');
     
     // Auth::routes();      with Illuminate/Routing/Router.php  -> function auth
     $router->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -89,7 +59,6 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->resource('user', 'UsersController');
     
     // 话题路由
-    $router->post('uploadTopicFiles', 'TopicsController@uploadTopicFiles');
     $router->resource('topic', 'TopicsController', ['except' => [
         'create'
     ]]);
@@ -105,15 +74,6 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->get('topic/by/{id?}', 'TopicsController@index');
     $router->get('topic/sort/{orderby?}', 'TopicsController@index')->where('orderby', '[a-z]+')->name('topic.sort');
     $router->get('topic/filter', 'TopicsController@index')->name('topic.filter');
-    
-    
-    // $router->get('topic/create', 'TopicsController@create')->name('topic.create');
-    // $router->get('topic/{id}/write', 'TopicsController@write')->where('id', '[0-9]+')->name('topic.write');
-    // $router->patch('topic/write', 'TopicsController@save')->name('topic.save');
-    
-    
-    // $router->get('topic/{id}', 'TopicsController@show')->where('id', '[0-9]+')->name('topic.show');
-    
 });
 
 
@@ -135,9 +95,6 @@ Route::group(['prefix' => 'admincms', 'namespace' => 'AdminCms'], function($rout
     $router->get('logout', 'LoginController@logout');
 });
 
-// Route::get('/admin', 'HomeController@index');
-
-// 
 // Event::listen('illuminate.query', function($sql, $param)
 // {
 //     Log::info($sql . ", with[" . join(',', $param) ."]");
