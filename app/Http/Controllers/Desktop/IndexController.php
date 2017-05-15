@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Desktop;
 use Illuminate\Http\Request;
 use Auth;
 use Cache;
-use Smallnews\Cos\QCloudCos;
+// use Smallnews\Cos\QCloudCos;
 use Storage;
 use Illuminate\HTTP\File;
 use Image;
+use MyUpload;
 
 class IndexController extends CommonController
 {
@@ -29,6 +30,8 @@ class IndexController extends CommonController
      */
     public function index()
     {
+        
+        
         // print_r(app('config')->get('qcloud'));
         // print_r($config);
         // exit;
@@ -76,4 +79,78 @@ class IndexController extends CommonController
         return view('desktop.index');
     }
     
+    
+    public function upload(Request $request){
+        if ($request->hasFile('FileContent')){
+            $result = MyUpload::upload($request->file('FileContent'), $request->input('file_type', 'avatars'));
+            $result['filename'] = $result['data']['url'];
+        }else {
+            $result = [
+                'error' => 1,
+                'info' => '文件不存在'
+            ];
+        }
+
+        return response()->json($result);
+    }
+    
+    
+    public function fileTest($filename = ''){   // 可以上传成功，但是超级慢
+        // $url = "/public/".$filename;
+        // 
+        // $result = Storage::disk('local')->get($url);
+        // 
+        // // $img = Image::make(file_get_contents($url));
+        // $img = Image::make($result);
+        // $img->fit(50, 50);
+        // 
+        // // $save_tmp_path = public_path().'/tmp_file/2222.jpeg';
+        // 
+        // // $img->save($save_tmp_path);     // 保存到临时文件夹
+        // // echo $save_tmp_path;
+        // Storage::disk('local')->put('/tmp_file/1111.jpg', $img->encode());
+        // exit;
+        $fileid = 'sample123';
+        $expired = time() + 999999;
+        $url = \Tencentyun\ImageV2::generateResUrl('smalltest', 0, $fileid);
+        $sign = \Smallnews\Cos\Auth::createReusableSignature($expired, 'smalltest');
+        
+        // echo $sign;
+        $ret = array('url' => $url,'sign' => $sign);
+        exit(json_encode($ret));
+        exit;
+        
+        $fileid = 'sample123';                              // 自定义文件名
+        //生成新的上传签名
+        $expired = time() + 999;
+        $sign = \Tencentyun\Auth::getAppSignV2('smalltest', $fileid, $expired);
+        $ret = array('url' => $url,'sign' => $sign);
+        exit(json_encode($ret));
+
+        
+        // $contents = file_get_contents("http://onguivs9z.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720160715121751.jpg");
+        $contents = file_get_contents("http://smalltest-1252018639.picsh.myqcloud.com/avatars/20170415/98de34446ea23a3ff2257ad638216fe0.jpeg");
+        echo $contents;exit;
+        // $url = "/public/".$filename;
+        
+        $result = Storage::disk('qcos')->get($filename);
+        
+        // $img = Image::make(file_get_contents($url));
+        $img = Image::make($result);
+        $img->fit(50, 50);
+        
+        // $save_tmp_path = public_path().'/tmp_file/2222.jpeg';
+        
+        // $img->save($save_tmp_path);     // 保存到临时文件夹
+        // echo $save_tmp_path;
+        Storage::disk('local')->put('/tmp_file/qcos.jpg', $img->encode());
+        exit;
+        
+        
+        
+        var_dump($img);exit;
+        // echo $filename;
+        print_r(request()->all());exit;
+        return view('desktop.fileTest');
+    }
 }

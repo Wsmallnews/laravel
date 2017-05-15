@@ -82,30 +82,14 @@ class UsersController extends CommonController
         }
         $this->validator($request->all())->validate();      // 验证失败，自动返回
         
-        if ($request->hasFile('avatar')){
-            $avatar_path = MyUpload::upload($request->file('avatar'), 'avatars');
-            $user->avatar = $avatar_path;
-        }
-        
-        if ($request->hasFile('wechat_qrcode')){
-            $wechat_path = MyUpload::upload($request->file('wechat_qrcode'), 'general');
-            $user->wechat_qrcode = $wechat_path;
-        }
-        
-        if ($request->hasFile('qq_qrcode')){
-            $qq_path = MyUpload::upload($request->file('qq_qrcode'), 'general');
-            $user->qq_qrcode = $qq_path;
-        }
-        
-        if ($request->hasFile('pay_me')){
-            $pay_me = MyUpload::upload($request->file('pay_me'), 'general');
-            $user->pay_me = $pay_me;
-        }
-        
+        $user->avatar = $request->input('avatar');
         $user->phone = $request->input('phone');
         $user->personal_website = $request->input('personal_website');
+        $user->wechat_qrcode = $request->input('wechat_qrcode');
+        $user->qq_qrcode = $request->input('qq_qrcode');
         $user->linked_in = $request->input('linked_in');
         $user->company = $request->input('company');
+        $user->pay_me = $request->input('pay_me');
         
         $user->save();
 
@@ -121,11 +105,7 @@ class UsersController extends CommonController
      * @return [type]       [description]
      */
     protected function validator($data){
-        return Validator::make($data,[
-            'avatars'=>'image|between:0,5242880',
-            'wechat_qrcode'=>'image|between:0,5242880',
-            'qq_qrcode'=>'image|between:0,5242880',
-            'pay_me'=>'image|between:0,5242880',
+        return Validator::make($data, [
             'phone'=>'unique:users,id,'.Auth::id().'|regex:/^1[34578][0-9]{9}$/',
             'personal_website' => 'regex:/^(http:\/\/|https:\/\/).*$/',
         ]);

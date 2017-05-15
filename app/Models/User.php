@@ -28,11 +28,22 @@ class User extends Authenticatable
     ];
     
     
+    /* =======================访问器=======================*/    
+    
+    
+    
+    /* =======================访问器 end=======================*/
+    
+    
     /* =======================模型关联=======================*/
     public function topic(){
         return $this->hasMany('App\Models\Topic', 'user_id');
     }
     
+    
+    public function classify(){
+        return $this->hasMany('App\Models\Classify', 'user_id');
+    }
     
     /* =======================模型关联 end=======================*/
 }

@@ -67,11 +67,15 @@ window.SimpleMDE = require('simplemde');
 
 /**
  * markdown 拖拽粘贴上传图片
- * @return {[type]}
  */
 require('./inline-attachment.js');
 require('./codemirror.inline-attachment.js');
 
+
+/**
+ * webuploader 图片上传
+ */
+window.WebUploader = require('webuploader/dist/webuploader.js');
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

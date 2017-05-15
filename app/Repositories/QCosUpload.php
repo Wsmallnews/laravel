@@ -4,167 +4,154 @@ use App\Contracts\MyUpload;
 use Session;
 use Image;
 use Storage;
+use Smallnews\Cos;
 
 class QCosUpload implements MyUpload {
-
-	private $img = '';				//图片对象
-	private $save_path = '';		//最终文件保存路径
-	private $mime_type = '';		//文件mime 类型
 	private $extension = '';		//图片后缀名
 	private $tmp_path = '';			//临时文件路径
-	private $dir = '/';		//上传文件保存根目录
-	private $real_dir = '';			//图片真实保存目录
 	private $filename = '';			//生成文件文件名，不带后缀
-    private $filesize = '';			//文件大小
-
-	public function __construct(){		
-		
-	}
-
+	private $filesize = '';			//文件大小
+	private $upload_dir = '';			//图片真实保存目录
+	private $upload_url = '';			//图片真实保存目录
+	
+	
 	public function upload($file, $type = 'avatars'){
 		//文件的扩展名
-		$this->entension = $file->getClientOriginalExtension();	//获取文件的扩展名
+		$this->extension = $file->getClientOriginalExtension();	//获取文件的扩展名
 		$this->tmp_path = $file->getRealPath();	//这个表示的是缓存在tmp文件夹下的文件的绝对路径
-		$this->mime_type = $file->getMimeType();	//获取文件mime 类型
 		$this->filename = $file->hashName();		// 根据hash 值 生成文件名
         $this->filesize = $file->getClientSize();
 		
 		// 设置上传目录
-		$this->setRealDir($type);
+		$this->upload_dir = $this->createUploadDir($type);
 
-		// 生成图片完整路径，包括文件名
-		$this->setDefaultPath();
-		
-		// 获取裁剪尺寸
-		$this->zoomType($type);
+		$this->upload_url = $this->setUploadUrl();
 
-		if(!$this->driver()->exists($this->save_path)){
-			$this->img = Image::make($this->tmp_path);
-
-			//保存图片
-			$this->saveImg($type);		// 裁剪图片，打水印，并保存图片
-            
-			return $this->normalizerPath(config('filesystems.disks.qcos.root')).$this->normalizerPath($this->save_path);	// 返回 url  图片访问 路径
+		if(!$this->exists($this->upload_url)){
+			$ret = $this->driver()::upload($this->tmp_path, $this->upload_url);
+			
+			if ($ret['code']){
+				return $this->returnMessage("上传失败", 1);
+			} else {
+				return $this->returnMessage("上传成功", 0, [
+					'url' => $this->fullUrl($this->upload_url)
+				]);
+			}
 		}else{
-			return false;
+			return $this->returnMessage("上传成功", 0, [
+				'url' => $this->fullUrl($this->upload_url)
+			]);
 		}
+	}
+	
+	
+	/**
+	 * 目录完整路径
+	 * @author @smallnews 2017-05-08
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	private function createUploadDir($type){
+		$date_dir = date('Ymd');
+
+		$upload_dir = '/'.$type.'/'.$date_dir.'/';
+
+		if ($this->makeDirectory($upload_dir)){
+			return $upload_dir;
+		}
+	}
+	
+	/**
+	 * 文件完整路径
+	 * @author @smallnews 2017-05-08
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	private function setUploadUrl(){
+		return $this->upload_dir . $this->filename;
+	}
+	
+	/**
+	 * 创建目录
+	 * @author @smallnews 2017-05-08
+	 * @param  [type] $dir [description]
+	 * @return [type]      [description]
+	 */
+	private function makeDirectory($dir){
+		if (!$this->existsFolder($dir)){
+			$ret = $this->driver()::createFolder($dir);
+			
+			if ($ret['code']){
+				return $this->returnMessage("目录创建失败，请重试", 1);
+			} 
+		}
+		
+		return true;
+	}
+	
+	
+	/**
+	 * 目录是否存在
+	 * @author @smallnews 2017-05-10
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
+	private function existsFolder($path){
+		$ret = $this->driver()::statFolder($path);
+		
+		return $ret['code'] ? false : true;
 	}
 	
 
 	/**
-	 * 保存图片
+	 * 文件是否存在
+	 * @author @smallnews 2017-05-10
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
 	 */
-	private function saveImg($type){
-		foreach($this->cut_img as $key => $value){
-            $img = $this->img;
-			//根据预定尺寸裁剪图片
-
-			if($type == 'avatars'){
-				//正方形
-				$img->fit($value[0],$value[0]);
-			}else{
-				//同比缩放
-				$img->widen($value[0], function ($constraint) {
-				    $constraint->upsize();
-				});
-			}
-
-			//水印，暂时不开启
-			// $this->img->insert(public_path().'/images/watermark.png','bottom-right');
-
-            $save_tmp_path = public_path().'/tmp_file/'.$this->filename;
-            $img->save($save_tmp_path);     // 保存到临时文件夹
-            
-			//设置图片路径
-			if($value[1]){
-				$save_path = $this->save_path;
-			}else{
-				$save_path = $this->getRealPath($value[0]);
-			}
-            
-            $this->driver()->put($save_path, $save_tmp_path);
-            
-            @unlink($save_tmp_path);
-		}
-	}
-
-	//设置文件保存目录
-	private function setRealDir($type){
-		$date_dir = date('Ymd');
-
-		$this->real_dir = $this->dir.'/'.$type.'/'.$date_dir.'/';
-
-		$this->driver()->makeDirectory($this->real_dir);
-	}
-
-	/*
-		设置默认文件保存路径，带文件名
-	 */
-	private function setDefaultPath(){
-		$this->save_path = $this->real_dir.$this->filename;
-	}
-
-
-	/*
-		获取处理过的文件保存路径，带文件名
-	 */
-	private function getRealPath($size){
-
-		return $this->real_dir.$this->filename."_".$size.'.'.$this->entension;
-	}
-
-	/*
-		图片缩放类型
-	 */
-	private function zoomType($zoom_type){
-		switch($zoom_type){
-			case 'avatars' :				// 用户头像
-				$this->cut_img[0][] = 400;
-				$this->cut_img[0][] = 0;
-				$this->cut_img[1][] = 200;
-				$this->cut_img[1][] = 1;
-				break;
-			case 'topics' :					// 主题图片		, 限制最大宽缩放
-				$this->cut_img[0][] = 1440;
-				$this->cut_img[0][] = 1;
-				break;
-			case 'general' :					// 普通图片		, 限制最大宽缩放
-				$this->cut_img[0][] = 800;
-				$this->cut_img[0][] = 0;
-				$this->cut_img[1][] = 400;
-				$this->cut_img[1][] = 1;
-				break;
-			default :						// 默认，普通图片		, 限制最大宽缩放
-				$this->cut_img[0][] = 800;
-				$this->cut_img[0][] = 0;
-				$this->cut_img[1][] = 400;
-				$this->cut_img[1][] = 1;
-				break;
-		}
+	private function exists($path){
+		$ret = $this->driver()::stat($path);
+		
+		return $ret['code'] ? false : true;
 	}
 	
 	
-	// 优化 url 图片地址
+	/**
+	 * 返回完整 url
+	 * @author @smallnews 2017-05-10
+	 * @param  [type] $upload_url [description]
+	 * @return [type]             [description]
+	 */
+	private function fullUrl($upload_url){
+		$upload_url = $this->normalizerPath($upload_url);
+		$full_url = config('qcloud.cos.root').$upload_url;
+		
+		return $full_url;
+	}
+	
+	
+	/**
+	 * 优化 url 图片地址
+	 * @author @smallnews 2017-05-10
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
 	private function normalizerPath($path) {
-		if(preg_match('/^(http:\/\/|https:\/\/).*$/', $path) == 0){	// 不是http:// 或者 https://
-			if (preg_match('/^\//', $path) == 0) {		// 如果开头没有 / ,则增加一个 /
-	            $path = '/' . $path;
-	        }
-			
-			// Remove unnecessary slashes.
-			$path = preg_replace('#/+#', '/', $path);	// 如果中间出现  // 或者 ///... 替换成 /
-		}else {
-			if (substr($path, strlen($path) - 1) == '/') {		// 如果结尾 有 / ,则截取掉 /
-	            $path = substr($path, 0, strlen($path) - 1);
-	        }
-		}
-
-        return $path;
-    }
+		$path = preg_replace('#/+#', '/', $path);	// 如果中间出现  // 或者 ///... 替换成 /
+		
+		return $path;
+	}
 	
 	
-	// 获取驱动
-	public function driver(){
-		return Storage::disk('qcos');
+	private function returnMessage($info, $error = 0, $data = []){
+		return [
+			'error' => $error,
+			'info' => $info,
+			'data' => $data
+		];
+	}
+	
+	private function driver(){
+		return app('qcloudcos');
 	}
 }

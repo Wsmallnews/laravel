@@ -50,14 +50,15 @@ trait TopicOper
      */
     public function edit($id)
     {
-        $topicClassifys = TopicClassify::orderBy('sort', 'desc')->get();
+        $user = Auth::user();
         
-        $topic = Auth::user()->topic()->findOrFail($id);
+        $classifys = $user->classify()->orderBy('sort', 'asc')->get();
+        $topic = $user->topic()->findOrFail($id);
         
         return view('desktop.topics.edit', [
             'title' => '编辑主题',
             'topic' => $topic,
-            'classify' => $topicClassifys
+            'classify' => $classifys
         ]);
     }
     

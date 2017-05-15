@@ -13,19 +13,7 @@ require('./bootstrap');
  * the body of the page. From here, you may begin adding components to
  * the application, or feel free to tweak this setup for your needs.
  */
-// 全局注册,admincms
-Vue.component('admin-no-data', require('./components/admincms/no-data.vue'));
 
-// 全局注册 desktop
-Vue.component('markdown', require('./components/markdown.vue'));
-// Vue.component('desk-no-data', require('./components/desktop/no-data.vue'));
-
-// 局部注册 admincms
-window.example = require('./components/Example.vue');
-window.admin_table = require('./components/admincms/table.vue');
-
-// 局部注册 desktop
-// window.md_desk = require('./components/markdown.vue');
 
 /**
  * 初始化vue进度条
@@ -45,11 +33,6 @@ const options = {
 }
 
 Vue.use(VueProgressBar, options);
-
-
-const Vm = new Vue({
-    el: '#wrapper'
-});
 
 
 /**
@@ -197,7 +180,7 @@ window.MDEditor = function(options){
 window.MDUploader = function(editor_obj, options){
     var defaults = {
         uploadUrl: "",
-        uploadFieldName: "file",
+        uploadFieldName: "FileContent",
         urlText: "\n ![file]({filename}) \n\n",
         extraParams: {
             '_token': Laravel.csrfToken
@@ -206,8 +189,93 @@ window.MDUploader = function(editor_obj, options){
     
     $.extend(defaults, options);
     
+    defaults.uploadUrl = (defaults.uploadUrl == undefined || defaults.uploadUrl == '') ? 
+                        Laravel.uploadUrl : defaults.uploadUrl;
+    
     inlineAttachment.editors.codemirror4.attach(editor_obj, defaults);
 }
+
+
+/**
+ * 重新定义 webuploader 图片上传
+ * @author @smallnews 2017-04-20
+ * @param  {[type]} options    [description]
+ * @param  {[type]} upload_obj [description]
+ * @return {[type]}            [description]
+ */
+window.MyUploader = function(options, upload_obj){
+    var defaults = {
+        dnd: true,
+        // swf: 'path_of_swf/Uploader.swf',
+        pick: upload_obj,
+        formData: {_token: Laravel.csrfToken},
+        server: '',
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        },
+        auto: true,
+        // 开起分片上传。
+        chunked: true,          // 开启分片上传
+        chunkSize: 5242880,     // 分片大小
+        chunkRetry: 2,          // 分片上传失败重试次数
+        fileVal: 'FileContent',        // 文件表单名称
+        method: 'POST',         // 方式
+        fileNumLimit: 5,        // 验证上传数量是否超过限制
+        fileSingleSizeLimit: 5242880,        // 验证单个文件大小是否超过限制
+        startUpload: function (){},                         // 开始上传流程是触发
+        uploadStart: function (file){},                     // 上传开始前
+        uploadProgress: function (file, percentage){},      // 上传中方法
+        uploadSuccess: function (file){},                       // 文件上传成功
+        uploadComplete: function (file){uploader.reset();},                      // 文件上传完成，不管成功失败
+        uploadError: function (file){}                         // 文件上传出错
+    };
+
+    // 把 defaults 的formData 合并到 options
+    if (options != undefined && options.formData != undefined) {
+        $.extend(options.formData, defaults.formData);
+    }
+    
+    // 把 options 合并到 defaults
+    $.extend(defaults, options);
+    
+    defaults.server = (defaults.server == undefined || defaults.server == '') ? 
+                        Laravel.uploadUrl : defaults.server;
+    
+    var uploader = WebUploader.create(defaults);
+    uploader.on('startUpload', defaults.startUpload);
+    uploader.on('uploadStart', defaults.uploadStart);     
+    uploader.on('uploadProgress', defaults.uploadProgress);
+    uploader.on('uploadSuccess', defaults.uploadSuccess);
+    uploader.on('uploadComplete', defaults.uploadComplete);
+    uploader.on('uploadError', defaults.uploadError);
+    
+    uploader._this = upload_obj;
+    
+    return uploader
+}
+
+
+// 全局注册,admincms
+Vue.component('admin-no-data', require('./components/admincms/no-data.vue'));
+
+// 全局注册 desktop
+Vue.component('markdown', require('./components/markdown.vue'));
+Vue.component('uploader', require('./components/uploader.vue'));
+// Vue.component('desk-no-data', require('./components/desktop/no-data.vue'));
+
+// 局部注册 admincms
+// window.example = require('./components/Example.vue');
+window.admin_table = require('./components/admincms/table.vue');
+
+// 局部注册 desktop
+// window.md_desk = require('./components/markdown.vue');
+
+const Vm = new Vue({
+    el: '#wrapper'
+});
+
 
 
 /**

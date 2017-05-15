@@ -171,8 +171,8 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        // Smallnews\Cos\QCloudCosServiceProvider::class,
-        Smallnews\Qls\QcloudFilesystemServiceProvider::class,
+        Smallnews\Cos\QCloudCosServiceProvider::class,
+        // Smallnews\Qls\QcloudFilesystemServiceProvider::class,
         // zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
         //
 
@@ -245,7 +245,7 @@ return [
          * Application Service Providers...
          */
         'MyUpload'  => App\Facades\MyUpload::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

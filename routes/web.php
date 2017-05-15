@@ -44,9 +44,15 @@ Route::get('/test',function(){
 // Route::get('/privacy', '');     // 隐私协议 twitter login
 // Route::get('/terms', '');       // 服务条款 twitter login
 
+
+
 Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
 {
+    $router->post('/myUpload', 'IndexController@upload')->name('myUpload');
+    
     $router->get('/', 'IndexController@index');
+    
+    $router->get('fileTest/{filename?}', 'IndexController@fileTest')->name('fileTest')->where('filename', '^(.+)/(.+)/(.+)$');
     
     // Auth::routes();      with Illuminate/Routing/Router.php  -> function auth
     $router->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -78,13 +84,20 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // $router->get('user/personal', 'UsersController@personal')->name('user.personal');
     // $router->get('user/bind', 'UsersController@personal')->name('user.bind');
     // $router->get('user/{id}', 'UsersController@show');
+    
+    // 用户路由
     $router->resource('user', 'UsersController');
     
+    // 话题路由
     $router->post('uploadTopicFiles', 'TopicsController@uploadTopicFiles');
     $router->resource('topic', 'TopicsController', ['except' => [
         'create'
     ]]);
 
+    // 个人分类路由
+    $router->resource('classify', 'classifyController');
+    
+    
     
     // $router->get('topic', 'TopicsController@index');
     

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bdae7b5eacd1cb25bc901ec507a9c876",
-    "content-hash": "435a1a8022f8f6bf13ae42b31514d92e",
+    "hash": "8271cad907dd1281b650435a8c151db1",
+    "content-hash": "870713f541159945540bf3f43a918694",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -3263,6 +3263,42 @@
                 "dump"
             ],
             "time": "2017-01-24 13:02:38"
+        },
+        {
+            "name": "tencentyun/php-sdk",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentyun/php-sdk.git",
+                "reference": "2b1554fd8a6f22fa5c7f40e0070f1e290fc3b378"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/tencentyun/php-sdk/2b1554fd8a6f22fa5c7f40e0070f1e290fc3b378.zip",
+                "reference": "2b1554fd8a6f22fa5c7f40e0070f1e290fc3b378",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tencentyun\\": "Tencentyun"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "php sdk for app.qcloud.com image service",
+            "homepage": "http://app.qcloud.com/",
+            "keywords": [
+                "qcloud",
+                "sdk",
+                "tencentyun"
+            ],
+            "time": "2016-05-19 07:21:03"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -49,8 +49,8 @@
                     
                     {{-- <markdown has-error="{{ $errors->has('body') }}" error-msg="{{ $errors->first('body') }}" ta-content="@if(old('body')){{{old('body')}}}@else{{{$topic->body_original}}}@endif"></markdown> --}}
                     <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
-                        @if(old('body')){{{old('body')}}}@else{{{$topic->body_original}}}@endif
-                        <textarea id="text_body" class="form-control markdown_editor" name="body" rows="20" ></textarea>
+                        
+                        <textarea id="text_body" class="form-control markdown_editor" name="body" rows="20" >@if(old('body')) {{old('body')}} @else {{$topic->body_original}} @endif</textarea>
                             
                         @if ($errors->has('body'))
                             <span class="help-block">
@@ -74,8 +74,7 @@
         </div>
     </div>
 </div>
-    
-</textarea>
+
 @endsection
 
 @section('script')
@@ -102,19 +101,16 @@
         element: $("#text_body")[0]
     });
     
-    
     /*
         markdown 上传图片
      */
-    MDUploader(simplemde.codemirror, {
-        uploadUrl: "{{url('uploadTopicFiles')}}"
-    });
+    MDUploader(simplemde.codemirror);
 
     
     $(window).keydown(function(e) {
     	if (e.keyCode == 83 && e.ctrlKey) {
     		e.preventDefault();
-    		
+
             $("#save_topic").html('正在保存...').fadeIn(0);
             
             var data = {}
@@ -122,7 +118,7 @@
             data._token = $("#topic_form input[name=_token]").val();
             data.classify_id = $("#topic_form select[name=classify_id]").val();
             data.title = $("#topic_form input[name=title]").val();
-            data.body = $("#topic_form textarea[name=body]").val();
+            data.body = simplemde.value();
             data.save = '';
             
             Vue.http.post("{{ route('topic.update', ['id' => $topic->id]) }}", data).then(function(response) {

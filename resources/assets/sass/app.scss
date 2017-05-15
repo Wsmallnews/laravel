@@ -16,7 +16,11 @@
 
 // simplemde 样式
 // @import "node_modules/simplemde/src/css/simplemde";
-@import "node_modules/simplemde/dist/simplemde.min";
+// @import "node_modules/simplemde/dist/simplemde.min";
+@import "../css/simplemde-theme-dark.min";
+
+// webuploader 样式
+@import "node_modules/webuploader/dist/webuploader";
 
 body{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;

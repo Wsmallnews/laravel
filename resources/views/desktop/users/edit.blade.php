@@ -15,16 +15,26 @@
         <div class="panel panel-default shadow">
             <div class="panel-heading">{{$title}}</div>
             <div class="panel-body">
-                <form role="form" method="POST" action="{{ route('user.update', ['id' => $user->id]) }}" id="user_form" enctype="multipart/form-data">
+                <form role="form" method="POST" action="{{ route('user.update', ['id' => $user->id]) }}" id="user_form" >
                     {{ csrf_field() }}
                     <input name="_method" type="hidden" value="PATCH" >
-                    
+                    <div style="display:none;">
+                        <uploader btn-obj="hidden" btn-name="hidden" type="no"  ></uploader>
+                    </div>
                     <div class="form-group">
-                        <input type="file" class="form-control" id="avatar" name="avatar" placeholder="请上传头像">
+                        {{-- <div class="img-file" @if (!old('avatar') && !session('socialiteUser.avatar')) style="display:none;" @endif>
+                            <input type="hidden" name="avatar" @if (old('avatar')) value="{{old('avatar')}}" @else value="{{ session('socialiteUser.avatar') }}" @endif >
+                            <div class="progress"></div>
+                        </div> --}}
+                        {{-- @if (!old('avatar') && !session('socialiteUser.avatar')) style="display:none;" @endif
+                            @if (old('avatar')) value="{{old('avatar')}}" @else value="{{ session('socialiteUser.avatar') }}" @endif --}}
+                        
+                        <uploader btn-obj="avatar" btn-name="更改头像" type="users/avatars"  @if (old('avatar')) def-value="{{old('avatar')}}" @else def-value="{{ $user->avatar }}" @endif></uploader>
                     </div>
                     
                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="请填写手机号" value="@if(old('phone')){{{old('phone')}}}@else{{{$user->phone}}}@endif">
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="请填写手机号" 
+                            @if(old('phone')) value="{{old('phone')}}" @else value="{{$user->phone}}" @endif>
                         
                         @if ($errors->has('phone'))
                             <span class="help-block">
@@ -34,7 +44,8 @@
                     </div>
                     
                     <div class="form-group{{ $errors->has('personal_website') ? ' has-error' : '' }}">
-                        <input type="text" class="form-control" id="personal_website" name="personal_website" placeholder="请填写个人网站地址" value="@if(old('personal_website')){{{old('personal_website')}}}@else{{{$user->personal_website}}}@endif">
+                        <input type="text" class="form-control" id="personal_website" name="personal_website" placeholder="请填写个人网站地址" 
+                            @if(old('personal_website')) value="{{old('personal_website')}}" @else value="{{$user->personal_website}}" @endif >
                         
                         @if ($errors->has('personal_website'))
                             <span class="help-block">
@@ -44,23 +55,25 @@
                     </div>
                     
                     <div class="form-group">
-                        <input type="file" class="form-control" id="wechat_qrcode" name="wechat_qrcode" placeholder="请上传微信二维码" value="@if(old('wechat_qrcode')){{{old('wechat_qrcode')}}}@else{{{$user->wechat_qrcode}}}@endif">
+                        <uploader btn-obj="wechat_qrcode" btn-name="更改微信二维码" type="users/qrcode"  @if (old('wechat_qrcode')) def-value="{{old('wechat_qrcode')}}" @else def-value="{{ $user->wechat_qrcode }}" @endif></uploader>
                     </div>
                     
                     <div class="form-group">
-                        <input type="file" class="form-control" id="qq_qrcode" name="qq_qrcode" placeholder="请上传qq二维码" value="@if(old('qq_qrcode')){{{old('qq_qrcode')}}}@else{{{$user->qq_qrcode}}}@endif">
+                        <uploader btn-obj="qq_qrcode" btn-name="更改qq二维码" type="users/qrcode"  @if (old('qq_qrcode')) def-value="{{old('qq_qrcode')}}" @else def-value="{{ $user->qq_qrcode }}" @endif></uploader>
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" class="form-control" id="linked_in" name="linked_in" placeholder="请填写领英个人主页" value="@if(old('linked_in')){{{old('linked_in')}}}@else{{{$user->linked_in}}}@endif">
+                        <input type="text" class="form-control" id="linked_in" name="linked_in" placeholder="请填写领英个人主页" 
+                            @if(old('linked_in')) value="{{old('linked_in')}}" @else value="{{$user->linked_in}}"@endif >
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" class="form-control" id="company" name="company" placeholder="请填写公司名称" value="@if(old('company')){{{old('company')}}}@else{{{$user->company}}}@endif">
+                        <input type="text" class="form-control" id="company" name="company" placeholder="请填写公司名称" 
+                            @if(old('company')) value="{{old('company')}}" @else value="{{$user->company}}" @endif>
                     </div>
                     
                     <div class="form-group">
-                        <input type="file" class="form-control" id="pay_me" name="pay_me" placeholder="请上传向我付款二维码" value="@if(old('pay_me')){{{old('pay_me')}}}@else{{{$user->pay_me}}}@endif">
+                        <uploader btn-obj="pay_me" btn-name="更改收款码" type="users/qrcode"  @if (old('pay_me')) def-value="{{old('pay_me')}}" @else def-value="{{ $user->pay_me }}" @endif></uploader>
                     </div>
                     
                     <div class="form-group">
@@ -76,5 +89,7 @@
 @endsection
 
 @section('script')
-    
+    <script type="text/javascript">
+        
+    </script>
 @endsection

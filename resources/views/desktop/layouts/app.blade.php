@@ -24,9 +24,11 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     <link rel="stylesheet" type="text/css"  href="{{ asset('/css/app.css') }}" >
 
     <style>
+        nav.navbar-fixed-top {z-index: 8;}
         body{background-color:#495664;color:#F8FCEB;}
         .navbar {box-shadow:0px 5px 15px #222222;}
         #page-body{padding-top:65px;}
+        .clear {clear:both;}
         
         /*多种阴影规则*/
         .shadow {box-shadow:1px 1px 5px #222222;}       /*设置阴影*/
@@ -60,8 +62,6 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .btn-default{color: #F8FCEB;background-color: #333C4A;border-color: #495664;}
         .btn-default:hover{color: #F8FCEB;background-color: #495664;border-color: #333C4A;}
         .btn-default:focus{color: #F8FCEB;background-color: #495664;border-color: #333C4A;}
-        .img-file {width:100px;height:100px;border: 2px solid #333C4A;border-radius: 2px;}
-        .img-file input {opacity: 0;width:100px;height:100px;}
         
         .panel {margin-bottom: 22px;background-color:#495664;}
         .panel-default {border:none;border-radius: 0px;}
@@ -112,7 +112,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .avatar_div {width:100%; text-align:center;}
         .user_info > tbody > tr:first-child > td {border-top: none;}
         .user_info > tbody > tr > td {border-top-style: dashed;}
-        .user_link_tag a { padding: 5px 10px;color: #ffffff;background-color: #333C4A;box-shadow:1px 1px 5px #222222;border-radius: 0px;}
+        .user_link_tag a { padding: 5px 10px;color: #F8FCEB;background-color: #333C4A;box-shadow:1px 1px 5px #222222;border-radius: 0px;}
         
         /* 分页 */
         .pagination{margin:10px;float:right;}
@@ -127,21 +127,40 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .pagination > .active > span:hover {background-color:#333C4A;border-color: #333C4A;}
         
         /* markdown 编辑器 */
+        /*覆盖 bootstrap code 样式， simplemde 使用*/
+        code {padding: 2px 4px;font-size: 90%;color: #F8FCEB;background-color: #333C4A;border-radius: 0px;}
+        mark {background: #ff0;color: #000;}
+        
+        pre{color: #F8FCEB;border: none;border-radius: 0px; }
+        
         .editor-toolbar {border-color:#333C4A;border-width: 2px;}
-        .editor-toolbar a {color:#F8FCEB !important; }
-        .editor-toolbar a.active {color:#F8FCEB !important; background-color:#333C4A;border:none;border-radius: 0px;box-shadow:1px 1px 5px #222222;}
+        .editor-toolbar a.active { background-color:#333C4A;border:none;border-radius: 0px;box-shadow:1px 1px 5px #222222;}
         .editor-toolbar a:hover{background-color:#333C4A; box-shadow:1px 1px 5px #222222;border:none;border-radius: 0px;}
         .editor-toolbar.disabled-for-preview {background-color: #495664; }
         .editor-toolbar.disabled-for-preview a:not(.no-disable) {background: #495664;box-shadow: none;}
-        
+        .editor-preview-side {border-left:none;border-top: 2px solid #333C4A;border-right: 2px solid #333C4A;border-bottom: 2px solid #333C4A;}
         .editor-preview.editor-preview-active{background-color: #495664;color: #F8FCEB;}
-        .CodeMirror {height:600px;background-color:#495664;color:#F8FCEB; border: 2px solid #333C4A;}
+        .CodeMirror {height:600px;border: 2px solid #333C4A;}
+        
+        /* webuploader button 样式*/
+            /* 图片框 */
+        .img-file {width:100px;height:100px;float:left;margin-right:20px;position: relative;}
+        .img-file input {opacity: 0;width:100px;height:100px;}
+        .progress {height:6px;width:0px;background: #F8FCEB;position:absolute;top:50%;border-radius: 0px;}
+            /* btn */
+        .edit-img {float:left;padding:5px 10px;background-color:#333C4A;}
+        
+        .webuploader-pick {padding:0px;border-radius: 0px;display: block;background:none;color:#F8FCEB;}
+        
         
     </style>
-
     <!-- Scripts -->
     <script type="text/javascript">
-        window.Laravel = {!! json_encode(['csrfToken' => csrf_token()]) !!}
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+            'uploadUrl' => route('myUpload')
+            ])
+        !!}
     </script>
 </head>
 <body>
@@ -249,9 +268,9 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     </div>
     <!-- Scripts -->
     <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
-    
     @section('script')
         <script type="text/javascript">
+        
         </script>
     @endsection
 
