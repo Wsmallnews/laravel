@@ -24,7 +24,7 @@ class QCosUpload implements MyUpload {
 		$this->filename = $file->hashName();		// 根据hash 值 生成文件名
         $this->filesize = $file->getClientSize();
 		
-		$this->saveFile();
+		return $this->saveFile();
 	}
 	
 	
