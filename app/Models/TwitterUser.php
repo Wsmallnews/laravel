@@ -11,7 +11,7 @@ class TwitterUser extends Model
 	protected $fillable = array('twitter_id', 'nick_name', 'name', 'email', 'avatar', 'user_id');
     
     
-    public function getWeiboUser($user_id = 0){
+    public function getTwitterUser($user_id = 0){
         return $this->where('twitter_id', $user_id)->first();
     }
 }

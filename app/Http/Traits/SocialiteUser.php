@@ -146,18 +146,18 @@ trait SocialiteUser
      * 用户通过weibo 登录，获取 weibo 用户       get.Weibo.User
      */
     protected function getWeiboUser($thirdUser){
-        $qqUser = new WeiboUser();
+        $weiboUser = new WeiboUser();
         
-        return $qqUser->getQqUser($thirdUser['id']);
+        return $weiboUser->getWeiboUser($thirdUser['id']);
     }
     
     /**
      * 用户通过twitter 登录，获取 twitter 用户       get.twitter.User
      */
     protected function getTwitterUser($thirdUser){
-        $qqUser = new WeiboUser();
+        $twitterUser = new TwitterUser();
         
-        return $qqUser->getTwitterUser($thirdUser['id']);
+        return $twitterUser->getTwitterUser($thirdUser['id']);
     }
     
     
@@ -311,7 +311,7 @@ trait SocialiteUser
      * @author @smallnews 2017-03-17
      */
     protected function createTwitterUser($twitter, $user_id){
-        return WeiboUser::create([
+        return TwitterUser::create([
             'twitter_id' => $twitter->getId(),
             'nick_name' => $twitter->getNickname(),
             'name' => $twitter->getName(),
