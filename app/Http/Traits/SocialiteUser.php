@@ -10,6 +10,7 @@ use App\Models\TwitterUser;
 use App\Models\User;
 use Socialite;
 use Validator;
+use MyUpload;
 
 trait SocialiteUser
 {
