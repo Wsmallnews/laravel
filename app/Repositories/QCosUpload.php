@@ -29,23 +29,30 @@ class QCosUpload implements MyUpload {
 	
 	
 	/**
-	 * 远程图片 复制 转存
+	 * 远程图片 复制 转存 折中方法，保存本地，之后再上传
 	 * @author @smallnews 2017-05-15
 	 * @return [type] [description]
 	 */
-	public function uploadCopy($file_src, $type = 'avatars'){
+	public function uploadCopy($file_src, $type = 'avatars'){	
 		$img = Image::make($file_src);
-		
+
 		$mime = $img->mime();
 		$mime = explode('/', $mime);
 		
 		$this->type = $type;
-		$this->extension = $mime[[count($mime)-1]];
-		$this->tmp_path = $file_src; 
+		$this->extension = $mime[count($mime)-1];
+		$this->tmp_path = $file_src;
 		$this->filename = $this->getHashName();
 		$this->filesize = $img->filesize();
 		
-		return $this->saveFile();
+		$save_tmp_path = public_path().'/tmp_file/'.$this->filename;
+		$img->save($save_tmp_path);
+		
+		$this->tmp_path = $save_tmp_path; 	// 重新定义 tmp_path
+		
+		$res = $this->saveFile();
+		@unlink($save_tmp_path);
+		return $res;
 	}
 	
 	
@@ -58,7 +65,7 @@ class QCosUpload implements MyUpload {
 
 		if(!$this->exists($this->upload_url)){
 			$ret = $this->driver()::upload($this->tmp_path, $this->upload_url);
-			
+
 			if ($ret['code']){
 				return $this->returnMessage("上传失败", 1);
 			} else {
