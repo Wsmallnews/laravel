@@ -34,12 +34,11 @@ class QCosUpload implements MyUpload {
 	 * @return [type] [description]
 	 */
 	public function uploadCopy($file_src, $type = 'avatars'){	
-		echo $file_src;
 		$img = Image::make($file_src);
 
 		$mime = $img->mime();
 		$mime = explode('/', $mime);
-		print_r($mime);
+
 		$this->type = $type;
 		$this->extension = $mime[count($mime)-1];
 		$this->tmp_path = $file_src;
