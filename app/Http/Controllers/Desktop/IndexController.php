@@ -30,8 +30,14 @@ class IndexController extends CommonController
      */
     public function index()
     {
-        $result = MyUpload::uploadCopy("http://tvax2.sinaimg.cn/crop.0.0.120.120.180/e544b016ly8fdteyqp8xtj203c03cq51.jpg", 'avatars');
-        print_r($result);exit;
+        if ($data = @file_get_contents("http://tvax2.sinaimg.cn/crop.0.0.120.120.180/e544b016ly8fdteyqp8xtj203c03cq51.jpg", false, $context)) {
+            var_dump($data);
+            echo "---------------------------";
+            var_dump(imagecreatefromstring($data));
+        }
+        exit;
+        // $result = MyUpload::uploadCopy("", 'avatars');
+        // print_r($result);exit;
         
         return view('desktop.index');
     }
