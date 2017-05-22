@@ -239,7 +239,7 @@ trait SocialiteUser
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'avatar' => $data['avatar'],
-            'driver' => $data['driver'],
+            'source_driver' => $data['driver'],
         ]);
     }
     
