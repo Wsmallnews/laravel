@@ -226,13 +226,13 @@ trait SocialiteUser
     protected function create(array $data)
     {
         // 检测头像 host 是否是 配置的host ，如果不是，将图片转存
-        if (parse_url($data['avatar'])['host'] != config('qcloud.cos.host')) {
-            $result = MyUpload::uploadCopy($data['avatar'], 'avatars');
-            
-            if (!$result['error']) {
-                $data['avatar'] = $result['data']['url'];
-            }
-        }
+        // if (parse_url($data['avatar'])['host'] != config('qcloud.cos.host')) {
+        //     $result = MyUpload::uploadCopy($data['avatar'], 'avatars');
+        //     
+        //     if (!$result['error']) {
+        //         $data['avatar'] = $result['data']['url'];
+        //     }
+        // }
         
         return User::create([
             'name' => $data['name'],
