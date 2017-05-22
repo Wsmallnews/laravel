@@ -19,7 +19,7 @@ class CreateTwitterUsersTable extends Migration
             $table->string('twitter_id')->unique();
             $table->string('nick_name');
             $table->string('name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('avatar')->nullable();
             $table->integer('user_id');
             $table->timestamps();
