@@ -41,7 +41,6 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->post('createUser', 'Auth\LoginController@createUser');
     $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
     $router->get('auth/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
-    $router->get('auth/driver/{type}', 'Auth\LoginController@redirectToProvider')->name('auth.bind');
     // fast login end
     
     
