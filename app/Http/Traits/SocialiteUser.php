@@ -33,7 +33,7 @@ trait SocialiteUser
      */
     public function redirectToProvider(Request $request)
     {
-        $type = $request->input('type') ? : '';var_dump($type);exit;
+        $type = $request->input('type') ? : '';
         $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'qq';
         
         if($type == 'bind' || $type == 'unbind'){
@@ -58,7 +58,7 @@ trait SocialiteUser
      * @return Response
      */
     public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
-    {var_dump($type);exit;
+    {
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         if ($type == 'bind') {
