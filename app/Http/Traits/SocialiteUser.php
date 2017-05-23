@@ -57,10 +57,12 @@ trait SocialiteUser
      * @param type      登录还是绑定    
      * @return Response
      */
-    public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
+    public function handleProviderCallback(Request $request, $driver = 'qq')
     {
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
-
+        var_dump($driver);
+        var_dump($type);
+        exit;
         if ($type == 'bind') {
             $this->bindDriver($driver, $type);
         } else if ($type == 'unbind') {
