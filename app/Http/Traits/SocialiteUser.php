@@ -59,6 +59,7 @@ trait SocialiteUser
      */
     public function handleProviderCallback(Request $request, $driver = 'qq')
     {
+        var_dump($request->all());
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
         var_dump($driver);
         var_dump($type);
