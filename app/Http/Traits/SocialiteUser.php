@@ -87,8 +87,8 @@ trait SocialiteUser
                 
                 return redirect($this->redirectTo);
             }else {                 // 创建用户和第三方用户
-                $request->session()->flash('socialiteUser', $socialiteUser);
-                $request->session()->flash('driver', $driver);
+                session()->flash('socialiteUser', $socialiteUser);
+                session()->flash('driver', $driver);
                 
                 return redirect($this->redirectCreate);
             }
