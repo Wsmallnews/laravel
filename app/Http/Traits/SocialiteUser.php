@@ -75,7 +75,7 @@ trait SocialiteUser
      * @author @smallnews 2017-05-23
      * @param  [type] $driver [第三方驱动]
      */
-    public function loginDriver($driver) {
+    protected function loginDriver($driver) {
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
         
         if($socialiteUser['token']){
@@ -105,7 +105,7 @@ trait SocialiteUser
      * @author @smallnews 2017-05-23
      * @param  [type] $driver [第三方驱动名称]
      */
-    public function bindDriver($driver) {
+    protected function bindDriver($driver) {
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 
         if($socialiteUser['token']){
@@ -148,7 +148,7 @@ trait SocialiteUser
      * @author @smallnews 2017-05-23
      * @param  [type] $driver [第三方驱动名称]
      */
-    public function unbindDriver($driver) {
+    protected function unbindDriver($driver) {
         $user = Auth::user();
         
         if ($user->source_driver == $driver) {
