@@ -164,7 +164,10 @@ class QCosUpload implements MyUpload {
 	 */
 	private function fullUrl($upload_url){
 		$upload_url = $this->normalizerPath($upload_url);
-		$full_url = config('qcloud.cos.root').$upload_url;
+
+		$http_url = preg_replace('/(\/)$/', '', config('qcloud.cos.root'));
+		
+		$full_url = $http_url.$upload_url;
 		
 		return $full_url;
 	}
@@ -178,6 +181,10 @@ class QCosUpload implements MyUpload {
 	 */
 	private function normalizerPath($path) {
 		$path = preg_replace('#/+#', '/', $path);	// 如果中间出现  // 或者 ///... 替换成 /
+		
+		if (!preg_match('/^(\/)/', $path)) {
+			$path = "/".$path;
+		}
 		
 		return $path;
 	}

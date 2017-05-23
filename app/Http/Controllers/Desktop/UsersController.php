@@ -98,6 +98,16 @@ class UsersController extends CommonController
     }
     
     
+    public function bind(){
+        $user = Auth::user();
+        
+        return view('desktop.users.bind', [
+            'title' => '账号绑定',
+            'user' => $user
+        ]);
+    }
+    
+    
     /**
      * 验证信息完整性
      * @author @smallnews 2017-01-04

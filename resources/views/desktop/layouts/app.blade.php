@@ -45,14 +45,24 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .nav.navbar-nav .github_login {text-align: center;color:#999999;font-size:18px;padding: 4px 0px;margin: 10px 5px;}
         .nav.navbar-nav .wechat_login:hover{color:#E6162D;}
         .nav.navbar-nav .github_login:hover{color: #4FA7EF;}
-        li.list-group-item{background-color:#495664;border-color: #333C4A;color:#F8FCEB;position:relative;
-                            overflow:hidden;border-left:none;border-right:none;}
-        li.list-group-item a {color: #F8FCEB; text-decoration: none;}
-        li.list-group-item:hover {background-color:#333C4A;color:#F8FCEB;}
-        li.list-group-item:focus {background-color:#333C4A;color:#F8FCEB;}
-        li.list-group-item > .badge {position: absolute; top: 50%;right: 20px;margin-top: -9px;}
+        
+
+        
+
+        .list-group-item a {color: #F8FCEB !important; text-decoration: none;}
         .list-group-item:first-child{border-radius: 0px;border-top: none;}
         .list-group-item:last-child{border-radius: 0px;}
+        
+        li.list-group-item, a.list-group-item{background-color:#495664;border-color: #333C4A;color:#F8FCEB;position:relative;
+                            overflow:hidden;border-left:none;border-right:none;}
+        li.list-group-item, a.list-group-item {color: #F8FCEB !important; text-decoration: none;}
+        li.list-group-item:hover, li.list-group-item:focus, a.list-group-item:hover, a.list-group-item:focus {background-color:#333C4A;color:#F8FCEB;}
+        
+        li.list-group-item.active, a.list-group-item.active {background-color:#333C4A;border:none;}
+        li.list-group-item.active:hover, li.list-group-item.active:focus, a.list-group-item.active:hover, a.list-group-item.active:focus {background-color:#333C4A;color:#F8FCEB;}
+        
+        li.list-group-item > .badge {position: absolute; top: 50%;right: 20px;margin-top: -9px;}
+        
         .form-control { background-color: #495664;border: 2px solid #333C4A;color: #F8FCEB;}
         .pd-10 {padding:10px;}
         .padding-no {padding:0px;}
@@ -83,7 +93,8 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         .white{color:#F8FCEB;}
         .white-20{color:#F8FCEB;font-size:20px;}
         .huang{color:#f49d06;}
-        .hui-12 {color:#929292;font-size:12px;}
+        .hui-12 {color:#A2A2A2;font-size:12px;}
+        .hui-14 {color:#A2A2A2;font-size:14px;}
         /* alert 框 */
         .sweet-alert {background-color: #F6F7D3;border-radius: 0px;box-shadow:1px 1px 5px #222222;}
         /* alert 框 end */
@@ -154,6 +165,9 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         
         
     </style>
+    
+    @yield('style')
+    
     <!-- Scripts -->
     <script type="text/javascript">
         window.Laravel = {!! json_encode([

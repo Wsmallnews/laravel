@@ -52,10 +52,10 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // Route::get('/', 'IndexController@index');
     
     // $router->get('user/personal', 'UsersController@personal')->name('user.personal');
-    // $router->get('user/bind', 'UsersController@personal')->name('user.bind');
     // $router->get('user/{id}', 'UsersController@show');
     
     // 用户路由
+    $router->get('user/bind', 'UsersController@bind')->name('user.bind');   // 第三方账号绑定
     $router->resource('user', 'UsersController');
     
     // 话题路由

@@ -8,7 +8,7 @@
 
 <div class="rows">
     <div class="col-lg-3">
-        @include('desktop.layouts.userInfo')
+        @include('desktop.users.userMenu')
     </div>
     
     <div class="col-lg-9 pd-left pd-no">

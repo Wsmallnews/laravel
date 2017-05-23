@@ -35,7 +35,7 @@ trait SocialiteUser
     {
         $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'qq';
         
-        if($type == 'bind'){
+        if($type == 'bind' || $type == 'unbind'){
             if(!$this->guard()->check()){
                 flash('您还未登录，请先登录', 'warning');
                 return redirect($this->redirectTo);
@@ -60,6 +60,51 @@ trait SocialiteUser
     {
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
+        if ($type == 'bind') {
+            $this->bindDriver($driver, $type);
+        } else if ($type == 'unbind') {
+            $this->unbindDriver($driver, $type);
+        } else {
+            $this->loginDriver($driver, $type);
+        }
+    }
+    
+    /**
+     * 第三方登录
+     * @author @smallnews 2017-05-23
+     * @param  [type] $driver [第三方驱动]
+     */
+    public function loginDriver($driver) {
+        $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
+        
+        if($socialiteUser['token']){
+            $method = "get".ucfirst($driver)."User";
+            $driverUser = $this->$method($socialiteUser);
+            
+            if($driverUser){        // 找到第三方用户
+                $this->guard()->loginUsingId($driverUser['user_id'], true);
+                flash('登录成功', 'success');
+                
+                return redirect($this->redirectTo);
+            }else {                 // 创建用户和第三方用户
+                $request->session()->flash('socialiteUser', $socialiteUser);
+                $request->session()->flash('driver', $driver);
+                
+                return redirect($this->redirectCreate);
+            }
+        }
+        
+        // 没有获取到第三方数据
+        flash('请刷新重试', 'warning');
+        return redirect($this->redirectTo);
+    }
+    
+    /**
+     * 第三方绑定
+     * @author @smallnews 2017-05-23
+     * @param  [type] $driver [第三方驱动名称]
+     */
+    public function bindDriver($driver) {
         $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
 
         if($socialiteUser['token']){
@@ -67,27 +112,72 @@ trait SocialiteUser
             $driverUser = $this->$method($socialiteUser);
             
             if($driverUser){
-                $this->guard()->loginUsingId($driverUser['user_id'], true);
-                flash('登录成功', 'success');
-                return redirect($this->redirectTo);
-            }else {
-                if($type == 'bind'){
-                    $method = "create".ucfirst($driver)."User";
-                    $this->$method($socialiteUser, $this->guard->id());
+                if (empty($driverUser['user_id'])) {
+                    $driverUser->user_id = $this->guard->id();
+                    $driverUser->save();
                     
                     flash('绑定成功', 'success');
                     return redirect()->route('user.bind');
-                }else{
-                    // 创建用户和第三方用户
-                    $request->session()->flash('socialiteUser', $socialiteUser);
-                    $request->session()->flash('driver', $driver);
-                    return redirect($this->redirectCreate);
                 }
+                
+                flash('该第三方账号已被绑定其他帐号，请解绑之后重新绑定', 'warning');
+                return redirect($this->redirectTo);
+            }else {
+                $method = "create".ucfirst($driver)."User";
+                $driverUser = $this->$method($socialiteUser, $this->guard->id());
+                
+                $third_id = $driver."_id";
+                
+                $user = Auth::user();
+                $user->$third_id = $driverUser->id;
+                $user->save();
+                
+                flash('绑定成功', 'success');
+                return redirect()->route('user.bind');
             }
         }
         
         // 没有获取到第三方数据
-        flash('请刷新重试', 'warning');
+        flash('绑定失败，请刷新重试', 'warning');
+        return redirect($this->redirectTo);
+    }
+    
+    /**
+     * 解绑第三方登录
+     * @author @smallnews 2017-05-23
+     * @param  [type] $driver [第三方驱动名称]
+     */
+    public function unbindDriver($driver) {
+        $user = Auth::user();
+        
+        if ($user->source_driver == $driver) {
+            flash('创建账号的第三方账号不能解绑', 'success');
+            return redirect()->route('user.bind');
+        }
+        
+        $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
+
+        if($socialiteUser['token']){
+            $method = "get".ucfirst($driver)."User";
+            $driverUser = $this->$method($socialiteUser);
+            
+            if($driverUser){
+                $driverUser->user_id = '';
+                $driverUser->save();
+                
+                $third_id = $driver."_id";
+                
+                
+                $user->$third_id = '';
+                $user->save();
+                
+                flash('解绑成功', 'success');
+                return redirect()->route('user.bind');
+            }
+        }
+        
+        // 没有获取到第三方数据
+        flash('解绑失败，请刷新重试', 'warning');
         return redirect($this->redirectTo);
     }
     
