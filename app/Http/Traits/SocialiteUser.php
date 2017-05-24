@@ -47,7 +47,8 @@ trait SocialiteUser
             }
         }
         
-        app('config')['services.'.$driver.'.redirect'] = app('config')['services.'.$driver.'.redirect']."/".$type;  // type 参数 callback 带不回来，问题未解决
+        $redirectUrl = config('services.'.$driver.'.redirect')."/".$type;  // type 参数 callback 带不回来，问题未解决
+        config(['services.'.$driver.'.redirect' => $redirectUrl]);
         
         return Socialite::driver($driver)->redirect();
         
