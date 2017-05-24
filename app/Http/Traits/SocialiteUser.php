@@ -47,8 +47,8 @@ trait SocialiteUser
             }
         }
         
-        $redirectUrl = config('services.'.$driver.'.redirect')."/".$type;  // type 参数 callback 带不回来，问题未解决
-        config(['services.'.$driver.'.redirect' => $redirectUrl]);
+        $redirectUrl = config('services.'.$driver.'.redirect')."/".$type;  // type 参数 callback 带不回来，问题未解决，采用这种方式
+        config(['services.'.$driver.'.redirect' => $redirectUrl]);      // 这种方式不可取，weibo 登录地址必须绝对一致，最起码github 是可以的
         
         return Socialite::driver($driver)->redirect();
         
