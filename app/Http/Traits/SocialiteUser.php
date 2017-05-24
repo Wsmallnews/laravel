@@ -47,8 +47,10 @@ trait SocialiteUser
             }
         }
         
+        $socialiteDriver = Socialite::driver($driver);
+        // echo $socialiteDriver->redirectUrl;exit;
         return Socialite::driver($driver)
-                ->with(['driver' => $driver, 'type' => $type])->redirect();
+                ->with(['login_type' => $type])->redirect();
     }
 
     /**
@@ -57,8 +59,10 @@ trait SocialiteUser
      * @param type      登录还是绑定    
      * @return Response
      */
-    public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
+    public function handleProviderCallback(Request $request, $driver = 'qq')
     {
+        print_r($request->all());
+        print_r($driver);exit;
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         if ($type == 'bind') {
