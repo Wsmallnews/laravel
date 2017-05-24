@@ -50,7 +50,7 @@ trait SocialiteUser
         $redirectUrl = config('services.'.$driver.'.redirect')."/".$type;  // type 参数 callback 带不回来，问题未解决
         config(['services.'.$driver.'.redirect' => $redirectUrl]);
         
-        return Socialite::driver($driver)->redirect();
+        return Socialite::driver($driver)->with(['login_type' => 'abcdefg'])->redirect();
         
         // return Socialite::driver($driver)        // with 参数可以带进去，但是带不回来
         //         ->with(['login_type' => $type])->redirect();
@@ -64,6 +64,7 @@ trait SocialiteUser
      */
     public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
     {
+        print_r($request->all());
         var_dump($driver);
         var_dump($type);exit;
         
