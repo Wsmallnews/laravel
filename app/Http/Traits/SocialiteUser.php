@@ -47,10 +47,12 @@ trait SocialiteUser
             }
         }
         
-        $socialiteDriver = Socialite::driver($driver);
-        // echo $socialiteDriver->redirectUrl;exit;
-        return Socialite::driver($driver)
-                ->with(['login_type' => $type])->redirect();
+        app('config')['services.'.$driver.'.redirect'] = app('config')['services.'.$driver.'.redirect']."/".$type;  // type 参数 callback 带不回来，问题未解决
+        
+        return Socialite::driver($driver)->redirect();
+        
+        // return Socialite::driver($driver)        // with 参数可以带进去，但是带不回来
+        //         ->with(['login_type' => $type])->redirect();
     }
 
     /**
@@ -59,10 +61,11 @@ trait SocialiteUser
      * @param type      登录还是绑定    
      * @return Response
      */
-    public function handleProviderCallback(Request $request, $driver = 'qq')
+    public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
     {
-        print_r($request->all());
-        print_r($driver);exit;
+        var_dump($driver);
+        var_dump($type);exit;
+        
         $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         if ($type == 'bind') {
