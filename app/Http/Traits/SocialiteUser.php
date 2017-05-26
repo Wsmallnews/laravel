@@ -64,6 +64,7 @@ trait SocialiteUser
      */
     public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
     {
+        var_dump(Auth::user());
         print_r($request->all());
         var_dump($driver);
         var_dump($type);exit;
