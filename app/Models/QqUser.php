@@ -11,7 +11,7 @@ class QqUser extends Model
 	protected $fillable = array('qq_id', 'nick_name', 'name', 'email', 'avatar', 'user_id');
     
     
-    public function getQqUser($user_id = 0){
-        return $this->where('qq_id', $user_id)->first();
+    public function getQqUserByThirdId($qq_id = 0){
+        return $this->where('qq_id', $qq_id)->first();
     }
 }

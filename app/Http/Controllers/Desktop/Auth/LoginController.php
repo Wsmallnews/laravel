@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Desktop\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
-use App\Http\Traits\SocialiteUser;
+use App\Http\Traits\ThirdOper;
 
 class LoginController extends Controller
 {
@@ -20,7 +20,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers,SocialiteUser;
+    use AuthenticatesUsers,ThirdOper;
 
     /**
      * Where to redirect users after login / registration.
@@ -35,7 +35,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['logout', 'redirectToProvider', 'handleProviderCallback']]);
+        $this->middleware('guest', ['except' => ['logout', 'thirdLogin']]);
     }
     
 

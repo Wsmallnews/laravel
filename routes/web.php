@@ -39,7 +39,10 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // fast login start
     $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
     $router->post('createUser', 'Auth\LoginController@createUser');
-    $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
+    
+    
+    // $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
+    $router->get('thirdLogin', 'Auth\LoginController@thirdLogin')->name('auth.thirdLogin');
     $router->get('auth/callback/{driver}/{type?}', 'Auth\LoginController@handleProviderCallback');
     // fast login end
     

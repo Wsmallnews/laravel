@@ -11,8 +11,8 @@ class GithubUser extends CommonModel
 	protected $fillable = array('github_id', 'nick_name', 'name', 'email', 'avatar', 'user_id');
     
     
-    public function getGithubUser($user_id = 0){
-        return $this->where('github_id', $user_id)->first();
+    public function getGithubUserByThirdId($github_id = 0){
+        return $this->where('github_id', $github_idgetGithubUserByThirdId)->first();
     }
     
 }

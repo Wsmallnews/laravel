@@ -11,7 +11,7 @@ class TwitterUser extends Model
 	protected $fillable = array('twitter_id', 'nick_name', 'name', 'email', 'avatar', 'user_id');
     
     
-    public function getTwitterUser($user_id = 0){
-        return $this->where('twitter_id', $user_id)->first();
+    public function getTwitterUserByThirdId($twitter_id = 0){
+        return $this->where('twitter_id', $twitter_id)->first();
     }
 }

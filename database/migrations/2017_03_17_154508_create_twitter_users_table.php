@@ -22,6 +22,7 @@ class CreateTwitterUsersTable extends Migration
             $table->string('email')->nullable();
             $table->string('avatar')->nullable();
             $table->integer('user_id');
+            $table->string('oper_type')->nullable();
             $table->timestamps();
         });
     }

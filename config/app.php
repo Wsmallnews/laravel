@@ -186,7 +186,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MarkdownServiceProvider::class,
         App\Providers\MyUploadServiceProvider::class,
-        
+        App\Providers\MyRepServiceProvider::class,
     ],
 
     /*

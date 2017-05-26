@@ -11,7 +11,7 @@ class WeiboUser extends Model
 	protected $fillable = array('weibo_id', 'nick_name', 'name', 'email', 'avatar', 'user_id');
     
     
-    public function getWeiboUser($user_id = 0){
-        return $this->where('weibo_id', $user_id)->first();
+    public function getWeiboUserByThirdId($weibo_id = 0){
+        return $this->where('weibo_id', $weibo_id)->first();
     }
 }

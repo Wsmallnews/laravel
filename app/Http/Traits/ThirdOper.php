@@ -3,28 +3,117 @@ namespace App\Http\Traits;
 
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\GithubUser;
-use App\Models\QqUser;
-use App\Models\WeiboUser;
-use App\Models\TwitterUser;
 use App\Models\User;
-use Socialite;
 use Validator;
 use MyUpload;
 
-trait SocialiteUser
+trait ThirdOper
 {
-    /**
-     * 允许登录的第三方
-     */
-    protected $filterLogin = ['github', 'wechat', 'qq', 'weibo', 'twitter'];
-    
-    /**
-     * 
-     * @var [type]
-     */
     protected $redirectCreate = "/createUser";
     
+    protected $driver = null;
+    protected $driverUser = null;
+    protected $socialiteUser = null;
+    
+    /**
+     * 第三方登录，绑定，解绑 操作
+     */
+
+    
+    /**
+     * 第三方登录
+     * @author @smallnews 2017-05-26
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function thirdLogin(Request $request){
+        $driver = $request->input('driver');
+        
+        return resolve('App\Repositories\MySocialite')->redirectToProvider($driver);   // 获取第三方数据
+    }
+    
+    
+    /**
+     * 第三方绑定, 必须登录，别忘了权限
+     * @author @smallnews 2017-05-26
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function thirdBind(Request $request){
+        $driver = $request->input('driver');
+        
+        return resolve('App\Repositories\MySocialite')->redirectToProvider($driver);   // 获取第三方数据
+    }
+    
+    
+    public function thirdUnbind(Request $request){      // 解绑
+        $driver = $request->input('driver');
+        
+        $user = Auth::user();
+        
+        $this->driverUser = resolve('App\Repositories\MyThirdLoginDriver')->getThirdUserById($driver, $user->{$driver.'_id'});
+        $this->driverUser->user_id = 0;
+        $this->driverUser->save();
+        
+        $user->{$driver.'_id'} = 0;
+        $user->save();
+    }
+    
+    
+
+	public function thirdCallBack($driver, $socialite = null){
+        $this->driver = $driver;
+		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
+		
+		if ($socialiteUser['token']) {
+            $this->driverUser = $driverUser = resolve('App\Repositories\MyThirdLoginDriver')->getThirdUserByThirdId($driver, $socialiteUser->getId());
+            
+            if($this->driverUser){
+                $oper_type = !empty($driverUser['oper_type']) ? $driverUser['oper_type'] : 'login';
+                $method = 'third'.ucfirst($oper_type).'Back';
+                
+                if (!function_exists($method)) {
+                    abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
+                } 
+                
+                $this->$method();
+            }
+		}
+		
+		// 没有获取到第三方数据
+        flash('拉取第三方数据失败，请刷新重试', 'warning');
+        return redirect($this->redirectTo);
+	}
+    
+    
+    protected function thirdLoginBack(){
+        if($this->driverUser['user_id']){        // 找到第三方用户
+            $this->guard()->loginUsingId($this->driverUser['user_id'], true);
+            flash('登录成功', 'success');
+            
+            return redirect($this->redirectTo);
+        }else {                 // 创建用户和第三方用户
+            session()->flash('socialiteUser', $this->socialiteUser);
+            session()->flash('driver', $this->driver);
+            
+            return redirect($this->redirectCreate);
+        }
+    }
+    
+    
+    protected function thirdBindBack(){
+        if($this->driverUser['user_id']){        // 找到第三方用户
+            $this->guard()->loginUsingId($this->driverUser['user_id'], true);
+            flash('登录成功', 'success');
+            
+            return redirect($this->redirectTo);
+        }else {                 // 创建用户和第三方用户
+            session()->flash('socialiteUser', $this->socialiteUser);
+            session()->flash('driver', $this->driver);
+            
+            return redirect($this->redirectCreate);
+        }
+    }
     
     /**
      * Redirect the user to the GitHub authentication page.
