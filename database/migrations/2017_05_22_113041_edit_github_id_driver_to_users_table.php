@@ -18,6 +18,7 @@ class EditGithubIdDriverToUsersTable extends Migration
             $table->integer('qq_id')->nullable();
             $table->integer('weibo_id')->nullable();
             $table->integer('twitter_id')->nullable();
+            $table->string('third_oper')->nullable();
         });
     }
 

@@ -2,10 +2,8 @@
 
 use Socialite;
 use MyThirdLoginDriver;
-use App\Http\Traits\ThirdOper;
 
 class MySocialite{
-	use ThirdOper;
     /*
         获取的所有第三方数据
      */
@@ -34,22 +32,16 @@ class MySocialite{
         
         return Socialite::driver($driver)->redirect();
     }
+
     
-    
-    /**
-     * Obtain the user information from GitHub. 
-     * @param driver    第三方驱动  
-     * @return Response
-     */
-    public function handleProviderCallback(Request $request, $driver = 'qq')
-    {
-        $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
+	public function handleProviderCallback($driver = 'qq'){
+		$driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         $this->socialiteUser = Socialite::driver($driver)->user();
-        
-		return $this->thirdCallBack($driver, $this);	// 获取第三方之后的本地回调
-    }
-    
+		
+		return $this;
+	}
+	
     
     /**
      * 通过 token 获取 Socialite 用户

@@ -36,15 +36,22 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     $router->post('logout', 'Auth\LoginController@logout');
     // Auth::routes(); end
     
-    // fast login start
+    // third login start
+    $router->get('thirdLogin', 'Auth\LoginController@thirdLogin')->name('auth.thirdLogin');
+    $router->get('auth/callback/{driver}', 'Auth\LoginController@handleProviderCallback');
+    
     $router->get('createUser', 'Auth\LoginController@showFastCreateUserForm')->name('createUser');
     $router->post('createUser', 'Auth\LoginController@createUser');
-    
+    // fast login end
     
     // $router->get('auth/driver', 'Auth\LoginController@redirectToProvider')->name('auth.driver');
-    $router->get('thirdLogin', 'Auth\LoginController@thirdLogin')->name('auth.thirdLogin');
-    $router->get('auth/callback/{driver}/{type?}', 'Auth\LoginController@handleProviderCallback');
-    // fast login end
+    
+    
+    
+    
+    
+    
+    
     
     
     // $router->get('topic/{id}/edit', 'TopicsController@edit')->name('topic.edit');
@@ -57,6 +64,9 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     
     // 用户路由
     $router->get('user/bind', 'UsersController@bind')->name('user.bind');   // 第三方账号绑定
+    $router->get('user/thirdBind', 'Auth\LoginController@thirdLogin')->name('user.thirdBind');
+    $router->get('user/thirdUnbind', 'Auth\LoginController@thirdLogin')->name('user.thirdUnbind');
+    
     $router->resource('user', 'UsersController');
     
     // 话题路由

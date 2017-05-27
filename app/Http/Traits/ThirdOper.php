@@ -11,13 +11,20 @@ trait ThirdOper
 {
     protected $redirectCreate = "/createUser";
     
+    protected $myThirdLoginDriver = null;   // 自定义第三方操作对象
+    protected $mySocialite = null;   // 自定义第三方 驱动 对象
     protected $driver = null;
     protected $driverUser = null;
     protected $socialiteUser = null;
-    
+    protected $user = null;
     /**
      * 第三方登录，绑定，解绑 操作
      */
+
+    public function __construct(){
+        $this->myThirdLoginDriver = resolve('App\Repositories\MyThirdLoginDriver');
+        $this->mySocialite = resolve('App\Repositories\MySocialite');
+    }
 
     
     /**
@@ -50,6 +57,10 @@ trait ThirdOper
         $driver = $request->input('driver');
         
         $user = Auth::user();
+        if ($user->source_driver == $driver) {
+            flash('创建账号的第三方账号不能解绑', 'warning');
+            return redirect($this->redirectTo);
+        }
         
         $this->driverUser = resolve('App\Repositories\MyThirdLoginDriver')->getThirdUserById($driver, $user->{$driver.'_id'});
         $this->driverUser->user_id = 0;
@@ -60,24 +71,40 @@ trait ThirdOper
     }
     
     
-
-	public function thirdCallBack($driver, $socialite = null){
+    /**
+     * Obtain the user information from GitHub. 
+     * @param driver    第三方驱动  
+     * @return Response
+     */
+    public function handleProviderCallback($driver)
+    {
         $this->driver = $driver;
+        $this->myThirdLoginDriver = resolve('App\Repositories\MyThirdLoginDriver');
+        $this->mySocialite = resolve('App\Repositories\MySocialite');
+        
+        $mySocialite = $this->mySocialite->handleProviderCallback($driver); // 返回 MySocialite 实例
+        
+		return $this->thirdCallBack($mySocialite);	// 获取第三方之后的本地回调
+    }
+    
+
+	public function thirdCallBack($socialite = null){
+        
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
 		if ($socialiteUser['token']) {
-            $this->driverUser = $driverUser = resolve('App\Repositories\MyThirdLoginDriver')->getThirdUserByThirdId($driver, $socialiteUser->getId());
-            
-            if($this->driverUser){
-                $oper_type = !empty($driverUser['oper_type']) ? $driverUser['oper_type'] : 'login';
-                $method = 'third'.ucfirst($oper_type).'Back';
-                
-                if (!function_exists($method)) {
-                    abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
-                } 
-                
-                $this->$method();
+            if ($this->guard()->check()) {
+                $this->user = $this->guard()->user();
+                $method = 'third'.ucfirst($user->third_oper).'Back';
+            }else {
+                $method = 'thirdLoginBack';
             }
+            
+            if (!function_exists($method)) {
+                abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
+            } 
+            
+            $this->$method();       // 根据操作类型，调用对应function
 		}
 		
 		// 没有获取到第三方数据
@@ -86,7 +113,15 @@ trait ThirdOper
 	}
     
     
+    /**
+     * 第三方登录回调
+     * @author @smallnews 2017-05-27
+     * @return [type] [description]
+     */
     protected function thirdLoginBack(){
+        // get third user data
+        $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($driver, $this->socialiteUser->getId());
+        
         if($this->driverUser['user_id']){        // 找到第三方用户
             $this->guard()->loginUsingId($this->driverUser['user_id'], true);
             flash('登录成功', 'success');
@@ -101,256 +136,50 @@ trait ThirdOper
     }
     
     
+    /**
+     * 第三方账号绑定
+     * @author @smallnews 2017-05-27
+     * @return [type] [description]
+     */
     protected function thirdBindBack(){
-        if($this->driverUser['user_id']){        // 找到第三方用户
-            $this->guard()->loginUsingId($this->driverUser['user_id'], true);
-            flash('登录成功', 'success');
-            
+        // get third user data
+        $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($driver, $this->socialiteUser->getId());
+        
+        if ($this->driverUser['user_id']) {
+            flash('绑定失败，该第三方账号已绑定其他帐号，请解绑重新绑定', 'error');
             return redirect($this->redirectTo);
-        }else {                 // 创建用户和第三方用户
-            session()->flash('socialiteUser', $this->socialiteUser);
-            session()->flash('driver', $this->driver);
-            
-            return redirect($this->redirectCreate);
         }
-    }
-    
-    /**
-     * Redirect the user to the GitHub authentication page.
-     *
-     * @return Response
-     */
-    public function redirectToProvider(Request $request)
-    {
-        $type = $request->input('type') ? : '';
-        $driver = in_array($request->input('driver'), $this->filterLogin) ? $request->input('driver') : 'qq';
-        
-        if($type == 'bind' || $type == 'unbind'){
-            if(!$this->guard()->check()){
-                flash('您还未登录，请先登录', 'warning');
-                return redirect($this->redirectTo);
-            }
+            
+        if($this->driverUser){        // 找到第三方用户
+            //绑定
+            $this->driverUser->user_id = $this->user->id;
+            $this->driverUser->save();
+            
+            $this->user->{$this->driver."_id"} = $this->driverUser->id;
+            $this->user->save();
         }else {
-            if($this->guard()->check()){
-                return redirect($this->redirectTo);
-            }
-        }
-        
-        $redirectUrl = config('services.'.$driver.'.redirect')."/".$type;  // type 参数 callback 带不回来，问题未解决，采用这种方式
-        config(['services.'.$driver.'.redirect' => $redirectUrl]);      // 这种方式不可取，weibo 登录地址必须绝对一致，最起码github 是可以的
-        
-        return Socialite::driver($driver)->redirect();
-        
-        // return Socialite::driver($driver)        // with 参数可以带进去，但是带不回来
-        //         ->with(['login_type' => $type])->redirect();
-    }
-
-    /**
-     * Obtain the user information from GitHub.
-     * @param driver    第三方驱动
-     * @param type      登录还是绑定    
-     * @return Response
-     */
-    public function handleProviderCallback(Request $request, $driver = 'qq', $type = '')
-    {
-        print_r($request->all());
-        var_dump($driver);
-        var_dump($type);exit;
-        
-        $driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
-
-        if ($type == 'bind') {
-            $this->bindDriver($driver, $type);
-        } else if ($type == 'unbind') {
-            $this->unbindDriver($driver, $type);
-        } else {
-            $this->loginDriver($driver, $type);
-        }
-    }
-    
-    /**
-     * 第三方登录
-     * @author @smallnews 2017-05-23
-     * @param  [type] $driver [第三方驱动]
-     */
-    protected function loginDriver($driver) {
-        $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
-        
-        if($socialiteUser['token']){
-            $method = "get".ucfirst($driver)."User";
-            $driverUser = $this->$method($socialiteUser);
+            // 创建第三方用户
+            $this->driverUser = $this->myThirdLoginDriver->createThirdUser($this->driver, $this->socialiteUser, $this->user->id);
             
-            if($driverUser){        // 找到第三方用户
-                $this->guard()->loginUsingId($driverUser['user_id'], true);
-                flash('登录成功', 'success');
-                
-                return redirect($this->redirectTo);
-            }else {                 // 创建用户和第三方用户
-                session()->flash('socialiteUser', $socialiteUser);
-                session()->flash('driver', $driver);
-                
-                return redirect($this->redirectCreate);
-            }
+            $this->user->{$this->driver."_id"} = $this->driverUser->id;
+            $this->user->save();
         }
         
-        // 没有获取到第三方数据
-        flash('请刷新重试', 'warning');
-        return redirect($this->redirectTo);
-    }
-    
-    /**
-     * 第三方绑定
-     * @author @smallnews 2017-05-23
-     * @param  [type] $driver [第三方驱动名称]
-     */
-    protected function bindDriver($driver) {
-        $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
-
-        if($socialiteUser['token']){
-            $method = "get".ucfirst($driver)."User";
-            $driverUser = $this->$method($socialiteUser);
-            
-            if($driverUser){
-                if (empty($driverUser['user_id'])) {
-                    $driverUser->user_id = $this->guard->id();
-                    $driverUser->save();
-                    
-                    flash('绑定成功', 'success');
-                    return redirect()->route('user.bind');
-                }
-                
-                flash('该第三方账号已被绑定其他帐号，请解绑之后重新绑定', 'warning');
-                return redirect($this->redirectTo);
-            }else {
-                $method = "create".ucfirst($driver)."User";
-                $driverUser = $this->$method($socialiteUser, $this->guard->id());
-                
-                $third_id = $driver."_id";
-                
-                $user = Auth::user();
-                $user->$third_id = $driverUser->id;
-                $user->save();
-                
-                flash('绑定成功', 'success');
-                return redirect()->route('user.bind');
-            }
-        }
-        
-        // 没有获取到第三方数据
-        flash('绑定失败，请刷新重试', 'warning');
-        return redirect($this->redirectTo);
-    }
-    
-    /**
-     * 解绑第三方登录
-     * @author @smallnews 2017-05-23
-     * @param  [type] $driver [第三方驱动名称]
-     */
-    protected function unbindDriver($driver) {
-        $user = Auth::user();
-        
-        if ($user->source_driver == $driver) {
-            flash('创建账号的第三方账号不能解绑', 'success');
-            return redirect()->route('user.bind');
-        }
-        
-        $socialiteUser= $this->getSocialiteUser($driver);      // 获取第三方数据
-
-        if($socialiteUser['token']){
-            $method = "get".ucfirst($driver)."User";
-            $driverUser = $this->$method($socialiteUser);
-            
-            if($driverUser){
-                $driverUser->user_id = '';
-                $driverUser->save();
-                
-                $third_id = $driver."_id";
-                
-                
-                $user->$third_id = '';
-                $user->save();
-                
-                flash('解绑成功', 'success');
-                return redirect()->route('user.bind');
-            }
-        }
-        
-        // 没有获取到第三方数据
-        flash('解绑失败，请刷新重试', 'warning');
+        flash('绑定成功', 'success');
         return redirect($this->redirectTo);
     }
     
     
     /**
-     * getSocialiteUser
-     * @author @smallnews 2016-12-28
-     * @param  [type] $driver [description]
-     * @return [type]         [description]
+     * 第三方 解绑，不需要返回
+     * @author @smallnews 2017-05-27
+     * @return [type] [description]
      */
-    protected function getSocialiteUser($driver){
-        $thirdUser = Socialite::driver($driver)->user();
+    public function thirdUnbindBack(){
+        return true;
+    }
+    
 
-        $simUser = array(
-            'token' => $thirdUser->token,
-            'id' => $thirdUser->getId(),
-            'avatar' => $thirdUser->getAvatar(),
-            'name' => $thirdUser->getNickname(),
-            'email' => $thirdUser->getEmail()
-        );
-
-        return $simUser;
-    }
-    
-    /**
-     * 通过token 获取 Socialite 用户
-     * @author @smallnews 2016-12-28
-     * @param  [type] $token [description]
-     * @return [type]        [description]
-     */
-    protected function getSocialiteUserFromToken($driver, $token){
-        $thirdUser = Socialite::driver($driver)->userFromToken($token);
-        
-        return $thirdUser;
-    }
-    
-    
-    /**
-     * 用户通过github 登录，获取 github 用户       get.Driver.User
-     */
-    protected function getGithubUser($thirdUser){
-        $githubUser = new GithubUser();
-        
-        return $githubUser->getGithubUser($thirdUser['id']);
-    }
-    
-    /**
-     * 用户通过qq 登录，获取 qq 用户       get.Qq.User
-     */
-    protected function getQqUser($thirdUser){
-        $qqUser = new QqUser();
-        
-        return $qqUser->getQqUser($thirdUser['id']);
-    }
-    
-    /**
-     * 用户通过weibo 登录，获取 weibo 用户       get.Weibo.User
-     */
-    protected function getWeiboUser($thirdUser){
-        $weiboUser = new WeiboUser();
-        
-        return $weiboUser->getWeiboUser($thirdUser['id']);
-    }
-    
-    /**
-     * 用户通过twitter 登录，获取 twitter 用户       get.twitter.User
-     */
-    protected function getTwitterUser($thirdUser){
-        $twitterUser = new TwitterUser();
-        
-        return $twitterUser->getTwitterUser($thirdUser['id']);
-    }
-    
-    
     /**
      * create Third user
      * @author @smallnews 2016-12-27
@@ -367,17 +196,26 @@ trait ThirdOper
      * @return [type] [description]
      */
     public function createUser(Request $request){
+        $driver = $request->input('driver');
+        $token = $request->input('token');
+        
+        // 验证 输入数据
         $this->validator($request->all())->validate();
+        
+        // 取出第三方登录实例
+        $myThird = resolve('App\Repositories\MyThirdLoginDriver');
+        $mySocialite = resolve('App\Repositories\MySocialite');
+        
+        // 获取 socialite 用户
+        $socialiteUser = $mySocialite->getSocialiteUserFromToken($driver, $token);
+        
         // 创建 User
         $user = $this->create($request->all());
 
         // create third user
-        $socialite = $this->createSocialiteUser($user->id);
-
-        $driver = request()->input('driver');
+        $thirdUser = $myThird->createThirdUser($driver, $socialiteUser, $user->id);
         
-        $third_id = $driver."_id";
-        $user->$third_id = $socialite->id;
+        $user->{$driver."_id"} = $thirdUser->id;    // 绑定
         $user->save();
 
         $this->guard()->login($user);
@@ -429,85 +267,6 @@ trait ThirdOper
             'password' => bcrypt($data['password']),
             'avatar' => $data['avatar'],
             'source_driver' => $data['driver'],
-        ]);
-    }
-    
-    
-    /**
-     * Create 第三方用户 user
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function createSocialiteUser($user_id)
-    {
-        $driver = request()->input('driver');
-        $token = request()->input('token');
-        $socialiteUser = $this->getSocialiteUserFromToken($driver, $token);
-        
-        // 创建对应的第三方用户
-        $method = "create".ucfirst($driver)."User";
-        return $this->$method($socialiteUser, $user_id);
-    }
-    
-    /**
-     * [创建github 用户]
-     * @author @smallnews 2017-01-20
-     */
-    protected function createGithubUser($githubUser, $user_id){
-        return GithubUser::create([
-            'github_id' => $githubUser->getId(),
-            'nick_name' => $githubUser->getNickname(),
-            'name' => $githubUser->getName(),
-            'email' => $githubUser->getEmail(),
-            'avatar' => $githubUser->getAvatar(),
-            'user_id' => $user_id
-        ]);
-    }
-    
-    /**
-     * [创建 qq 用户]
-     * @author @smallnews 2017-01-20
-     */
-    protected function createQqUser($qqUser, $user_id){
-        return QqUser::create([
-            'qq_id' => $qqUser->getId(),
-            'nick_name' => $qqUser->getNickname(),
-            'name' => $qqUser->getName(),
-            'email' => $qqUser->getEmail(),
-            'avatar' => $qqUser->getAvatar(),
-            'user_id' => $user_id
-        ]);
-    }
-    
-    
-    /**
-     * [创建 weibo 用户]
-     * @author @smallnews 2017-03-17
-     */
-    protected function createWeiboUser($weiboUser, $user_id){
-        return WeiboUser::create([
-            'weibo_id' => $weiboUser->getId(),
-            'nick_name' => $weiboUser->getNickname(),
-            'name' => $weiboUser->getName(),
-            'email' => $weiboUser->getEmail(),
-            'avatar' => $weiboUser->getAvatar(),
-            'user_id' => $user_id
-        ]);
-    }
-    
-    /**
-     * [创建 weibo 用户]
-     * @author @smallnews 2017-03-17
-     */
-    protected function createTwitterUser($twitter, $user_id){
-        return TwitterUser::create([
-            'twitter_id' => $twitter->getId(),
-            'nick_name' => $twitter->getNickname(),
-            'name' => $twitter->getName(),
-            'email' => $twitter->getEmail(),
-            'avatar' => $twitter->getAvatar(),
-            'user_id' => $user_id
         ]);
     }
 }
