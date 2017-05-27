@@ -11,9 +11,11 @@ use Validator;
 use Auth;
 use DB;
 use MyUpload;
+use App\Http\Traits\ThirdOper;
 
 class UsersController extends CommonController
 {
+    use ThirdOper;
     /**
      * Create a new controller instance.
      *

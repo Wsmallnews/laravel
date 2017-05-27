@@ -9,7 +9,9 @@ use MyUpload;
 
 trait ThirdOper
 {
-    protected $redirectCreate = "/createUser";
+    // protected $redirectTo = "/";
+    protected $redirectToCreate = "/createUser";
+    protected $redirectToBind = "/user/bind";
     
     protected $myThirdLoginDriver = null;   // 自定义第三方操作对象
     protected $mySocialite = null;   // 自定义第三方 驱动 对象
@@ -48,6 +50,11 @@ trait ThirdOper
      */
     public function thirdBind(Request $request){
         $driver = $request->input('driver');
+        $type = $request->input('type');
+        
+        $user = Auth::user();
+        $user->third_oper = $type;          // 保存操作类型
+        $user->save();
         
         return resolve('App\Repositories\MySocialite')->redirectToProvider($driver);   // 获取第三方数据
     }
@@ -55,11 +62,15 @@ trait ThirdOper
     
     public function thirdUnbind(Request $request){      // 解绑
         $driver = $request->input('driver');
+        $type = $request->input('type');
         
         $user = Auth::user();
+        $user->third_oper = $type;           // 保存操作类型
+        $user->save();
+        
         if ($user->source_driver == $driver) {
             flash('创建账号的第三方账号不能解绑', 'warning');
-            return redirect($this->redirectTo);
+            return redirect($this->redirectToBind);
         }
         
         $this->driverUser = resolve('App\Repositories\MyThirdLoginDriver')->getThirdUserById($driver, $user->{$driver.'_id'});
@@ -68,6 +79,9 @@ trait ThirdOper
         
         $user->{$driver.'_id'} = 0;
         $user->save();
+        
+        flash('解绑成功', 'success');
+        return redirect($this->redirectToBind);
     }
     
     
@@ -131,7 +145,7 @@ trait ThirdOper
             session()->flash('socialiteUser', $this->socialiteUser);
             session()->flash('driver', $this->driver);
             
-            return redirect($this->redirectCreate);
+            return redirect($this->redirectToCreate);
         }
     }
     
@@ -147,7 +161,7 @@ trait ThirdOper
         
         if ($this->driverUser['user_id']) {
             flash('绑定失败，该第三方账号已绑定其他帐号，请解绑重新绑定', 'error');
-            return redirect($this->redirectTo);
+            return redirect($this->redirectToBind);
         }
             
         if($this->driverUser){        // 找到第三方用户
@@ -166,7 +180,7 @@ trait ThirdOper
         }
         
         flash('绑定成功', 'success');
-        return redirect($this->redirectTo);
+        return redirect($this->redirectToBind);
     }
     
     

@@ -204,8 +204,8 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}" class="pjax-element"> 登录</a></li>
                             <li><a href="{{ url('/register') }}" class="pjax-element"> 注册</a></li>
-                            <li><a href="{{ route('auth.driver', ['driver' => 'weibo']) }}" class="wechat_login"> <b class="fa fa-weibo"></b></a></li>
-                            <li><a href="{{ route('auth.driver', ['driver' => 'github']) }}" class="github_login"> <b class="fa fa-github-alt"></b></a></li>
+                            <li><a href="{{ route('auth.thirdLogin', ['driver' => 'weibo']) }}" class="wechat_login"> <b class="fa fa-weibo"></b></a></li>
+                            <li><a href="{{ route('auth.thirdLogin', ['driver' => 'github']) }}" class="github_login"> <b class="fa fa-github-alt"></b></a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
