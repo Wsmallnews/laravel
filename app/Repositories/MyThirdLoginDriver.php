@@ -47,7 +47,7 @@ class MyThirdLoginDriver{
      * @param  array  $data
      * @return User
      */
-    protected function createThirdUser($driver, $socialiteUser, $user_id = '')
+    public function createThirdUser($driver, $socialiteUser, $user_id = '')
     {
         $method = "create".ucfirst($driver)."User";
 		
