@@ -12,7 +12,7 @@ class GithubUser extends CommonModel
     
     
     public function getGithubUserByThirdId($github_id = 0){
-        return $this->where('github_id', $github_idgetGithubUserByThirdId)->first();
+        return $this->where('github_id', $github_id)->first();
     }
     
 }
