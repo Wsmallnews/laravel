@@ -103,13 +103,12 @@ trait ThirdOper
     
 
 	public function thirdCallBack($socialite = null){
-        
-		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
+		$this->socialiteUser = $socialite->socialiteUser;
 		
-		if ($socialiteUser->token) {
+		if ($this->socialiteUser->token) {
             if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
-                $method = 'third'.ucfirst($user->third_oper).'Back';
+                $method = 'third'.ucfirst($this->user->third_oper).'Back';
             }else {
                 $method = 'thirdLoginBack';
             }
