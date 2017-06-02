@@ -106,8 +106,9 @@ trait ThirdOper
         
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
-        print_r($socialiteUser->token);
 		if ($socialiteUser->token) {
+            print_r($this->guard());
+            var_dump($this->guard()->check());
             if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
                 $method = 'third'.ucfirst($user->third_oper).'Back';
