@@ -64,8 +64,8 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     
     // 用户路由
     $router->get('user/bind', 'UsersController@bind')->name('user.bind');   // 第三方账号绑定
-    $router->get('user/thirdBind', 'Auth\LoginController@thirdLogin')->name('user.thirdBind');
-    $router->get('user/thirdUnbind', 'Auth\LoginController@thirdLogin')->name('user.thirdUnbind');
+    $router->get('user/thirdBind', 'UsersController@thirdLogin')->name('user.thirdBind');
+    $router->get('user/thirdUnbind', 'UsersController@thirdLogin')->name('user.thirdUnbind');
     
     $router->resource('user', 'UsersController');
     
