@@ -28,44 +28,44 @@
             <li class="list-group-item">
                 <b class="fa fa-qq fa-bind"></b>
                 @if (empty($user->qq_id))
-                    <a href="{{ route('auth.thirdLogin', ['driver' => 'qq', 'type' => 'bind']) }}" class="btn btn-default">
+                    <a href="{{ route('user.thirdBind', ['driver' => 'qq']) }}" class="btn btn-default">
                         绑定 qq 登录
                     </a>
                 @else 
-                    <span class="hui-14 binded">已绑定</span><a href="{{ route('auth.thirdLogin', ['driver' => 'qq', 'type' => 'unbind']) }}" class="hui-14 unbind">解除绑定</a>
+                    <span class="hui-14 binded">已绑定</span><a href="{{ route('user.thirdUnbind', ['driver' => 'qq']) }}" class="hui-14 unbind">解除绑定</a>
                 @endif
             </li>
             
             <li class="list-group-item">
                 <b class="fa fa-weibo fa-bind"></b>
                 @if (empty($user->weibo_id))
-                    <a href="{{ route('auth.thirdLogin', ['driver' => 'weibo', 'type' => 'bind']) }}" class="btn btn-default">
+                    <a href="{{ route('user.thirdBind', ['driver' => 'weibo']) }}" class="btn btn-default">
                         绑定 微博 登录
                     </a>
                 @else 
-                    <span class="hui-14 binded">已绑定</span><a href="{{ route('auth.thirdLogin', ['driver' => 'weibo', 'type' => 'unbind']) }}" class="hui-14 unbind">解除绑定</a>
+                    <span class="hui-14 binded">已绑定</span><a href="{{ route('user.thirdUnbind', ['driver' => 'weibo']) }}" class="hui-14 unbind">解除绑定</a>
                 @endif
             </li>
             
             <li class="list-group-item">
                 <b class="fa fa-github fa-bind"></b>
                 @if (empty($user->github_id))
-                    <a href="{{ route('auth.thirdLogin', ['driver' => 'github', 'type' => 'bind']) }}" class="btn btn-default">
+                    <a href="{{ route('user.thirdBind', ['driver' => 'github']) }}" class="btn btn-default">
                         绑定 github 登录
                     </a>
                 @else 
-                    <span class="hui-14 binded">已绑定</span><a href="{{ route('auth.thirdLogin', ['driver' => 'github', 'type' => 'unbind']) }}" class="hui-14 unbind">解除绑定</a>
+                    <span class="hui-14 binded">已绑定</span><a href="{{ route('user.thirdUnbind', ['driver' => 'github']) }}" class="hui-14 unbind">解除绑定</a>
                 @endif
             </li>
             
             <li class="list-group-item">
                 <b class="fa fa-twitter fa-bind"></b>
                 @if (empty($user->twitter_id))
-                    <a href="{{ route('auth.thirdLogin', ['driver' => 'twitter', 'type' => 'bind']) }}" class="btn btn-default">
+                    <a href="{{ route('user.thirdBind', ['driver' => 'twitter']) }}" class="btn btn-default">
                         绑定 twitter 登录
                     </a>
                 @else 
-                    <span class="hui-14 binded">已绑定</span><a href="{{ route('auth.thirdLogin', ['driver' => 'twitter', 'type' => 'unbind']) }}" class="hui-14 unbind">解除绑定</a>
+                    <span class="hui-14 binded">已绑定</span><a href="{{ route('user.thirdUnbind', ['driver' => 'twitter']) }}" class="hui-14 unbind">解除绑定</a>
                 @endif
             </li>
         </ul>
