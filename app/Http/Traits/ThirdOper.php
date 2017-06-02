@@ -56,7 +56,7 @@ trait ThirdOper
         $user = Auth::user();
         $user->third_oper = $type;          // 保存操作类型
         $user->save();
-        
+
         return resolve('App\Repositories\MySocialite')->redirectToProvider($driver);   // 获取第三方数据
     }
     
