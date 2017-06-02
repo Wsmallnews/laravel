@@ -107,18 +107,17 @@ trait ThirdOper
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
 		if ($socialiteUser->token) {
-            var_dump($this->guard()->check());
             if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
                 $method = 'third'.ucfirst($user->third_oper).'Back';
             }else {
                 $method = 'thirdLoginBack';
             }
-            var_dump($method);
-            if (!function_exists($method)) {
+
+            if (!method_exists($this, $method)) {
                 abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
             } 
-            print_r($method);
+
             $this->$method();       // 根据操作类型，调用对应function
 		}
 		
