@@ -17,7 +17,7 @@ class MySocialite{
     /*
         allows the driver`s
      */
-    protected $filterLogin = ['github', 'wechat', 'qq', 'weibo', 'twitter'];
+    public $filterLogin = ['github', 'wechat', 'qq', 'weibo', 'twitter'];
     
     
     /**

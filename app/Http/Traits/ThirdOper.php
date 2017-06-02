@@ -250,7 +250,7 @@ trait ThirdOper
             'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'driver' => 'required|in:'.join(',', $this->filterLogin),
+            'driver' => 'required|in:'.join(',', resolve('App\Repositories\MySocialite')->filterLogin),
             'token' => 'required',
         ],[
             
