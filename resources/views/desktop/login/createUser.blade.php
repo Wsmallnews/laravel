@@ -2,7 +2,7 @@
 
 @section('content')
     
-    {{ var_dump(session('socialiteUser')) }}
+    {{ print_r(session('socialiteUser')) }}
     
 <div class="rows">
     <div class="col-lg-3">
