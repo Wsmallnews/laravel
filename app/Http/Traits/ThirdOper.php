@@ -91,13 +91,13 @@ trait ThirdOper
      * @return Response
      */
     public function handleProviderCallback($driver)
-    {print_r($driver);
+    {
         $this->driver = $driver;
         $this->myThirdLoginDriver = resolve('App\Repositories\MyThirdLoginDriver');
         $this->mySocialite = resolve('App\Repositories\MySocialite');
         
         $mySocialite = $this->mySocialite->handleProviderCallback($driver); // 返回 MySocialite 实例
-        print_r($mySocialite);exit;
+
 		return $this->thirdCallBack($mySocialite);	// 获取第三方之后的本地回调
     }
     
@@ -106,7 +106,7 @@ trait ThirdOper
         
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
-		if ($socialiteUser['token']) {
+		if ($socialiteUser->token) {
             if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
                 $method = 'third'.ucfirst($user->third_oper).'Back';
