@@ -21,7 +21,7 @@ class MyThirdLoginDriver{
 		// if (!class_exists($class)) {
 		// 	abort('third login driver not found');
 		// }
-		$thirdUser = new $class();
+		$thirdUser = new $class;
 		print_r($thirdUser);
 		return $thirdUser->{'get'.ucfirst($driver).'UserByThirdId'}($third_id);
 	}
