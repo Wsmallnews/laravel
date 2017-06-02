@@ -18,9 +18,9 @@ class MyThirdLoginDriver{
 		// $this->socialiteUser = $socialiteUser;
 		$class = ucfirst($driver)."User";
 		
-		if (!class_exists($class)) {
-			abort('third login driver not found');
-		}
+		// if (!class_exists($class)) {
+		// 	abort('third login driver not found');
+		// }
 		$thirdUser = new $class();
 		print_r($thirdUser);
 		return $thirdUser->{'get'.ucfirst($driver).'UserByThirdId'}($third_id);
