@@ -35,7 +35,7 @@ class MySocialite{
     
 	public function handleProviderCallback($driver = 'qq'){
 		$driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
-
+print_r($driver);
         $this->socialiteUser = Socialite::driver($driver)->user();
 		
 		return $this;
