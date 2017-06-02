@@ -3,6 +3,8 @@
 @section('content')
     
     {{ print_r(session('socialiteUser')) }}
+    
+    {{ session('socialiteUser.email') }}
     {{ session('socialiteUser.token') }}
 <div class="rows">
     <div class="col-lg-3">
