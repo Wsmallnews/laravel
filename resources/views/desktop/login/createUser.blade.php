@@ -1,8 +1,6 @@
 @extends('desktop.layouts.app')
 
 @section('content')
-    {{ session()->get('driver') }}
-    {{ session()->get('socialiteUser.token') }}
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
