@@ -97,7 +97,7 @@ trait ThirdOper
         $this->mySocialite = resolve('App\Repositories\MySocialite');
         
         $mySocialite = $this->mySocialite->handleProviderCallback($driver); // 返回 MySocialite 实例
-
+print_r($mySocialite);
 		return $this->thirdCallBack($mySocialite);	// 获取第三方之后的本地回调
     }
     
@@ -132,10 +132,10 @@ trait ThirdOper
      * @author @smallnews 2017-05-27
      * @return [type] [description]
      */
-    protected function thirdLoginBack(){
+    protected function thirdLoginBack(){print_r('login_back');
         // get third user data
         $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($this->driver, $this->socialiteUser->getId());
-
+print_r($this->driverUser);exit;
         if($this->driverUser['user_id']){        // 找到第三方用户
             $this->guard()->loginUsingId($this->driverUser['user_id'], true);
             flash('登录成功', 'success');
