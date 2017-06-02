@@ -53,7 +53,7 @@ trait ThirdOper
         $driver = $request->input('driver');
         $type = $request->input('type');
         
-        $user = Auth::user();
+        $user = Auth::user();print_r($user);exit;
         $user->third_oper = $type;          // 保存操作类型
         $user->save();
 
