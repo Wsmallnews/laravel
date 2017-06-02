@@ -15,7 +15,7 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/createUser') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="driver" @if (old('driver')) value="{{old('driver')}}" @else value="{{ session('driver') }}" @endif>
-                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session('socialiteUser.token') }}" @endif>
+                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session('socialiteUser')->token }}" @endif>
                     <div class="form-group">
                         <label for="avatar" class="col-md-4 control-label">头像</label>
                         <div class="col-md-6">
