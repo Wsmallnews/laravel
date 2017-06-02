@@ -106,6 +106,7 @@ trait ThirdOper
         
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
+        print_r($socialiteUser->token);
 		if ($socialiteUser->token) {
             if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
@@ -117,7 +118,7 @@ trait ThirdOper
             if (!function_exists($method)) {
                 abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
             } 
-            
+            print_r($method);
             $this->$method();       // 根据操作类型，调用对应function
 		}
 		
@@ -132,10 +133,10 @@ trait ThirdOper
      * @author @smallnews 2017-05-27
      * @return [type] [description]
      */
-    protected function thirdLoginBack(){
+    protected function thirdLoginBack(){print_r('login_back');
         // get third user data
         $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($driver, $this->socialiteUser->getId());
-        
+        print_r($this->driverUser);exit;
         if($this->driverUser['user_id']){        // 找到第三方用户
             $this->guard()->loginUsingId($this->driverUser['user_id'], true);
             flash('登录成功', 'success');
