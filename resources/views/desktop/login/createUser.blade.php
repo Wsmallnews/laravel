@@ -3,7 +3,7 @@
 @section('content')
     
     {{ print_r(session('socialiteUser')) }}
-    
+    {{ session('socialiteUser')['token'] }}
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
@@ -26,7 +26,7 @@
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">用户名</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="" @if (old('name')) value="{{old('name')}}" @else value="{{ session('socialiteUser.name') }}" @endif>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="" @if (old('name')) value="{{old('name')}}" @else value="{{ session('socialiteUser')['name'] }}" @endif>
                             
                             @if ($errors->has('name'))
                                 <span class="help-block">
