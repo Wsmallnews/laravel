@@ -33,7 +33,7 @@ class MyThirdLoginDriver{
 		// $this->socialiteUser = $socialiteUser;
 		$class = "App\\Models\\".ucfirst($driver)."User";
 		
-		if (!class_exists($method)) {
+		if (!class_exists($class)) {
 			abort('third login driver not found');
 		}
 		$thirdUser = new $class();
