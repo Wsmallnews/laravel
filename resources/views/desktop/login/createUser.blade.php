@@ -1,6 +1,9 @@
 @extends('desktop.layouts.app')
 
 @section('content')
+    
+    {{ var_dump(session('socialiteUser')) }}
+    
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>

@@ -143,7 +143,6 @@ trait ThirdOper
             
             return redirect($this->redirectTo);
         }else {                 // 创建用户和第三方用户
-            print_r($this->socialiteUser);exit;
             $this->request->session()->flash('socialiteUser', $this->socialiteUser);
             $this->request->session()->flash('driver', $this->driver);
             
