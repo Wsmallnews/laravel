@@ -47,7 +47,7 @@ class MyThirdLoginDriver{
      * @param  array  $data
      * @return User
      */
-    public function createThirdUser($driver, $socialiteUser, $user_id = '')
+    public function createThirdUser($driver, $socialiteUser, $user_id = 0)
     {
         $method = "create".ucfirst($driver)."User";
 		
@@ -55,14 +55,14 @@ class MyThirdLoginDriver{
 			abort('third login driver not found');
 		}
 		
-        return $this->$method($socialiteUser);
+        return $this->$method($socialiteUser, $user_id);
     }
     
     /**
      * [创建github 用户]
      * @author @smallnews 2017-01-20
      */
-    protected function createGithubUser($githubUser, $user_id = ''){
+    protected function createGithubUser($githubUser, $user_id){
         return GithubUser::create([
             'github_id' => $githubUser->getId(),
             'nick_name' => $githubUser->getNickname(),
@@ -77,7 +77,7 @@ class MyThirdLoginDriver{
      * [创建 qq 用户]
      * @author @smallnews 2017-01-20
      */
-    protected function createQqUser($qqUser, $user_id = ''){
+    protected function createQqUser($qqUser, $user_id){
         return QqUser::create([
             'qq_id' => $qqUser->getId(),
             'nick_name' => $qqUser->getNickname(),
@@ -93,7 +93,7 @@ class MyThirdLoginDriver{
      * [创建 weibo 用户]
      * @author @smallnews 2017-03-17
      */
-    protected function createWeiboUser($weiboUser, $user_id = ''){
+    protected function createWeiboUser($weiboUser, $user_id){
         return WeiboUser::create([
             'weibo_id' => $weiboUser->getId(),
             'nick_name' => $weiboUser->getNickname(),
@@ -108,7 +108,7 @@ class MyThirdLoginDriver{
      * [创建 weibo 用户]
      * @author @smallnews 2017-03-17
      */
-    protected function createTwitterUser($twitter, $user_id = ''){
+    protected function createTwitterUser($twitter, $user_id){
         return TwitterUser::create([
             'twitter_id' => $twitter->getId(),
             'nick_name' => $twitter->getNickname(),
