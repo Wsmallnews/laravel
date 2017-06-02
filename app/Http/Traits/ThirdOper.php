@@ -135,7 +135,7 @@ trait ThirdOper
     protected function thirdLoginBack(){
         // get third user data
         $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($this->driver, $this->socialiteUser->getId());
-        print_r($this->driverUser);exit;
+
         if($this->driverUser['user_id']){        // 找到第三方用户
             $this->guard()->loginUsingId($this->driverUser['user_id'], true);
             flash('登录成功', 'success');
