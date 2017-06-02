@@ -1,6 +1,7 @@
 @extends('desktop.layouts.app')
 
 @section('content')
+    session()->get('driver')
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
@@ -12,18 +13,18 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/createUser') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="driver" @if (old('driver')) value="{{old('driver')}}" @else value="{{ session('driver') }}" @endif>
-                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session('socialiteUser.token') }}" @endif>
+                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session()->get('socialiteUser.token') }}" @endif>
                     <div class="form-group">
                         <label for="avatar" class="col-md-4 control-label">头像</label>
                         <div class="col-md-6">
-                            <uploader btn-obj="avatar" btn-name="更改头像" type="users/avatars"  @if (old('avatar')) def-value="{{old('avatar')}}" @else def-value="{{ session('socialiteUser.avatar') }}" @endif></uploader>
+                            <uploader btn-obj="avatar" btn-name="更改头像" type="users/avatars"  @if (old('avatar')) def-value="{{old('avatar')}}" @else def-value="{{ session('socialiteUser') ? session('socialiteUser')->avatar : "" }}" @endif></uploader>
                         </div>
                     </div>
                     
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">用户名</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="" @if (old('name')) value="{{old('name')}}" @else value="{{ session('socialiteUser.nickname') }}" @endif>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="" @if (old('name')) value="{{old('name')}}" @else value="{{ session('socialiteUser') ? session('socialiteUser')->nickname : "" }}" @endif>
                             
                             @if ($errors->has('name'))
                                 <span class="help-block">
