@@ -15,6 +15,7 @@ trait ThirdOper
     
     protected $myThirdLoginDriver = null;   // 自定义第三方操作对象
     protected $mySocialite = null;   // 自定义第三方 驱动 对象
+    protected $request = null;
     protected $driver = null;
     protected $driverUser = null;
     protected $socialiteUser = null;
@@ -90,8 +91,9 @@ trait ThirdOper
      * @param driver    第三方驱动  
      * @return Response
      */
-    public function handleProviderCallback($driver)
+    public function handleProviderCallback(Request $request, $driver)
     {
+        $this->request = $request;
         $this->driver = $driver;
         $this->myThirdLoginDriver = resolve('App\Repositories\MyThirdLoginDriver');
         $this->mySocialite = resolve('App\Repositories\MySocialite');
@@ -141,8 +143,9 @@ trait ThirdOper
             
             return redirect($this->redirectTo);
         }else {                 // 创建用户和第三方用户
-            session()->flash('socialiteUser', $this->socialiteUser);
-            session()->flash('driver', $this->driver);
+            print_r($this->socialiteUser);
+            $this->request->session()->flash('socialiteUser', $this->socialiteUser);
+            $this->request->session()->flash('driver', $this->driver);
             
             return redirect($this->redirectToCreate);
         }
