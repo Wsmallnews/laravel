@@ -117,8 +117,7 @@ trait ThirdOper
                 abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
             } 
 
-            $this->$method();       // 根据操作类型，调用对应function
-            return;
+            return $this->$method();       // 根据操作类型，调用对应function
 		}
 		
 		// 没有获取到第三方数据
