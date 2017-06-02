@@ -1,7 +1,8 @@
 @extends('desktop.layouts.app')
 
 @section('content')
-    session()->get('driver')
+    {{ session()->get('driver') }}
+    {{ session()->get('socialiteUser.token') }}
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
@@ -13,7 +14,7 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/createUser') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="driver" @if (old('driver')) value="{{old('driver')}}" @else value="{{ session('driver') }}" @endif>
-                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session()->get('socialiteUser.token') }}" @endif>
+                    <input type="hidden" name="token" @if (old('token')) value="{{old('token')}}" @else value="{{ session('socialiteUser') ? session('socialiteUser')->token : "" }}" @endif>
                     <div class="form-group">
                         <label for="avatar" class="col-md-4 control-label">头像</label>
                         <div class="col-md-6">
@@ -37,7 +38,7 @@
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="col-md-4 control-label">邮箱</label>
                         <div class="col-md-6">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="" @if (old('email')) value="{{old('email')}}" @else value="{{ session('socialiteUser.email') }}" @endif>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="" @if (old('email')) value="{{old('email')}}" @else value="{{ session('socialiteUser') ? session('socialiteUser')->email : "" }}" @endif>
                             
                             @if ($errors->has('email'))
                                 <span class="help-block">
