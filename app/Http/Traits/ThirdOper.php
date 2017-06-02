@@ -118,10 +118,11 @@ trait ThirdOper
             } 
 
             $this->$method();       // 根据操作类型，调用对应function
+            return;
 		}
 		
 		// 没有获取到第三方数据
-        flash('拉取第三方数据失败，请刷新重试', 'warning');
+        flash('拉取第三方数据失败，请刷新重试', 'error');
         return redirect($this->redirectTo);
 	}
     

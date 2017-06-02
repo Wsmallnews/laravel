@@ -37,7 +37,7 @@ class MySocialite{
 		$driver = in_array($driver, $this->filterLogin) ? $driver : 'qq';
 
         $this->socialiteUser = Socialite::driver($driver)->user();
-		
+
 		return $this;
 	}
 	
