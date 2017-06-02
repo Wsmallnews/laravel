@@ -158,7 +158,7 @@ trait ThirdOper
      */
     protected function thirdBindBack(){
         // get third user data
-        $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($driver, $this->socialiteUser->getId());
+        $this->driverUser = $driverUser = $this->myThirdLoginDriver->getThirdUserByThirdId($this->driver, $this->socialiteUser->getId());
         
         if ($this->driverUser['user_id']) {
             flash('绑定失败，该第三方账号已绑定其他帐号，请解绑重新绑定', 'error');
