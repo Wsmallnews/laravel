@@ -3,7 +3,6 @@
 @section('content')
     
     {{ print_r(session('socialiteUser')) }}
-    {{ session('socialiteUser')['token'] }}
 <div class="rows">
     <div class="col-lg-3">
         <div class="shadow mr-bo-20">asdfasdfasdf</div>
