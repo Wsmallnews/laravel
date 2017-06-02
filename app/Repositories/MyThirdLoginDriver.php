@@ -16,12 +16,12 @@ class MyThirdLoginDriver{
 	public function getThirdUserByThirdId($driver, $third_id) {
 		echo $third_id."<br>";
 		// $this->socialiteUser = $socialiteUser;
-		$class = ucfirst($driver)."User";
+		$class = "App\\Models\\".ucfirst($driver)."User";
 		
 		// if (!class_exists($class)) {
 		// 	abort('third login driver not found');
 		// }
-		$thirdUser = new $class;
+		$thirdUser = new $class();
 		print_r($thirdUser);
 		return $thirdUser->{'get'.ucfirst($driver).'UserByThirdId'}($third_id);
 	}
@@ -53,7 +53,7 @@ class MyThirdLoginDriver{
     {
         $method = "create".ucfirst($driver)."User";
 		
-		if (!function_exists($method)) {
+		if (!method_exists($method)) {
 			abort('third login driver not found');
 		}
 		
