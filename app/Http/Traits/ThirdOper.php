@@ -37,7 +37,7 @@ trait ThirdOper
      */
     public function thirdLogin(Request $request){
         $driver = $request->input('driver');
-        
+
         return resolve('App\Repositories\MySocialite')->redirectToProvider($driver);   // 获取第三方数据
     }
     
@@ -107,16 +107,14 @@ trait ThirdOper
 		$this->socialiteUser = $socialiteUser = $socialite->socialiteUser;
 		
 		if ($socialiteUser->token) {
-            print_r(Auth::user());
-            var_dump(Auth::check());
-            var_dump(Auth::guard('web')->check());exit;
-            if (Auth::check()) {
+            var_dump($this->guard()->check());
+            if ($this->guard()->check()) {
                 $this->user = $this->guard()->user();
                 $method = 'third'.ucfirst($user->third_oper).'Back';
             }else {
                 $method = 'thirdLoginBack';
             }
-            
+            var_dump($method);
             if (!function_exists($method)) {
                 abort('third type oper not found'); // 第三方操作 不存在（登录，绑定，解绑）
             } 
