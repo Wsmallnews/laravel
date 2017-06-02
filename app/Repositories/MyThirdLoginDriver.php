@@ -51,7 +51,7 @@ class MyThirdLoginDriver{
     {
         $method = "create".ucfirst($driver)."User";
 		
-		if (!method_exists($method)) {
+		if (!method_exists($this, $method)) {
 			abort('third login driver not found');
 		}
 		
