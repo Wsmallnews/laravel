@@ -1,6 +1,14 @@
 <?php namespace App\Repositories;
 
 class MyHelper {
+	/**
+	 * 我的资源请求路径，为了链到 腾讯云，重写辅助函数 elixir
+	 * @author @smallnews 2017-06-03
+	 * @param  [type] $file           [description]
+	 * @param  string $buildDirectory [description]
+	 * @param  string $assetDriectory [description]
+	 * @return [type]                 [description]
+	 */
 	public function elixir($file, $buildDirectory = 'build', $assetDriectory = 'asset')
     {
         static $manifest = [];
@@ -25,6 +33,8 @@ class MyHelper {
             return '/'.trim($file, '/');
         }
 
-        throw new InvalidArgumentException("File {$file} not defined in asset manifest.");
+        abort(404);
     }
+	
+	
 }
