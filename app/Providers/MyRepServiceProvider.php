@@ -4,6 +4,7 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\MySocialite;
 use App\Repositories\MyThirdLoginDriver;
+use App\Repositories\MyHelper;
 
 class MyRepServiceProvider extends ServiceProvider {
 
@@ -39,6 +40,11 @@ class MyRepServiceProvider extends ServiceProvider {
 		$this->app->bind(		// 第三方登录 处理 实例
 			'MyThirdLoginDriver',
 			'MyThirdLoginDriver'
+		);
+		
+		$this->app->bind(		// 第三方登录 处理 实例
+			'myHelper',
+			'MyHelper'
 		);
 	}
 

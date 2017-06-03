@@ -21,7 +21,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
     <title>@yield('title-body'){{ $title or config('app.name', 'Laravel')}} - {{ config('app.name', 'Laravel') }}开发者社区</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" type="text/css"  href="{{ asset('/css/app.css') }}" >
+    <link rel="stylesheet" type="text/css"  href="{{ MyHelper::elixir('css/app.css') }}" >
 
     <style>
         nav.navbar-fixed-top {z-index: 8;}
@@ -281,7 +281,7 @@ ___) | | | | | | (_| | | | | | |  __/\ V  V /\__ \
         <vue-progress-bar></vue-progress-bar>
     </div>
     <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ MyHelper::elixir('js/app.js') }}"></script>
     @section('script')
         <script type="text/javascript">
         

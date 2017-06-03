@@ -10,6 +10,7 @@ use Storage;
 use Illuminate\HTTP\File;
 use Image;
 use MyUpload;
+use MyHelper;
 
 class IndexController extends CommonController
 {

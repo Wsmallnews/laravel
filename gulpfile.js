@@ -23,6 +23,10 @@ elixir(mix => {
         .webpack('app.js');
 });
 
+elixir(function(mix) {
+    mix.version(['css/app.css', 'js/app.js']);
+});
+
 // var elixir = require('laravel-elixir');
 //
 // elixir(function (mix){

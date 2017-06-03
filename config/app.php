@@ -55,6 +55,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Asset URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used by the console to properly generate URLs when using
+    | the Artisan command line tool. You should set this to the root of
+    | your application so that it is used when running Artisan tasks.
+    |
+    */
+    
+    'asset_url' => env('ASSET_URL', 'http://localhost'),
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
@@ -245,6 +259,7 @@ return [
          * Application Service Providers...
          */
         'MyUpload'  => App\Facades\MyUpload::class,
+        'MyHelper'  => App\Facades\MyHelper::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ],
 
