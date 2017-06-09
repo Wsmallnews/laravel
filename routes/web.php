@@ -63,9 +63,11 @@ Route::group(['prefix' => '', 'namespace' => 'Desktop'], function($router)
     // $router->get('user/{id}', 'UsersController@show');
     
     // 用户路由
+    $router->post('admin/uploadAsset', 'UsersController@uploadAsset')->name('admin.uploadAsset');   // 第三方账号绑定
     $router->get('user/bind', 'UsersController@bind')->name('user.bind');   // 第三方账号绑定
     $router->get('user/thirdBind', 'UsersController@thirdBind')->name('user.thirdBind');
     $router->get('user/thirdUnbind', 'UsersController@thirdUnbind')->name('user.thirdUnbind');
+    $router->get('user/admin', 'UsersController@admin')->name('user.admin');   // 管理中心
     
     $router->resource('user', 'UsersController');
     

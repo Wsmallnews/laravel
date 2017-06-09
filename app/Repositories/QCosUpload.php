@@ -56,6 +56,38 @@ class QCosUpload implements MyUpload {
 	}
 	
 	
+	/**
+	 * 本地 资源文件 转存到 cos，js css
+	 * @author @smallnews 2017-06-08
+	 * @param  [type] $file_src [description]
+	 * @param  string $type     [description]
+	 * @return [type]           [description]
+	 */
+	public function uploadAsset($file_src, $save_path = '/asset/'){	
+		$this->makeDirectory($save_path);
+		
+		$save_name = $this->normalizerPath($save_path."/".basename($file_src));
+		$ret = $this->driver()::upload($file_src, $save_name);
+		
+		if ($ret['code']){
+			return $this->returnMessage("上传失败", 1);
+		} else {
+			return $this->returnMessage("上传成功", 0);
+		}
+	}
+	
+	
+	/**
+	 * 设置要是用的 bucket
+	 * @author @smallnews 2017-06-08
+	 * @param  string $bucket [description]
+	 * @return [type]         [description]
+	 */
+	public function bucket($bucket = ''){
+		$this->driver()::setBucket($bucket);
+	}
+	
+	
 	private function saveFile(){
 		// 设置上传目录
 		$this->upload_dir = $this->createUploadDir($this->type);
@@ -197,6 +229,7 @@ class QCosUpload implements MyUpload {
 			'data' => $data
 		];
 	}
+	
 	
 	private function driver(){
 		return app('qcloudcos');

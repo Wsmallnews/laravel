@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9275b7f9395b02fa07898447fd791bcd",
-    "content-hash": "e6c5b56f0e31fd14516cd5b2c07e706c",
+    "hash": "9d35380f8bd098f1861a6ebbfaebd219",
+    "content-hash": "9b296d39581991c00862411b8b537d30",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2029,16 +2029,16 @@
         },
         {
             "name": "pusher/pusher-php-server",
-            "version": "2.6.3",
+            "version": "2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pusher/pusher-http-php.git",
-                "reference": "7101edc482d1b1de027abadd7a80a0d00222ef08"
+                "reference": "2cf2ba85e7ce3250468a1c42ab7c948a7d43839d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/pusher/pusher-http-php/7101edc482d1b1de027abadd7a80a0d00222ef08.zip",
-                "reference": "7101edc482d1b1de027abadd7a80a0d00222ef08",
+                "url": "https://files.phpcomposer.com/files/pusher/pusher-http-php/2cf2ba85e7ce3250468a1c42ab7c948a7d43839d.zip",
+                "reference": "2cf2ba85e7ce3250468a1c42ab7c948a7d43839d",
                 "shasum": ""
             },
             "require": {
@@ -2069,7 +2069,7 @@
                 "rest",
                 "trigger"
             ],
-            "time": "2016-12-22 10:46:28"
+            "time": "2017-06-06 16:41:17"
         },
         {
             "name": "ramsey/uuid",
@@ -2604,16 +2604,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.3.0",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "a9f8b02b0ef07302eca92cd4bba73200b7980e9c"
+                "reference": "4054a102470665451108f9b59305c79176ef98f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/event-dispatcher/a9f8b02b0ef07302eca92cd4bba73200b7980e9c.zip",
-                "reference": "a9f8b02b0ef07302eca92cd4bba73200b7980e9c",
+                "url": "https://files.phpcomposer.com/files/symfony/event-dispatcher/4054a102470665451108f9b59305c79176ef98f0.zip",
+                "reference": "4054a102470665451108f9b59305c79176ef98f0",
                 "shasum": ""
             },
             "require": {
@@ -2663,7 +2663,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-04 12:23:07"
+            "time": "2017-06-04 18:15:29"
         },
         {
             "name": "symfony/finder",
@@ -3319,16 +3319,16 @@
         },
         {
             "name": "wsmallnews/laravel-cos",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Wsmallnews/laravel-cos.git",
-                "reference": "067a6498b905f7cb25006f918e725c9aab244dde"
+                "reference": "d242d6f25f192bdadfe459298229e9376a116dc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/Wsmallnews/laravel-cos/067a6498b905f7cb25006f918e725c9aab244dde.zip",
-                "reference": "067a6498b905f7cb25006f918e725c9aab244dde",
+                "url": "https://files.phpcomposer.com/files/Wsmallnews/laravel-cos/d242d6f25f192bdadfe459298229e9376a116dc3.zip",
+                "reference": "d242d6f25f192bdadfe459298229e9376a116dc3",
                 "shasum": ""
             },
             "type": "library",
@@ -3355,7 +3355,7 @@
                 "qcloud",
                 "tengxun"
             ],
-            "time": "2017-03-25 03:36:48"
+            "time": "2017-06-09 07:20:05"
         }
     ],
     "packages-dev": [
@@ -4727,16 +4727,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.0",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "885db865f6b2b918404a1fae28f9ac640f71f994"
+                "reference": "9752a30000a8ca9f4b34b5227d15d0101b96b063"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/yaml/885db865f6b2b918404a1fae28f9ac640f71f994.zip",
-                "reference": "885db865f6b2b918404a1fae28f9ac640f71f994",
+                "url": "https://files.phpcomposer.com/files/symfony/yaml/9752a30000a8ca9f4b34b5227d15d0101b96b063.zip",
+                "reference": "9752a30000a8ca9f4b34b5227d15d0101b96b063",
                 "shasum": ""
             },
             "require": {
@@ -4778,7 +4778,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28 10:56:20"
+            "time": "2017-06-02 22:05:06"
         },
         {
             "name": "webmozart/assert",

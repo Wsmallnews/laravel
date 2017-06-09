@@ -100,6 +100,11 @@ class UsersController extends CommonController
     }
     
     
+    /**
+     * 第三方账号绑定
+     * @author @smallnews 2017-06-03
+     * @return [type] [description]
+     */
     public function bind(){
         $user = Auth::user();
         
@@ -107,6 +112,57 @@ class UsersController extends CommonController
             'title' => '账号绑定',
             'user' => $user
         ]);
+    }
+    
+    
+    /**
+     * 管理中心
+     * @author @smallnews 2017-06-03
+     * @return [type] [description]
+     */
+    public function admin(){
+        $user = Auth::user();
+        
+        if (!$user->isSuperAdmin()) {
+            abort(404);
+        }
+        
+        return view('desktop.users.admin', [
+            'title' => '管理中心',
+            'user' => $user
+        ]);
+    }
+    
+    
+    /**
+     * 上传网站资源文件
+     * @author @smallnews 2017-06-09
+     */
+    public function uploadAsset() {
+        $path = public_path('build/rev-manifest.json');
+
+        if (file_exists($path)) {
+            $manifest = json_decode(file_get_contents($path), true);
+        }
+        
+        if (isset($manifest)) {
+            $bucket = request()->input('type') == 'correct' ? 'smallnews' : 'smalltest';
+            
+            MyUpload::bucket($bucket);
+            foreach ($manifest as $key => $value) {
+                $file_path = public_path('build/'.$value);
+                
+                $result = MyUpload::uploadAsset($file_path, 'asset/'.pathinfo($file_path, PATHINFO_EXTENSION)."/");
+                
+                if ($result['error']){
+                    break;
+                }
+            }
+            
+            return response()->json($result);
+        }
+
+        return response()->json(['error' => 1, 'info' => '上传失败']);
     }
     
     

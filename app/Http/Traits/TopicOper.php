@@ -8,6 +8,7 @@ use App\Models\Topic;
 use App\Models\TopicClassify;
 use App\Repositories\Markdown;
 use MyUpload;
+use Gate;
 
 trait TopicOper
 {    
@@ -71,8 +72,9 @@ trait TopicOper
      */
     public function update(Request $request, $id)
     {
-        $topics = Auth::user()->topic()->findOrFail($id);
-        
+        $user = Auth::user();
+        $topics = $user->topic()->findOrFail($id);
+                
         if($request->input('save_and_publish') !== null && !$topics->is_public){
             $this->validator($request->all())->validate();
             

@@ -84,19 +84,19 @@ window.WebUploader = require('webuploader/dist/webuploader.js');
  * start echo pusher 实时通信，公共频道
  * @type {[type]}
  */
-window.Pusher = require('pusher-js');
-
-import Echo from "laravel-echo"
-
-window.echo = new Echo({
-    broadcaster: 'pusher',
-    key: '0be6cdabf67ef8242444'
-});
-
-
-echo.channel('chat-room.1')
-    .listen('ChatMessageWasReceived', function (data) {
-        alert(data.chatMessage.message);
-        // console.log(data.user, data.chatMessage);
-    });
+// window.Pusher = require('pusher-js');
+// 
+// import Echo from "laravel-echo"
+// 
+// window.echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: '0be6cdabf67ef8242444'
+// });
+// 
+// 
+// echo.channel('chat-room.1')
+//     .listen('ChatMessageWasReceived', function (data) {
+//         alert(data.chatMessage.message);
+//         // console.log(data.user, data.chatMessage);
+//     });
 // end echo pusher 结束

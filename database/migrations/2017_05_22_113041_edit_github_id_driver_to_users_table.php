@@ -19,6 +19,7 @@ class EditGithubIdDriverToUsersTable extends Migration
             $table->integer('weibo_id')->nullable();
             $table->integer('twitter_id')->nullable();
             $table->string('third_oper')->nullable();
+            $table->string('identity')->nullable()->default('general');     // 默认为一般人
         });
     }
 
@@ -34,6 +35,7 @@ class EditGithubIdDriverToUsersTable extends Migration
             $table->dropColumn('qq_id');
             $table->dropColumn('weibo_id');
             $table->dropColumn('twitter_id');
+            $table->dropColumn('identity');
         });
     }
 }
